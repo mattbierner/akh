@@ -1,5 +1,5 @@
 /*
- * THIS FILE IS AUTO GENERATED from 'lib/identity.kep'
+ * THIS FILE IS AUTO GENERATED from 'lib/monad/identity.kep'
  * DO NOT EDIT
 */"use strict";
 var Identity;

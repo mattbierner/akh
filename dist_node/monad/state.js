@@ -1,9 +1,9 @@
 /*
- * THIS FILE IS AUTO GENERATED from 'lib/state.kep'
+ * THIS FILE IS AUTO GENERATED from 'lib/monad/state.kep'
  * DO NOT EDIT
 */"use strict";
 var Identity = require("./identity"),
-    StateT = require("./statet"),
+    StateT = require("../trans/statet"),
     runStateT = StateT["runStateT"],
     State;
 (State = StateT(Identity));

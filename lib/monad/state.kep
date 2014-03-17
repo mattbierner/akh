@@ -4,7 +4,7 @@
 package State
 with
     import './identity' Identity,
-    import './statet' StateT#{runStateT}
+    import '../trans/statet' StateT#{runStateT}
 in {
 
 /* Structure

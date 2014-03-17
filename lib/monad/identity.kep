@@ -6,9 +6,6 @@ package Identity
 
 /* Structure
  ******************************************************************************/
-/**
- * 
- */
 Identity = function \x =self-> {
     self.value = x;
 };
