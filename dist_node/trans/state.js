@@ -1,5 +1,5 @@
 /*
- * THIS FILE IS AUTO GENERATED from 'lib/trans/statet.kep'
+ * THIS FILE IS AUTO GENERATED from 'lib/trans/state.kep'
  * DO NOT EDIT
 */"use strict";
 var StateT, runStateT = (function(m, s) {

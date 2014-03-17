@@ -3,7 +3,7 @@
  * DO NOT EDIT
 */"use strict";
 var Identity = require("./identity"),
-    StateT = require("../trans/statet"),
+    StateT = require("../trans/state"),
     runStateT = StateT["runStateT"],
     State;
 (State = StateT(Identity));
