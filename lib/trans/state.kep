@@ -31,6 +31,7 @@ StateT = \m -> {
                 .chain(\[x ss] ->
                     runStateT(f(x), ss)));
     
+    // State operations
     Instance.get = new Instance(\s ->
         m.of([s, s]));
     
@@ -39,7 +40,7 @@ StateT = \m -> {
             m.of([s, s]));
     
     // Lift
-    var lift = \t ->
+    Instance.lift = \t ->
         new Instance(\s ->
             t.chain(\x -> m.of([x, s])));
     
@@ -75,6 +76,5 @@ StateT.evalStateT =
 StateT.execStateT =
     runStateT
     \>> \[_ s] -> s;
-
 
 }

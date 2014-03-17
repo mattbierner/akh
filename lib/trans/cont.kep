@@ -1,0 +1,59 @@
+/**
+ * @fileOverview Continuation monad transformer.
+ */
+package ContT
+{
+
+var runContT = \m k ->
+    m.run(k);
+
+/* Transformer
+ ******************************************************************************/
+/**
+ * 
+ */
+ContT = \m -> {
+    var Instance = function \run =self-> {
+        self.run = run;
+    };
+    
+    // of
+    var of = \x ->
+        new Instance(\k -> k(x));
+    
+    Instance.prototype.of = of;
+    Instance.of = of;
+    
+    // Chain
+    Instance.prototype.chain = \f =self->
+        new Instance(\k ->
+            runContT(self, \x ->
+                runContT(f(x), k)));
+    
+    // Callcc
+    Instance.prototype.callcc = \f =self->
+        new Instance(\k ->
+            runContT(
+                f(\x ->
+                    new Instance(\_ -> k x)),
+                k));
+    
+    // Lift
+    Instance.lift = \t ->
+        new Instance(\k ->
+            t.chain(k));
+    
+    return Instance;
+};
+
+/* Running
+ ******************************************************************************/
+/**
+ * Perform a continuation computation and complete with `k`.
+ * 
+ * @param m ContT computation.
+ * @param k Outer continuation.
+ */
+ContT.runContT = runContT;
+
+}

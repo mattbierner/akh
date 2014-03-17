@@ -36,13 +36,13 @@ var StateT, runStateT = (function(m, s) {
             return m.of([s, s]);
         }));
     }));
-    var lift = (function(t) {
+    (Instance.lift = (function(t) {
         return new(Instance)((function(s) {
             return t.chain((function(x) {
                 return m.of([x, s]);
             }));
         }));
-    });
+    }));
     return Instance;
 }));
 (StateT.runStateT = runStateT);
