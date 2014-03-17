@@ -1,0 +1,80 @@
+/**
+ * @fileOverview State monad transformer.
+ */
+package StateT
+{
+
+var runStateT = \m s ->
+    m.run(s);
+
+/* Transformer
+ ******************************************************************************/
+/**
+ * 
+ */
+StateT = \m -> {
+    var Instance = function \run =self-> {
+        self.run = run;
+    };
+    
+    // of
+    var of = \x ->
+        new Instance(\s -> m.of([x, s]));
+    
+    Instance.prototype.of = of;
+    Instance.of = of;
+    
+    // Chain
+    Instance.prototype.chain = \f =self->
+        new Instance(\s ->
+            runStateT(self, s)
+                .chain(\[x ss] ->
+                    runStateT(f(x), ss)));
+    
+    Instance.get = new Instance(\s ->
+        m.of([s, s]));
+    
+    Instance.put = \s ->
+        new Instance(\_ ->
+            m.of([s, s]));
+    
+    // Lift
+    var lift = \t ->
+        new Instance(\s ->
+            t.chain(\x -> m.of([x, s])));
+    
+    return Instance;
+};
+
+/* Running
+ ******************************************************************************/
+/**
+ * Perform a stateful computation and return resulting value, state pair.
+ * 
+ * @param m StateT computation.
+ * @param s Initial state.
+ */
+StateT.runStateT = runStateT;
+
+/**
+ * Perform a stateful computation and return resulting value.
+ * 
+ * @param m StateT computation.
+ * @param s Initial state.
+ */
+StateT.evalStateT =
+    runStateT
+    \>> \[x _] -> x;
+
+/**
+ * Perform a stateful computation and return resulting state.
+ * 
+ * @param m StateT computation.
+ * @param s Initial state.
+ */
+StateT.execStateT =
+    runStateT
+    \>> \[_ s] -> s;
+
+
+}

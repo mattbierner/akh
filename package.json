@@ -1,0 +1,39 @@
+{
+    "name": "akh",
+    "version": "0.0.0",
+    "description": "Monad and Monad Transformers Collection",
+    "author": "Matt Bierner",
+    "license": "MIT",
+    "keywords": [
+        "monad"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mattbierner/akh.git"
+    },
+    "bugs": {
+       "url" : "https://github.com/mattbierner/akh/issues"
+    },
+    
+    "main": "index.js",
+    "directories": {
+        "lib": "dist_node/"
+    },
+    "files": [
+        "bin/",
+        "dist_node",
+        "index.js"
+    ],
+    
+    "dependencies": {
+        "require-directory": "1.2.x"
+    },
+    
+   "devDependencies": {
+        "nodeunit": "0.8.x"
+    },
+    
+    "scripts": {
+        "test": "node test.js"
+    }
+}

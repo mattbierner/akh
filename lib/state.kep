@@ -1,0 +1,47 @@
+/**
+ * @fileOverview State monad
+ */
+package State
+with
+    import './identity' Identity,
+    import './statet' StateT#{runStateT}
+in {
+
+/* Structure
+ ******************************************************************************/
+/**
+ * State monad.
+ */
+State = StateT(Identity);
+
+/* Running
+ ******************************************************************************/
+/**
+ * Perform a state computation and return resulting value, state pair.
+ * 
+ * @param m State computation.
+ * @param s Initial state.
+ */
+State.runState = runStateT \>> Identity.runIdentity;
+
+/**
+ * Perform a state computation and return resulting value.
+ * 
+ * @param m State computation.
+ * @param s Initial state.
+ */
+State.evalState =
+    State.runState
+    \>> \[x _] -> x;
+
+/**
+ * Perform a state computation and return resulting state.
+ * 
+ * @param m State computation.
+ * @param s Initial state.
+ */
+State.execState =
+    State.runState
+    \>> \[_ s] -> s;
+
+}

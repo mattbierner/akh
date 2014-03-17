@@ -1,0 +1,43 @@
+/**
+ * @fileOverview Identity monad.
+ */
+package Identity
+{
+
+/* Structure
+ ******************************************************************************/
+/**
+ * 
+ */
+Identity = function \x =self-> {
+    self.value = x;
+};
+
+var run = \c -> c.value;
+
+/**
+ * 
+ */
+Identity.runIdentity = run;
+
+/* Monad
+ ******************************************************************************/
+/**
+ * 
+ */
+var of = \x ->
+    new Identity(x);
+
+Identity.of = of;
+Identity.prototype.of = of;
+
+/**
+ * 
+ */
+var chain = \c f ->
+    f <| run c;
+
+Identity.chain = chain;
+Identity.prototype.chain = \f =self -> chain(self, f);
+
+}
