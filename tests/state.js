@@ -1,4 +1,4 @@
-var State = require('../index').monad.state;
+var State = require('../index').state;
 
 exports.simple_of = function(test) {
     var c = State.of(3);

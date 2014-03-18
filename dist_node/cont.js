@@ -1,9 +1,9 @@
 /*
- * THIS FILE IS AUTO GENERATED from 'lib/monad/cont.kep'
+ * THIS FILE IS AUTO GENERATED from 'lib/cont.kep'
  * DO NOT EDIT
 */"use strict";
 var Identity = require("./identity"),
-    ContT = require("../trans/cont"),
+    ContT = require("./trans/cont"),
     runContT = ContT["runContT"],
     Cont;
 (Cont = ContT(Identity));

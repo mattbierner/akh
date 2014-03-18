@@ -1,5 +1,5 @@
 # Akh
-Javascript Monad and Monad Transformers Collection
+Javascript Monad and Monad Transformer Collection
 
 
 ### Overview
@@ -14,10 +14,13 @@ A collection of simple monad and monad transformers that implement the [Fantasy 
 
 ### Monad Transformers
 * StateT - `akh::trans::state` - State transformer.
+* ContT - `akh::trans::cont` - Continuation transformer.
+* DContT - `akh::trans::dcont` - Delimited continuation transformer.
 
 ### Monads
 * State - `akh::monad::state` - Stateful computation.
 * Identity - `akh::monad::identity` - Identity computation.
-
+* Cont - `akh::monad::cont` - Continuation computation.
+* DCont - `akh::monad::dcont` - Delimited continuation computation.
 
 [fl]: https://github.com/fantasyland/fantasy-land

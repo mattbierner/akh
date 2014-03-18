@@ -2,10 +2,9 @@
  * @fileOverview State monad transformer.
  */
 package StateT
-{
-
-var runStateT = \m s ->
-    m.run(s);
+with
+    import '../monad' Monad
+in {
 
 /* Transformer
  ******************************************************************************/
@@ -17,19 +16,17 @@ StateT = \m -> {
         self.run = run;
     };
     
-    // of
-    var of = \x ->
-        new Instance(\s -> m.of([x, s]));
-    
-    Instance.prototype.of = of;
-    Instance.of = of;
-    
-    // Chain
-    Instance.prototype.chain = \f =self->
-        new Instance(\s ->
-            runStateT(self, s)
-                .chain(\[x ss] ->
-                    runStateT(f(x), ss)));
+    // monad
+    Monad(Instance,
+        \x ->
+            new Instance(\s ->
+                m.of([x, s])),
+        
+        \c f ->
+            new Instance(\s ->
+                StateT.runStateT(c, s)
+                    .chain(\[x ss] ->
+                        StateT.runStateT(f(x), ss))));
     
     // State operations
     Instance.get = new Instance(\s ->
@@ -55,7 +52,8 @@ StateT = \m -> {
  * @param m StateT computation.
  * @param s Initial state.
  */
-StateT.runStateT = runStateT;
+StateT.runStateT = \m s ->
+    m.run(s);
 
 /**
  * Perform a stateful computation and return resulting value.

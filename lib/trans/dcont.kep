@@ -1,0 +1,135 @@
+/**
+ * @fileOverview Delimited continuation monad transformer.
+ * 
+ * Based on:
+ * http://www.cs.indiana.edu/~sabry/papers/monadicDC.pdf
+ */
+package DContT
+with
+    import 'nu-stream::stream' stream#{first rest isEmpty}
+in {
+
+/* Records
+ ******************************************************************************/
+/**
+ * Control segment.
+ */
+var Seg = function \f =self-> {
+    self.frame = f;
+};
+
+/**
+ * Delimiter.
+ */
+var P = function \t =self-> {
+    self.prompt = t;
+};
+
+/* Control Stack
+ ******************************************************************************/
+var empty = stream.NIL;
+
+var push = stream.cons;
+
+/**
+ * Push an entire slice of control stack onto a control stack.
+ */
+var pushSeq = stream.append;
+
+/**
+ * Push a delimiter `t` on onto control stack `k`.
+ */
+var pushP = \t, k ->
+    push(new P(t), k);
+
+/**
+ * Push a segment for `f` onto control stack `k`.
+ */
+var pushSeg = \f k ->
+    push(new Seg(f), k);
+
+/**
+ * Splits the control stack around prompt `t`.
+ */
+var splitSeq = \t k -> {
+    if (isEmpty k)
+        return [empty, empty];
+    
+    var top = first k,
+        rest = rest k;
+    
+    if (top instanceof P && top.prompt === t)
+        return [empty, rest];
+    
+    var sub = splitSeq(t, rest);
+    return [push(top, sub[0]), sub[1]];
+};
+
+/* Operations
+ ******************************************************************************/
+var runDContT = \m k ->
+    m.run(k);
+
+/**
+ * Apply continuation `k`
+ * 
+ * @param k Continuation.
+ * @param x Value
+ */
+var appk = \k x -> {
+    var c = k;
+    do {
+        if (typeof c === 'function')
+            return c(x);
+
+        var top := first c;
+        if (top instanceof Seg)
+            return runDContT(top.frame(x), rest c);
+        
+        c = ?top instanceof P 
+            :rest c
+            :top;
+    } while (true);
+};
+
+/* Transformer
+ ******************************************************************************/
+/**
+ * 
+ */
+DContT = \m -> {
+    var Instance = function \run =self-> {
+        self.run = run;
+    };
+    
+    // of
+    var of = \x ->
+        new Instance(\k -> appk(k, x));
+    
+    Instance.prototype.of = of;
+    Instance.of = of;
+    
+    // Chain
+    Instance.prototype.chain = \f =self->
+        new Instance(\k ->
+            runDContT(self, pushSeg(f, k)));
+   
+    // Lift
+    Instance.lift = \t ->
+        new Instance(\k ->
+            t.chain(appk).lift(k));
+    
+    return Instance;
+};
+
+/* Running
+ ******************************************************************************/
+/**
+ * Perform a continuation computation and complete with `k`.
+ * 
+ * @param m ContT computation.
+ * @param k Outer continuation.
+ */
+DContT.runDContT = runDContT;
+
+}

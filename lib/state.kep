@@ -1,17 +1,14 @@
 /**
- * @fileOverview State monad
+ * @fileOverview State computation
  */
 package State
 with
     import './identity' Identity,
-    import '../trans/state' StateT#{runStateT}
+    import './trans/state' StateT#{runStateT}
 in {
 
 /* Structure
  ******************************************************************************/
-/**
- * State monad.
- */
 State = StateT(Identity);
 
 /* Running

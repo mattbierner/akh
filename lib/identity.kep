@@ -1,5 +1,5 @@
 /**
- * @fileOverview Identity monad.
+ * @fileOverview Identity computation.
  */
 package Identity
 {
@@ -10,12 +10,13 @@ Identity = function \x =self-> {
     self.value = x;
 };
 
-var run = \c -> c.value;
 
+/* Running
+ ******************************************************************************/
 /**
  * 
  */
-Identity.runIdentity = run;
+Identity.runIdentity = \c -> c.value;
 
 /* Monad
  ******************************************************************************/
@@ -32,7 +33,7 @@ Identity.prototype.of = of;
  * 
  */
 var chain = \c f ->
-    f <| run c;
+    f <| Identity.runIdentity c;
 
 Identity.chain = chain;
 Identity.prototype.chain = \f =self -> chain(self, f);

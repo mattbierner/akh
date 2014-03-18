@@ -1,0 +1,15 @@
+package Monad {
+
+
+Monad = \instance of chain -> {
+    instance.of = of;
+    instance.prototype.of = of;
+    
+    instance.chain = chain;
+    instance.prototype.chain = \f =self-> chain(self, f);
+    
+    return instance;
+};
+    
+
+}

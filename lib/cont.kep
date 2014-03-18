@@ -1,0 +1,27 @@
+/**
+ * @fileOverview Continuation monad
+ */
+package Cont
+with
+    import './identity' Identity,
+    import './trans/cont' ContT#{runContT}
+in {
+
+/* Structure
+ ******************************************************************************/
+Cont = ContT(Identity);
+
+/* Running
+ ******************************************************************************/
+/**
+ * Perform a continuation computation .
+ * 
+ * @param m Computation.
+ * @param k Outer continuation.
+ */
+Cont.runCont =
+    (\m k ->
+        runContT(m, \x -> new Identity(k(x))))
+    \>> Identity.runIdentity;
+
+}

@@ -1,18 +1,15 @@
 /**
- * @fileOverview Continuation monad
+ * @fileOverview Continuation computation.
  */
-package Cont
+package DCont
 with
     import './identity' Identity,
-    import '../trans/cont' ContT#{runContT}
+    import './trans/dcont' DContT#{runDContT}
 in {
 
 /* Structure
  ******************************************************************************/
-/**
- * Continuation monad.
- */
-Cont = ContT(Identity);
+DCont = DContT(Identity);
 
 /* Running
  ******************************************************************************/
@@ -22,9 +19,9 @@ Cont = ContT(Identity);
  * @param m Computation.
  * @param k Outer continuation.
  */
-Cont.runCont =
+DCont.runDCont =
     (\m k ->
-        runContT(m, \x -> new Identity(k(x))))
+        runDContT(m, \x -> new Identity(k(x))))
     \>> Identity.runIdentity;
 
 }

@@ -2,25 +2,22 @@
  * THIS FILE IS AUTO GENERATED from 'lib/trans/state.kep'
  * DO NOT EDIT
 */"use strict";
-var StateT, runStateT = (function(m, s) {
+var Monad = require("../monad"),
+    StateT, runStateT = (function(m, s) {
         return m.run(s);
     });
 (StateT = (function(m) {
     var Instance = (function(run) {
         var self = this;
         (self.run = run);
-    }),
-        of = (function(x) {
-            return new(Instance)((function(s) {
-                return m.of([x, s]);
-            }));
-        });
-    (Instance.prototype.of = of);
-    (Instance.of = of);
-    (Instance.prototype.chain = (function(f) {
-        var self = this;
+    });
+    Monad(Instance, (function(x) {
         return new(Instance)((function(s) {
-            return runStateT(self, s)
+            return m.of([x, s]);
+        }));
+    }), (function(c, f) {
+        return new(Instance)((function(s) {
+            return runStateT(c, s)
                 .chain((function(__o) {
                     var x = __o[0],
                         ss = __o[1];
