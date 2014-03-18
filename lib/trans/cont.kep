@@ -9,7 +9,9 @@ in {
 /* Transformer
  ******************************************************************************/
 /**
+ * Continuation monad transformer.
  * 
+ * @param m Base monad.
  */
 ContT = \m -> {
     var Instance = function \run =self-> {
@@ -24,9 +26,9 @@ ContT = \m -> {
             new Instance(\k ->
                 ContT.runContT(c, \x ->
                     ContT.runContT(f x, k))));
-  
+    
     // Callcc
-    Instance.prototype.callcc = \f =self->
+    Instance.callcc = \f ->
         new Instance(\k ->
             ContT.runContT(
                 f(\x ->
@@ -50,6 +52,6 @@ ContT = \m -> {
  * @param k Outer continuation.
  */
 ContT.runContT = \m k ->
-    m.run(k);;
+    m.run(k);
 
 }

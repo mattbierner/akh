@@ -6,7 +6,9 @@
  */
 package DContT
 with
-    import 'nu-stream::stream' stream#{first rest isEmpty}
+    import 'nu-stream::stream' stream#{first rest isEmpty},
+    
+    import '../monad' Monad
 in {
 
 /* Records

@@ -6,6 +6,7 @@ var stream = require("nu-stream")["stream"],
     first = stream["first"],
     rest = stream["rest"],
     isEmpty = stream["isEmpty"],
+    Monad = require("../monad"),
     DContT, Seg = (function(f) {
         var self = this;
         (self.frame = f);

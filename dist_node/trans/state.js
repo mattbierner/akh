@@ -3,9 +3,7 @@
  * DO NOT EDIT
 */"use strict";
 var Monad = require("../monad"),
-    StateT, runStateT = (function(m, s) {
-        return m.run(s);
-    });
+    StateT;
 (StateT = (function(m) {
     var Instance = (function(run) {
         var self = this;
@@ -17,11 +15,11 @@ var Monad = require("../monad"),
         }));
     }), (function(c, f) {
         return new(Instance)((function(s) {
-            return runStateT(c, s)
+            return StateT.runStateT(c, s)
                 .chain((function(__o) {
                     var x = __o[0],
                         ss = __o[1];
-                    return runStateT(f(x), ss);
+                    return StateT.runStateT(f(x), ss);
                 }));
         }));
     }));
@@ -42,7 +40,9 @@ var Monad = require("../monad"),
     }));
     return Instance;
 }));
-(StateT.runStateT = runStateT);
+(StateT.runStateT = (function(m, s) {
+    return m.run(s);
+}));
 (StateT.evalStateT = (function(f, g) {
     return (function() {
         return f(g.apply(null, arguments));
@@ -50,7 +50,7 @@ var Monad = require("../monad"),
 })((function(__o) {
     var x = __o[0];
     return x;
-}), runStateT));
+}), StateT.runStateT));
 (StateT.execStateT = (function(f, g) {
     return (function() {
         return f(g.apply(null, arguments));
@@ -58,5 +58,5 @@ var Monad = require("../monad"),
 })((function(__o) {
     var s = __o[1];
     return s;
-}), runStateT));
+}), StateT.runStateT));
 (module.exports = StateT);

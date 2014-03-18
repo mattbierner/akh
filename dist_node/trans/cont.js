@@ -20,8 +20,7 @@ var Monad = require("../monad"),
             }));
         }));
     }));
-    (Instance.prototype.callcc = (function(f) {
-        var self = this;
+    (Instance.callcc = (function(f) {
         return new(Instance)((function(k) {
             return ContT.runContT(f((function(x) {
                 return new(Instance)((function(_) {

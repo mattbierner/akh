@@ -9,7 +9,9 @@ in {
 /* Transformer
  ******************************************************************************/
 /**
+ * State monad transformer.
  * 
+ * @param m Base monad.
  */
 StateT = \m -> {
     var Instance = function \run =self-> {
@@ -62,7 +64,7 @@ StateT.runStateT = \m s ->
  * @param s Initial state.
  */
 StateT.evalStateT =
-    runStateT
+    StateT.runStateT
     \>> \[x _] -> x;
 
 /**
@@ -72,7 +74,7 @@ StateT.evalStateT =
  * @param s Initial state.
  */
 StateT.execStateT =
-    runStateT
+    StateT.runStateT
     \>> \[_ s] -> s;
 
 }
