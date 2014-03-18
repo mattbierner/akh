@@ -2,7 +2,9 @@
  * @fileOverview Identity computation.
  */
 package Identity
-{
+with
+    import './monad' Monad
+in {
 
 /* Structure
  ******************************************************************************/
@@ -10,32 +12,20 @@ Identity = function \x =self-> {
     self.value = x;
 };
 
-
 /* Running
  ******************************************************************************/
 /**
- * 
+ * Run an identity computation.
  */
 Identity.runIdentity = \c -> c.value;
 
 /* Monad
  ******************************************************************************/
-/**
- * 
- */
-var of = \x ->
-    new Identity(x);
-
-Identity.of = of;
-Identity.prototype.of = of;
-
-/**
- * 
- */
-var chain = \c f ->
-    f <| Identity.runIdentity c;
-
-Identity.chain = chain;
-Identity.prototype.chain = \f =self -> chain(self, f);
+Monad(Identity,
+    \x ->
+    new Identity(x),
+    
+    \c f ->
+        f <| Identity.runIdentity c);
 
 }
