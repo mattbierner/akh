@@ -20,7 +20,7 @@ var Monad = require("../monad"),
             }));
         }));
     }));
-    (Instance.callcc = (function(f) {
+    var callcc = (function(f) {
         return new(Instance)((function(k) {
             return ContT.runContT(f((function(x) {
                 return new(Instance)((function(_) {
@@ -28,7 +28,9 @@ var Monad = require("../monad"),
                 }));
             })), k);
         }));
-    }));
+    });
+    (Instance.callcc = callcc);
+    (Instance.prototype.callcc = callcc);
     (Instance.lift = (function(t) {
         return new(Instance)((function(k) {
             return t.chain(k);

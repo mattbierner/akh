@@ -28,12 +28,14 @@ ContT = \m -> {
                     ContT.runContT(f x, k))));
     
     // Callcc
-    Instance.callcc = \f ->
+    var callcc = \f ->
         new Instance(\k ->
             ContT.runContT(
                 f(\x ->
                     new Instance(\_ -> k x)),
                 k));
+    Instance.callcc = callcc;
+    Instance.prototype.callcc = callcc;
     
     // Lift
     Instance.lift = \t ->
