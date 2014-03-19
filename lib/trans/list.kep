@@ -5,12 +5,27 @@
  */
 package ListT
 with
-    import '../monad' Monad
+    import '../base' {liftM liftM2},
+    import '../structure' {Monoid Monad}
 in {
 
-var foldr = \f z a -> Array.prototype.reduceRight.call(a, f, z);
+var foldr := \f z a -> Array.prototype.reduceRight.call(a, f, z);
+
+var map := \f a -> Array.prototype.map.call(a, f);
+
+var concat := Function.prototype.call.bind(Array.prototype.concat);
 
 var flatten := Function.prototype.apply.bind(Array.prototype.concat, []);
+
+var flip := \f -> \x y -> f(y, x);
+
+var cons := \x xs -> [x].concat(xs);
+
+var foldM := \f z l ->
+    foldr(
+        liftM2 @ f,
+        z,
+        l);
 
 /* Transformer
  ******************************************************************************/
@@ -24,17 +39,20 @@ ListT = \m -> {
         self.run = run;
     };
     
-    var sequence := foldr@(
-        \p c ->
-            c.chain\x ->
-            p.chain\y ->
-            m.of(x.concat(y)),
-        m.of([]));
+    var sequence := foldM @ (flip concat, m.of([]));
     
-    var map := \f x ->
-        sequence <| x.map(f);
+    var mapM := map \>> sequence;
     
-    // monad
+    var append = flip <| foldM @ concat;
+    
+    // Monoid
+    Monoid(Instance,
+        new Instance\->
+            m.of([]),
+        
+        append \>> liftM@flatten);
+    
+    // Monad
     Monad(Instance,
         \x ->
             new Instance\->
@@ -42,10 +60,15 @@ ListT = \m -> {
         
         \c f ->
             new Instance\->
-                ListT.runListT(c)
-                    .chain(map@(f \> ListT.runListT))
-                    .chain(flatten \> m.of));
+                liftM(flatten,
+                    ListT.runListT(c)
+                        .chain(mapM @ (f \> ListT.runListT))));
     
+    // Lift
+    Instance.lift = \t ->
+        new Instance\->
+            liftM(\x -> [x], t);
+            
     return Instance;
 };
 

@@ -65,7 +65,6 @@ exports.chain_empty= function(test) {
     test.done();
 };
 
-
 exports.chain_list = function(test) {
     var c = List.of(1)
         .chain(function(x) {
@@ -78,6 +77,18 @@ exports.chain_list = function(test) {
     test.deepEqual(
         List.runList(c),
         [[1, 2], [2, 3]]);
+    
+    test.done();
+};
+
+
+exports.list_concat = function(test) {
+    var c = List.zero
+        .concat(List.of([1, 2]));
+
+    test.deepEqual(
+        List.runList(c),
+        [1, 2]);
     
     test.done();
 };

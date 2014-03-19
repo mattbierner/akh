@@ -5,7 +5,7 @@
  */
 package StateT
 with
-    import '../monad' Monad
+    import '../structure' {Monad}
 in {
 
 var Pair = \x s -> ({

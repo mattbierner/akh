@@ -8,7 +8,7 @@ package DContT
 with
     import 'nu-stream::stream' stream#{first rest isEmpty},
     
-    import '../monad' Monad
+    import '../structure' {Monad}
 in {
 
 /* Records

@@ -3,7 +3,7 @@
  */
 package ContT
 with
-    import '../monad' Monad
+    import '../structure' {Monad}
 in {
 
 /* Transformer

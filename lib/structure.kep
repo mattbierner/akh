@@ -1,0 +1,23 @@
+package (
+    Monad
+    Monoid) {
+
+Monoid = \instance zero plus-> {
+    instance.zero = instance.prototype.zero = zero;
+    
+    instance.concat = plus;
+    instance.prototype.concat = \c =self-> plus(self, c);
+    
+    return instance;
+};
+
+Monad = \instance of chain -> {
+    instance.of = instance.prototype.of = of;
+    
+    instance.chain = chain;
+    instance.prototype.chain = \f =self-> chain(self, f);
+    
+    return instance;
+};
+
+}

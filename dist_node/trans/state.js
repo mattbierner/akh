@@ -2,7 +2,8 @@
  * THIS FILE IS AUTO GENERATED from 'lib/trans/state.kep'
  * DO NOT EDIT
 */"use strict";
-var Monad = require("../monad"),
+var __o = require("../structure"),
+    Monad = __o["Monad"],
     StateT, Pair = (function(x, s) {
         return ({
             "x": x,

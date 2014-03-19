@@ -1,0 +1,37 @@
+package (
+    liftM
+    liftM2
+    
+    next
+    seqa
+    seq)
+{
+
+
+liftM = \f m ->
+    m.chain(f \> m.of);
+
+liftM2 = \f m1 m2 ->
+    m1.chain \ x ->
+    m2.chain \ y ->
+    m1.of(f(x, y));
+
+/**
+ * Perform `p` then `q`. Return result from `q`.
+ */
+next = \p q -> p.chain(\_ -> q);
+
+/**
+ * Perform a sequence of computations left to right.
+ * 
+ * @param arr Array of computations.
+ */
+seqa = \arr -> Array.prototype.reduce.call(arr, next);
+
+/**
+ * Perform a sequence of computations from arguments left to right.
+ */
+seq = \args(...) -> seqa(args);
+
+
+}
