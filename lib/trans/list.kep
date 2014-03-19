@@ -26,10 +26,10 @@ ListT = \m -> {
     
     var sequence := foldr@(
         \p c ->
-            c.chain(\x ->
-                p.chain(\y ->
-                    c.of(x.concat(y)))),
-            m.of([]));
+            c.chain\x ->
+            p.chain\y ->
+            c.of(x.concat(y)),
+        m.of([]));
     
     var map := \f x ->
         sequence <| x.map(f);

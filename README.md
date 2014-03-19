@@ -14,13 +14,16 @@ Collection of simple monad and monad transformers that implement the [Fantasy La
 
 ### Monad Transformers
 * StateT - `akh::trans::state` - State transformer.
+* ListT - `akh::trans::list` - List transformer.
 * ContT - `akh::trans::cont` - Continuation transformer.
 * DContT - `akh::trans::dcont` - Delimited continuation transformer.
 
 ### Monads
 * State - `akh::state` - Stateful computation.
 * Identity - `akh::identity` - Identity computation.
+* List - `akh::list` - List computation.
 * Cont - `akh::cont` - Continuation computation.
 * DCont - `akh::dcont` - Delimited continuation computation.
+
 
 [fl]: https://github.com/fantasyland/fantasy-land
