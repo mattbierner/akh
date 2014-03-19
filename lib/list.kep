@@ -18,8 +18,6 @@ List = ListT(Identity);
  * 
  * @param m Computation.
  */
-List.runList =
-    runListT
-    \>> Identity.runIdentity;
+List.runList = runListT \> Identity.runIdentity;
 
 }

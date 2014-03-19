@@ -21,7 +21,7 @@ exports.simple_bind = function(test) {
     
     test.deepEqual(
         State.runState(c, 's'),
-        [8, 's']);
+        {'x': 8, 's': 's'});
     test.done();
 };
 

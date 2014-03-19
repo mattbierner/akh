@@ -23,7 +23,7 @@ Identity.runIdentity = \c -> c.value;
  ******************************************************************************/
 Monad(Identity,
     \x ->
-    new Identity(x),
+        new Identity(x),
     
     \c f ->
         f <| Identity.runIdentity c);

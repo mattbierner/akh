@@ -11,7 +11,7 @@ in {
 var foldr = \f z a -> Array.prototype.reduceRight.call(a, f, z);
 
 var flatten := Function.prototype.apply.bind(Array.prototype.concat, []);
-
+static console;
 /* Transformer
  ******************************************************************************/
 /**
@@ -37,14 +37,14 @@ ListT = \m -> {
     // monad
     Monad(Instance,
         \x ->
-            new Instance(\ ->
-                m.of([x])),
+            new Instance\->
+                m.of([x]),
         
         \c f ->
-            new Instance(\ ->
+            new Instance\->
                 ListT.runListT(c)
                     .chain(map@(f \> ListT.runListT))
-                    .chain(flatten \> m.of)));
+                    .chain(flatten \> m.of));
     
     return Instance;
 };

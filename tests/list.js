@@ -64,3 +64,20 @@ exports.chain_empty= function(test) {
     
     test.done();
 };
+
+
+exports.chain_list = function(test) {
+    var c = List.of(1)
+        .chain(function(x) {
+            return List.of([[x], [x * 2]])
+        })
+        .chain(function(x) {
+            return List.of([x.concat(x[0] + 1)])
+        });
+
+    test.deepEqual(
+        List.runList(c),
+        [[1, 2], [2, 3]]);
+    
+    test.done();
+};

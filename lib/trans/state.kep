@@ -1,10 +1,17 @@
 /**
  * @fileOverview State monad transformer.
+ * 
+ * Value and state are stored in `Pair`s.
  */
 package StateT
 with
     import '../monad' Monad
 in {
+
+var Pair = \x s -> ({
+    'x': x,
+    's': s
+});
 
 /* Transformer
  ******************************************************************************/
@@ -21,27 +28,27 @@ StateT = \m -> {
     // monad
     Monad(Instance,
         \x ->
-            new Instance(\s ->
-                m.of([x, s])),
+            new Instance\s ->
+                m.of(Pair(x, s)),
         
         \c f ->
-            new Instance(\s ->
+            new Instance\s ->
                 StateT.runStateT(c, s)
-                    .chain(\[x ss] ->
-                        StateT.runStateT(f(x), ss))));
+                    .chain(\{x s} ->
+                        StateT.runStateT(f(x), s)));
     
     // State operations
-    Instance.get = new Instance(\s ->
-        m.of([s, s]));
+    Instance.get = new Instance\s ->
+        m.of(Pair(s, s));
     
     Instance.put = \s ->
-        new Instance(\_ ->
-            m.of([s, s]));
+        new Instance\_ ->
+            m.of(Pair(s, s));
     
     // Lift
     Instance.lift = \t ->
-        new Instance(\s ->
-            t.chain(\x -> m.of([x, s])));
+        new Instance\s ->
+            t.chain(\x -> m.of(Pair(x, s)));
     
     return Instance;
 };
@@ -63,9 +70,10 @@ StateT.runStateT = \m s ->
  * @param m StateT computation.
  * @param s Initial state.
  */
-StateT.evalStateT = \m s ->
-    let n = StateT.runStateT(m, s) in
-        n.chain(\[x _] -> n.of(x));
+StateT.evalStateT =
+    StateT.runStateT
+    \>> \n ->
+        n.chain(\{x} -> n.of(x));
 
 /**
  * Perform a stateful computation and return resulting state.
@@ -73,8 +81,9 @@ StateT.evalStateT = \m s ->
  * @param m StateT computation.
  * @param s Initial state.
  */
-StateT.execStateT = \m s ->
-    let n = StateT.runStateT(m, s) in
-        n.chain(\[_ s] -> n.of(s));
+StateT.execStateT =
+    StateT.runStateT
+    \>> \n ->
+        n.chain(\{s} -> n.of(s));
 
 }
