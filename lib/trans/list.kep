@@ -28,7 +28,7 @@ ListT = \m -> {
         \p c ->
             c.chain\x ->
             p.chain\y ->
-            c.of(x.concat(y)),
+            m.of(x.concat(y)),
         m.of([]));
     
     var map := \f x ->

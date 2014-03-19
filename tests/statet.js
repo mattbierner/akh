@@ -1,19 +1,31 @@
-var State = require('../index').state;
+var StateT = require('../index').trans.state;
+var List = require('../index').list;
+
+var evalState = function(c, s) {
+    return List.runList(StateT.evalStateT(c, s));
+};
+
+var execState = function(c, s) {
+    return List.runList(StateT.execStateT(c, s));
+};
+
+
+var M = StateT(List);
 
 exports.simple_of = function(test) {
-    var c = State.of(3);
-
-    test.deepEqual(
-        State.evalState(c, 's'),
-        3);
+    var c = M.of(3);
     
     test.deepEqual(
-        State.execState(c, 's'),
-        's');
+        evalState(c, 's'),
+        [3]);
+    
+    test.deepEqual(
+        execState(c, 's'),
+        ['s']);
     
     test.done();
 };
-
+/*
 exports.simple_bind = function(test) {
     var c = State.of(3).chain(function(x) {
         return State.of(x + 5);
@@ -47,3 +59,4 @@ exports.put = function(test) {
     test.done();
 };
 
+*/

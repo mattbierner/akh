@@ -4,7 +4,7 @@
 package State
 with
     import './identity' Identity,
-    import './trans/state' StateT#{runStateT}
+    import './trans/state' StateT
 in {
 
 /* Structure
@@ -19,7 +19,7 @@ State = StateT(Identity);
  * @param m State computation.
  * @param s Initial state.
  */
-State.runState = runStateT \>> Identity.runIdentity;
+State.runState = StateT.runStateT \>> Identity.runIdentity;
 
 /**
  * Perform a state computation and return resulting value.
@@ -27,9 +27,7 @@ State.runState = runStateT \>> Identity.runIdentity;
  * @param m State computation.
  * @param s Initial state.
  */
-State.evalState =
-    State.runState
-    \>> \[x _] -> x;
+State.evalState = StateT.evalStateT \>> Identity.runIdentity;
 
 /**
  * Perform a state computation and return resulting state.
@@ -37,8 +35,6 @@ State.evalState =
  * @param m State computation.
  * @param s Initial state.
  */
-State.execState =
-    State.runState
-    \>> \[_ s] -> s;
+State.execState = StateT.execStateT \>> Identity.runIdentity;
 
 }

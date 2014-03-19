@@ -15,7 +15,7 @@ var Monad = require("../monad"),
         sequence = foldr.bind(null, (function(p, c) {
             return c.chain((function(x) {
                 return p.chain((function(y) {
-                    return c.of(x.concat(y));
+                    return m.of(x.concat(y));
                 }));
             }));
         }), m.of([])),

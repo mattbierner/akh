@@ -63,9 +63,9 @@ StateT.runStateT = \m s ->
  * @param m StateT computation.
  * @param s Initial state.
  */
-StateT.evalStateT =
-    StateT.runStateT
-    \>> \[x _] -> x;
+StateT.evalStateT = \m s ->
+    let n = StateT.runStateT(m, s) in
+        n.chain(\[x _] -> n.of(x));
 
 /**
  * Perform a stateful computation and return resulting state.
@@ -73,8 +73,8 @@ StateT.evalStateT =
  * @param m StateT computation.
  * @param s Initial state.
  */
-StateT.execStateT =
-    StateT.runStateT
-    \>> \[_ s] -> s;
+StateT.execStateT = \m s ->
+    let n = StateT.runStateT(m, s) in
+        n.chain(\[_ s] -> n.of(s));
 
 }

@@ -43,20 +43,18 @@ var Monad = require("../monad"),
 (StateT.runStateT = (function(m, s) {
     return m.run(s);
 }));
-(StateT.evalStateT = (function(f, g) {
-    return (function() {
-        return f(g.apply(null, arguments));
-    });
-})((function(__o) {
-    var x = __o[0];
-    return x;
-}), StateT.runStateT));
-(StateT.execStateT = (function(f, g) {
-    return (function() {
-        return f(g.apply(null, arguments));
-    });
-})((function(__o) {
-    var s = __o[1];
-    return s;
-}), StateT.runStateT));
+(StateT.evalStateT = (function(m, s) {
+    var n = StateT.runStateT(m, s);
+    return n.chain((function(__o) {
+        var x = __o[0];
+        return n.of(x);
+    }));
+}));
+(StateT.execStateT = (function(m, s) {
+    var n = StateT.runStateT(m, s);
+    return n.chain((function(__o) {
+        var s = __o[1];
+        return n.of(s);
+    }));
+}));
 (module.exports = StateT);

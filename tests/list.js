@@ -10,6 +10,16 @@ exports.simple_of = function(test) {
     test.done();
 };
 
+exports.of_array = function(test) {
+    var c = List.of([3]);
+    
+    test.deepEqual(
+        List.runList(c),
+        [[3]]);
+    
+    test.done();
+};
+
 exports.simple_chain = function(test) {
     var c = List.of(3).chain(function(x) {
         return List.of([x, x * 2]);
@@ -21,6 +31,7 @@ exports.simple_chain = function(test) {
     
     test.done();
 };
+
 
 exports.chain_order= function(test) {
     var c = List.of(1)
