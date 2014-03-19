@@ -11,7 +11,7 @@ in {
 var foldr = \f z a -> Array.prototype.reduceRight.call(a, f, z);
 
 var flatten := Function.prototype.apply.bind(Array.prototype.concat, []);
-static console;
+
 /* Transformer
  ******************************************************************************/
 /**

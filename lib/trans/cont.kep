@@ -20,27 +20,25 @@ ContT = \m -> {
     
     Monad(Instance,
         \x ->
-            new Instance(\k -> k(x)),
+            new Instance\k -> k(x),
         
         \c f ->
-            new Instance(\k ->
+            new Instance\k ->
                 ContT.runContT(c, \x ->
-                    ContT.runContT(f x, k))));
+                    ContT.runContT(f x, k)));
     
     // Callcc
-    var callcc = \f ->
-        new Instance(\k ->
+    Instance.callcc = Instance.prototype.callcc = \f ->
+        new Instance\k ->
             ContT.runContT(
                 f(\x ->
-                    new Instance(\_ -> k x)),
-                k));
-    Instance.callcc = callcc;
-    Instance.prototype.callcc = callcc;
+                    new Instance\_ -> k x),
+                k);
     
     // Lift
     Instance.lift = \t ->
-        new Instance(\k ->
-            t.chain(k));
+        new Instance\k ->
+            t.chain(k);
     
     return Instance;
 };
