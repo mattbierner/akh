@@ -1,0 +1,25 @@
+/**
+ * @fileOverview List monad
+ */
+package List
+with
+    import './identity' Identity,
+    import './trans/list' ListT#{runListT}
+in {
+
+/* Structure
+ ******************************************************************************/
+List = ListT(Identity);
+
+/* Running
+ ******************************************************************************/
+/**
+ * Perform a list computation .
+ * 
+ * @param m Computation.
+ */
+List.runList =
+    runListT
+    \>> Identity.runIdentity;
+
+}

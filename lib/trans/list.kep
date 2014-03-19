@@ -1,0 +1,63 @@
+/**
+ * @fileOverview List monad transformer.
+ * 
+ * This uses Javascript arrays.
+ */
+package ListT
+with
+    import '../monad' Monad
+in {
+
+var foldr = \f z a -> Array.prototype.reduceRight.call(a, f, z);
+
+var flatten := Function.prototype.apply.bind(Array.prototype.concat, []);
+
+/* Transformer
+ ******************************************************************************/
+/**
+ * State monad transformer.
+ * 
+ * @param m Base monad.
+ */
+ListT = \m -> {
+    var Instance = function \run =self-> {
+        self.run = run;
+    };
+    
+    var sequence := foldr@(
+        \p c ->
+            c.chain(\x ->
+                p.chain(\y ->
+                    c.of(x.concat(y)))),
+            m.of([]));
+    
+    var map := \f x ->
+        sequence <| x.map(f);
+    
+    // monad
+    Monad(Instance,
+        \x ->
+            new Instance(\ ->
+                m.of([x])),
+        
+        \c f ->
+            new Instance(\ ->
+                ListT.runListT(c)
+                    .chain(map@(f \> ListT.runListT))
+                    .chain(flatten \> m.of)));
+    
+    return Instance;
+};
+
+/* Running
+ ******************************************************************************/
+/**
+ * Perform a stateful computation and return resulting value, state pair.
+ * 
+ * @param m ListT computation.
+ * @param s Initial state.
+ */
+ListT.runListT = \m s ->
+    m.run(s);
+
+}

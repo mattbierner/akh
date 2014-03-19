@@ -121,6 +121,44 @@ DContT = \m -> {
         new Instance(\k ->
             t.chain(appk).lift(k));
     
+    // Primitive Continuation Operations
+    /**
+     * Create a new unique prompt.
+     */
+    var newPrompt = null;
+    
+    /**
+     * Pushes prompt onto the stack and evaluate `c`.
+     * 
+     * @param prompt Prompt.
+     * @param c Computation.
+     */
+    var pushPrompt = \prompt c ->
+        new Instance(\k ->
+            c <| pushP(prompt, k));
+    
+    /**
+     * Capture the continuation delimited by `prompt` and call `f` with it.
+     * 
+     * @param prompt Prompt.
+     * @param f Function mapping delimited continuation to computation.
+     */
+    var withSubCont = \prompt f  ->
+        new Instance(\k -> let
+            sub = splitSeq(prompt, k)
+        in
+            runDContT(f(sub.(0)), sub.(1)));
+    
+    /**
+     * Push an entire sub continuation onto the stack and evaluate `c`.
+     * 
+     * @param subk Sub continuation.
+     * @param c Computation
+     */
+    var pushSubCont = \subk, c ->
+        new Instance(\k ->
+            c <| pushSeq(subk, k));
+    
     return Instance;
 };
 

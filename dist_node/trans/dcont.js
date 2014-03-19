@@ -69,6 +69,23 @@ var stream = require("nu-stream")["stream"],
                 .lift(k);
         }));
     }));
+    var newPrompt = null,
+        pushPrompt = (function(prompt, c) {
+            return new(Instance)((function(k) {
+                return c(pushP(prompt, k));
+            }));
+        }),
+        withSubCont = (function(prompt, f) {
+            return new(Instance)((function(k) {
+                var sub = splitSeq(prompt, k);
+                return runDContT(f(sub[0]), sub[1]);
+            }));
+        }),
+        pushSubCont = (function(subk, c) {
+            return new(Instance)((function(k) {
+                return c(pushSeq(subk, k));
+            }));
+        });
     return Instance;
 }));
 (DContT.runDContT = runDContT);
