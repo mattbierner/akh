@@ -3,11 +3,30 @@ package (
     liftM2
     
     next
-    seqa
-    seq)
+    sequencea
+    sequence
+    mapM
+    foldM)
 {
 
+var flip := \f -> \x y -> f(y, x);
 
+var reducer := \f a -> Array.prototype.reduceRight.call(a, f);
+
+var foldr := \f z a -> Array.prototype.reduceRight.call(a, f, z);
+
+var map := \f a -> Array.prototype.map.call(a, f);
+
+var concat := Function.prototype.call.bind(Array.prototype.concat);
+
+var flatten := Function.prototype.apply.bind(Array.prototype.concat, []);
+
+
+var cons := \x xs -> [x].concat(xs);
+
+
+/* Lifting
+ ******************************************************************************/
 liftM = \f m ->
     m.chain(f \> m.of);
 
@@ -16,6 +35,8 @@ liftM2 = \f m1 m2 ->
     m2.chain \ y ->
     m1.of(f(x, y));
 
+/* Lifting
+ ******************************************************************************/
 /**
  * Perform `p` then `q`. Return result from `q`.
  */
@@ -26,12 +47,11 @@ next = \p q -> p.chain(\_ -> q);
  * 
  * @param arr Array of computations.
  */
-seqa = \arr -> Array.prototype.reduce.call(arr, next);
+sequencea = \arr -> Array.prototype.reduce.call(arr, next);
 
 /**
  * Perform a sequence of computations from arguments left to right.
  */
-seq = \args(...) -> seqa(args);
-
+sequence = \args(...) -> sequencea(args);
 
 }

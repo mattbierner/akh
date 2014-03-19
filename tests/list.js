@@ -84,11 +84,13 @@ exports.chain_list = function(test) {
 
 exports.list_concat = function(test) {
     var c = List.zero
-        .concat(List.of([1, 2]));
+        .concat(List.of(1))
+        .concat(List.of(2))
+        .concat(List.of(3))
 
     test.deepEqual(
         List.runList(c),
-        [1, 2]);
+        [1, 2, 3]);
     
     test.done();
 };

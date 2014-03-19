@@ -2,7 +2,25 @@
  * THIS FILE IS AUTO GENERATED from 'lib/base.kep'
  * DO NOT EDIT
 */"use strict";
-var liftM, liftM2, next, seqa, seq;
+var liftM, liftM2, next, sequencea, sequence, mapM, foldM, flip = (function(f) {
+        return (function(x, y) {
+            return f(y, x);
+        });
+    }),
+    reducer = (function(f, a) {
+        return Array.prototype.reduceRight.call(a, f);
+    }),
+    foldr = (function(f, z, a) {
+        return Array.prototype.reduceRight.call(a, f, z);
+    }),
+    map = (function(f, a) {
+        return Array.prototype.map.call(a, f);
+    }),
+    concat = Function.prototype.call.bind(Array.prototype.concat),
+    flatten = Function.prototype.apply.bind(Array.prototype.concat, []),
+    cons = (function(x, xs) {
+        return [x].concat(xs);
+    });
 (liftM = (function(f, m) {
     return m.chain((function(f, g) {
         return (function(x) {
@@ -22,15 +40,17 @@ var liftM, liftM2, next, seqa, seq;
         return q;
     }));
 }));
-(seqa = (function(arr) {
+(sequencea = (function(arr) {
     return Array.prototype.reduce.call(arr, next);
 }));
-(seq = (function() {
+(sequence = (function() {
     var args = arguments;
-    return seqa(args);
+    return sequencea(args);
 }));
 (exports["liftM"] = liftM);
 (exports["liftM2"] = liftM2);
 (exports["next"] = next);
-(exports["seqa"] = seqa);
-(exports["seq"] = seq);
+(exports["sequencea"] = sequencea);
+(exports["sequence"] = sequence);
+(exports["mapM"] = mapM);
+(exports["foldM"] = foldM);

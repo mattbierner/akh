@@ -21,11 +21,7 @@ var flip := \f -> \x y -> f(y, x);
 
 var cons := \x xs -> [x].concat(xs);
 
-var foldM := \f z l ->
-    foldr(
-        liftM2 @ f,
-        z,
-        l);
+var flattenM := liftM @ flatten;
 
 /* Transformer
  ******************************************************************************/
@@ -39,36 +35,36 @@ ListT = \m -> {
         self.run = run;
     };
     
-    var sequence := foldM @ (flip concat, m.of([]));
+    var sequence := foldr @ (liftM2 @ (flip concat), m.of []);
     
     var mapM := map \>> sequence;
-    
-    var append = flip <| foldM @ concat;
     
     // Monoid
     Monoid(Instance,
         new Instance\->
-            m.of([]),
+            m.of [],
         
-        append \>> liftM@flatten);
+        \a b ->
+            new Instance\->
+                liftM2(concat, ListT.runListT(a), ListT.runListT(b)));
     
     // Monad
     Monad(Instance,
         \x ->
             new Instance\->
-                m.of([x]),
+                m.of [x],
         
         \c f ->
             new Instance\->
-                liftM(flatten,
-                    ListT.runListT(c)
-                        .chain(mapM @ (f \> ListT.runListT))));
+                ListT.runListT(c)
+                    .chain(mapM @ (f \> ListT.runListT))
+                    |> flattenM);
     
     // Lift
     Instance.lift = \t ->
         new Instance\->
             liftM(\x -> [x], t);
-            
+    
     return Instance;
 };
 

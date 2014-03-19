@@ -24,35 +24,32 @@ var __o = require("../base"),
     cons = (function(x, xs) {
         return [x].concat(xs);
     }),
-    foldM = (function(f, z, l) {
-        return foldr(liftM2.bind(null, f), z, l);
-    });
+    flattenM = liftM.bind(null, flatten);
 (ListT = (function(m) {
     var Instance = (function(run) {
         var self = this;
         (self.run = run);
     }),
-        sequence = foldM.bind(null, flip(concat), m.of([])),
+        sequence = foldr.bind(null, liftM2.bind(null, flip(concat)), m.of([])),
         mapM = (function(f, g) {
             return (function() {
                 return f(g.apply(null, arguments));
             });
-        })(sequence, map),
-        append = flip(foldM.bind(null, concat));
+        })(sequence, map);
     Monoid(Instance, new(Instance)((function() {
         return m.of([]);
-    })), (function(f, g) {
-        return (function() {
-            return f(g.apply(null, arguments));
-        });
-    })(liftM.bind(null, flatten), append));
+    })), (function(a, b) {
+        return new(Instance)((function() {
+            return liftM2(concat, ListT.runListT(a), ListT.runListT(b));
+        }));
+    }));
     Monad(Instance, (function(x) {
         return new(Instance)((function() {
             return m.of([x]);
         }));
     }), (function(c, f) {
         return new(Instance)((function() {
-            return liftM(flatten, ListT.runListT(c)
+            return flattenM(ListT.runListT(c)
                 .chain(mapM.bind(null, (function(f, g) {
                     return (function(x) {
                         return f(g(x));
