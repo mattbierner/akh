@@ -51,12 +51,12 @@ exports.shift = function(test) {
                     return DCont.of(x + 1);
                 }); 
         })
-        .chain(function(x) {console.log('x', x, x * 2);
+        .chain(function(x) {
             return DCont.of(x * 2);
         });
     
     test.deepEqual(
         DCont.runDCont(c, sqr),
-        16);
+        7);
     test.done();
 };
