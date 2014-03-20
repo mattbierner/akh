@@ -1,3 +1,7 @@
+/*
+ * THIS FILE IS AUTO GENERATED FROM 'lib/state.kep'
+ * DO NOT EDIT
+*/
 define(["require", "exports", "./identity", "./trans/state"], (function(require, exports, Identity, StateT) {
     "use strict";
     var State;

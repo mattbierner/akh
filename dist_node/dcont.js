@@ -1,7 +1,8 @@
 /*
- * THIS FILE IS AUTO GENERATED from 'lib/dcont.kep'
+ * THIS FILE IS AUTO GENERATED FROM 'lib/dcont.kep'
  * DO NOT EDIT
-*/"use strict";
+*/
+"use strict";
 var Identity = require("./identity"),
     DContT = require("./trans/dcont"),
     runDContT = DContT["runDContT"],

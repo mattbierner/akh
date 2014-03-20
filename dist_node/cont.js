@@ -1,7 +1,8 @@
 /*
- * THIS FILE IS AUTO GENERATED from 'lib/cont.kep'
+ * THIS FILE IS AUTO GENERATED FROM 'lib/cont.kep'
  * DO NOT EDIT
-*/"use strict";
+*/
+"use strict";
 var Identity = require("./identity"),
     ContT = require("./trans/cont"),
     runContT = ContT["runContT"],

@@ -1,7 +1,8 @@
 /*
- * THIS FILE IS AUTO GENERATED from 'lib/trans/cont.kep'
+ * THIS FILE IS AUTO GENERATED FROM 'lib/trans/cont.kep'
  * DO NOT EDIT
-*/"use strict";
+*/
+"use strict";
 var __o = require("../structure"),
     Functor = __o["Functor"],
     Monad = __o["Monad"],

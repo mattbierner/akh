@@ -1,7 +1,8 @@
 /*
- * THIS FILE IS AUTO GENERATED from 'lib/list.kep'
+ * THIS FILE IS AUTO GENERATED FROM 'lib/list.kep'
  * DO NOT EDIT
-*/"use strict";
+*/
+"use strict";
 var Identity = require("./identity"),
     ListT = require("./trans/list"),
     runListT = ListT["runListT"],

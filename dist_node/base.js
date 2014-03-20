@@ -1,7 +1,8 @@
 /*
- * THIS FILE IS AUTO GENERATED from 'lib/base.kep'
+ * THIS FILE IS AUTO GENERATED FROM 'lib/base.kep'
  * DO NOT EDIT
-*/"use strict";
+*/
+"use strict";
 var liftM, liftM2, next, sequencea, sequence, mapM, foldM, flip = (function(f) {
         return (function(x, y) {
             return f(y, x);

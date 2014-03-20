@@ -1,7 +1,8 @@
 /*
- * THIS FILE IS AUTO GENERATED from 'lib/state.kep'
+ * THIS FILE IS AUTO GENERATED FROM 'lib/state.kep'
  * DO NOT EDIT
-*/"use strict";
+*/
+"use strict";
 var Identity = require("./identity"),
     StateT = require("./trans/state"),
     State;

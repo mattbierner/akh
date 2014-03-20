@@ -1,3 +1,7 @@
+/*
+ * THIS FILE IS AUTO GENERATED FROM 'lib/trans/cont.kep'
+ * DO NOT EDIT
+*/
 define(["require", "exports", "../structure"], (function(require, exports, __o) {
     "use strict";
     var Functor = __o["Functor"],

@@ -27,14 +27,21 @@
     
     "dependencies": {
         "nu-stream": ">=3.1.0",
+        
         "require-directory": "1.2.x"
     },
     
    "devDependencies": {
-        "nodeunit": "0.8.x"
+        "nodeunit": "0.8.x",
+        
+        "khepri": ">=0.19.0"
     },
     
     "scripts": {
-        "test": "node test.js"
+        "test": "node test.js",
+        
+        "build": "npm run build-amd && npm run build-node",
+        "build-amd": "khepri lib -o dist",
+        "build-node": "khepri lib -o dist_node --package_manager=node"
     }
 }

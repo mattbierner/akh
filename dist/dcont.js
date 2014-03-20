@@ -1,3 +1,7 @@
+/*
+ * THIS FILE IS AUTO GENERATED FROM 'lib/dcont.kep'
+ * DO NOT EDIT
+*/
 define(["require", "exports", "./identity", "./trans/dcont"], (function(require, exports, Identity, DContT) {
     "use strict";
     var runDContT = DContT["runDContT"],

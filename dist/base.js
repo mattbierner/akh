@@ -1,3 +1,7 @@
+/*
+ * THIS FILE IS AUTO GENERATED FROM 'lib/base.kep'
+ * DO NOT EDIT
+*/
 define(["require", "exports"], (function(require, exports) {
     "use strict";
     var liftM, liftM2, next, sequencea, sequence, mapM, foldM, flip = (function(f) {

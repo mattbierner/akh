@@ -1,7 +1,8 @@
 /*
- * THIS FILE IS AUTO GENERATED from 'lib/structure.kep'
+ * THIS FILE IS AUTO GENERATED FROM 'lib/structure.kep'
  * DO NOT EDIT
-*/"use strict";
+*/
+"use strict";
 var Functor, Monad, Monoid;
 (Functor = (function(instance, map) {
     (instance.map = map);
