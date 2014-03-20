@@ -57,6 +57,6 @@ exports.shift = function(test) {
     
     test.deepEqual(
         DCont.runDCont(c, sqr),
-        7);
+        14 * 14);
     test.done();
 };
