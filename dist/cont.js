@@ -1,3 +1,7 @@
+/*
+ * THIS FILE IS AUTO GENERATED FROM 'lib/cont.kep'
+ * DO NOT EDIT
+*/
 define(["require", "exports", "./identity", "./trans/cont"], (function(require, exports, Identity, ContT) {
     "use strict";
     var runContT = ContT["runContT"],

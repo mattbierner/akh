@@ -1,3 +1,7 @@
+/*
+ * THIS FILE IS AUTO GENERATED FROM 'lib/cont.kep'
+ * DO NOT EDIT
+*/
 "use strict";
 var Identity = require("./identity"),
     ContT = require("./trans/cont"),

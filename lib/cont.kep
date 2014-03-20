@@ -14,7 +14,7 @@ Cont = ContT(Identity);
 /* Running
  ******************************************************************************/
 /**
- * Perform a continuation computation .
+ * Perform a continuation computation.
  * 
  * @param m Computation.
  * @param k Outer continuation.

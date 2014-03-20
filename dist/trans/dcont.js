@@ -1,3 +1,7 @@
+/*
+ * THIS FILE IS AUTO GENERATED FROM 'lib/trans/dcont.kep'
+ * DO NOT EDIT
+*/
 define(["require", "exports", "nu-stream/stream", "../state", "../structure"], (function(require, exports, stream,
     State, __o) {
     "use strict";

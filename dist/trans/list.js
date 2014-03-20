@@ -1,3 +1,7 @@
+/*
+ * THIS FILE IS AUTO GENERATED FROM 'lib/trans/list.kep'
+ * DO NOT EDIT
+*/
 define(["require", "exports", "../base", "../structure"], (function(require, exports, __o, __o0) {
     "use strict";
     var liftM = __o["liftM"],
