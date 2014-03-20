@@ -28,12 +28,16 @@ ContT = \m -> {
                     ContT.runContT(f x, k)));
     
     // Callcc
-    Instance.callcc = Instance.prototype.callcc = \f ->
-        new Instance\k ->
-            ContT.runContT(
-                f(\x ->
-                    new Instance\_ -> k x),
-                k);
+    Instance.callcc = Instance.prototype.callcc = let
+        reify = \k ->
+            \x ->
+                new Instance\_ -> k x
+    in
+        \f ->
+            new Instance\k ->
+                ContT.runContT(
+                    f <| reify k,
+                    k);
     
     // Lift
     Instance.lift = \t ->

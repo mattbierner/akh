@@ -7,10 +7,10 @@ var __o = require("../structure"),
     Monad = __o["Monad"],
     ContT;
 (ContT = (function(m) {
-    var Instance = (function(run) {
-        var self = this;
-        (self.run = run);
-    });
+    var reify, Instance = (function(run) {
+            var self = this;
+            (self.run = run);
+        });
     Monad(Instance, (function(x) {
         return new(Instance)((function(k) {
             return k(x);
@@ -22,15 +22,17 @@ var __o = require("../structure"),
             }));
         }));
     }));
-    (Instance.callcc = (Instance.prototype.callcc = (function(f) {
+    (Instance.callcc = (Instance.prototype.callcc = ((reify = (function(k) {
+        return (function(x) {
+            return new(Instance)((function(_) {
+                return k(x);
+            }));
+        });
+    })), (function(f) {
         return new(Instance)((function(k) {
-            return ContT.runContT(f((function(x) {
-                return new(Instance)((function(_) {
-                    return k(x);
-                }));
-            })), k);
+            return ContT.runContT(f(reify(k)), k);
         }));
-    })));
+    }))));
     (Instance.lift = (function(t) {
         return new(Instance)((function(k) {
             return t.chain(k);
