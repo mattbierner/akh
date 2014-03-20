@@ -13,17 +13,17 @@ Collection of simple monad and monad transformers that implement [Fantasy Land's
 ## Library
 
 ### Monad Transformers
-* StateT - `akh::trans::state` - State transformer. (Monad, Monoid)
-* ListT - `akh::trans::list` - List transformer. (Monad, Monoid)
-* ContT - `akh::trans::cont` - Continuation transformer. (Monad)
-* DContT - `akh::trans::dcont` - Delimited continuation transformer. (Monad)
+* StateT - `akh::trans::state` - State transformer. (Monad, Monoid, Functor)
+* ListT - `akh::trans::list` - List transformer. (Monad, Monoid, Functor)
+* ContT - `akh::trans::cont` - Continuation transformer. (Monad, Functor)
+* DContT - `akh::trans::dcont` - Delimited continuation transformer. (Monad, Functor)
 
 ### Monads
-* Identity - `akh::identity` - Identity computation. (Monad)
-* State - `akh::state` - Stateful computation. (Monad)
-* List - `akh::list` - List computation. (Monad, Monoid)
-* Cont - `akh::cont` - Continuation computation. (Monad)
-* DCont - `akh::dcont` - Delimited continuation computation. (Monad)
+* Identity - `akh::identity` - Identity computation. (Monad, Functor)
+* State - `akh::state` - Stateful computation. (Monad, Functor)
+* List - `akh::list` - List computation. (Monad, Monoid, Functor)
+* Cont - `akh::cont` - Continuation computation. (Monad, Functor)
+* DCont - `akh::dcont` - Delimited continuation computation. (Monad, Functor)
 
 
 [fl]: https://github.com/fantasyland/fantasy-land

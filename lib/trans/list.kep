@@ -6,7 +6,7 @@
 package ListT
 with
     import '../base' {liftM liftM2},
-    import '../structure' {Monoid Monad}
+    import '../structure' {Functor Monoid Monad}
 in {
 
 var foldr := \f z a -> Array.prototype.reduceRight.call(a, f, z);
@@ -37,7 +37,12 @@ ListT = \m -> {
     
     var mapM := map \>> sequence;
     
-    // Monoid
+    Functor(Instance,
+        \c f ->
+            new Instance\->
+                ListT.runListT(c)
+                    .map(map @ f));
+    
     Monoid(Instance,
         new Instance\->
             m.of [],
@@ -46,7 +51,6 @@ ListT = \m -> {
             new Instance\->
                 liftM2(concat, ListT.runListT(a), ListT.runListT(b)));
     
-    // Monad
     Monad(Instance,
         \x ->
             new Instance\->

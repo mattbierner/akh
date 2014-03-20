@@ -3,7 +3,7 @@
  * DO NOT EDIT
 */"use strict";
 var __o = require("../structure"),
-    Monoid = __o["Monoid"],
+    Functor = __o["Functor"],
     Monad = __o["Monad"],
     ContT;
 (ContT = (function(m) {
@@ -11,6 +11,15 @@ var __o = require("../structure"),
             var self = this;
             (self.run = run);
         });
+    Functor(Instance, (function(c, f) {
+        return new(Instance)((function(k) {
+            return ContT.runCont(c, (function(f, g) {
+                return (function(x) {
+                    return f(g(x));
+                });
+            })(k, f));
+        }));
+    }));
     Monad(Instance, (function(x) {
         return new(Instance)((function(k) {
             return k(x);

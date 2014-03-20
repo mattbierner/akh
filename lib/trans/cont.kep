@@ -3,7 +3,7 @@
  */
 package ContT
 with
-    import '../structure' {Monoid Monad}
+    import '../structure' {Functor Monad}
 in {
 
 /* Transformer
@@ -17,6 +17,11 @@ ContT = \m -> {
     var Instance = function \run =self-> {
         self.run = run;
     };
+    
+    Functor(Instance,
+        \c f ->
+            new Instance\k ->
+                ContT.runCont(c, f \> k));
     
     Monad(Instance,
         \x ->

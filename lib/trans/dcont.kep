@@ -10,7 +10,7 @@ with
     
     import '../state' State,
 
-    import '../structure' {Monad}
+    import '../structure' {Functor Monad}
 in {
 
 /* Records
@@ -21,6 +21,22 @@ in {
 var Seg = function \f =self-> {
     self.frame = f;
 };
+
+/**
+ * Functor control segment.
+ */
+var FSeg = function \f =self-> {
+    self.frame = f;
+};
+FSeg.prototype = new Seg();
+
+/**
+ * Monad control segment.
+ */
+var MSeg = function \f =self-> {
+    self.frame = f;
+};
+MSeg.prototype = new Seg();
 
 /**
  * Delimiter.
@@ -47,10 +63,16 @@ var pushP = \t, k ->
     push(new P(t), k);
 
 /**
- * Push a segment for `f` onto control stack `k`.
+ * Push a functor segment for `f` onto control stack `k`.
  */
-var pushSeg = \f k ->
-    push(new Seg(f), k);
+var pushFSeg = \f k ->
+    push(new FSeg(f), k);
+
+/**
+ * Push a monad segment for `f` onto control stack `k`.
+ */
+var pushMSeg = \f k ->
+    push(new MSeg(f), k);
 
 /**
  * Splits the control stack around prompt `t`.
@@ -90,12 +112,14 @@ var appk = \k x -> {
             return State.of <| c(x);
 
         var top := first c;
-        if (top instanceof Seg)
+        if (top instanceof MSeg)
             return unDContT(top.frame(x), rest c);
-        
-        c = ?top instanceof P 
-            :rest c
-            :top;
+        else if (top instanceof FSeg)
+            return appk(rest c, top.frame(x));
+        else
+            c = ?top instanceof P 
+                :rest c
+                :top;
     } while (true);
 };
 
@@ -118,14 +142,18 @@ DContT = \m -> {
         self.run = run;
     };
     
-    // monad
+    Functor(Instance,
+        \c f ->
+            new Instance\k ->
+                unDContT(c, pushFSeg(f, k)));
+    
     Monad(Instance,
         \x ->
             new Instance\k -> appk(k, x),
 
         \c f ->
             new Instance\k ->
-                unDContT(c, pushSeg(f, k)));
+                unDContT(c, pushMSeg(f, k)));
    
     // Lift
     Instance.lift = \t ->
@@ -136,7 +164,7 @@ DContT = \m -> {
     /**
      * Create a new unique prompt.
      */
-    var newPrompt = new Instance\k ->
+    Instance.newPrompt = Instance.prototype.newPrompt = new Instance\k ->
         createPrompt.chain(appk @ k);
     
     /**
@@ -145,7 +173,7 @@ DContT = \m -> {
      * @param prompt Prompt.
      * @param c Computation.
      */
-    var pushPrompt = \prompt c ->
+    Instance.pushPrompt = Instance.prototype.pushPrompt = \prompt c ->
         new Instance\k ->
             unDContT(c, pushP(prompt, k));
     
@@ -155,7 +183,7 @@ DContT = \m -> {
      * @param prompt Prompt.
      * @param f Function mapping delimited continuation to computation.
      */
-    var withSubCont = \prompt f  ->
+    Instance.withSubCont = Instance.prototype.withSubCont = \prompt f ->
         new Instance\k -> let
             sub = splitSeq(prompt, k)
         in
@@ -167,13 +195,20 @@ DContT = \m -> {
      * @param subk Sub continuation.
      * @param c Computation
      */
-    var pushSubCont = \subk c ->
+    Instance.pushSubCont = Instance.prototype.pushSubCont = \subk c ->
         new Instance\k ->
             unDContT(c, pushSeq(subk, k));
     
+    /**
+     * Delimit a continuation
+     * 
+     * @param f Function taking a new prompt and returning the computation to be 
+     *    enclosed.
+     */
     Instance.reset = Instance.prototype.reset = \f->
-        newPrompt.chain\p -> 
-            pushPrompt(p, f(p));
+        Instance.newPrompt
+            .chain\p -> 
+                Instance.pushPrompt(p, f(p));
     
     /**
      * Capture the continuation delimited by `p`
@@ -182,9 +217,9 @@ DContT = \m -> {
      * @param f Function taking current delimited continuation.
      */
     Instance.shift = Instance.prototype.shift = \p f ->
-        withSubCont(p, \k ->
-            pushPrompt(p, f(\c ->
-                pushPrompt(p, pushSubCont(k, c)))));
+        Instance.withSubCont(p, \k ->
+            Instance.pushPrompt(p, f(\c ->
+                Instance.pushPrompt(p, Instance.pushSubCont(k, c)))));
         
     return Instance;
 };

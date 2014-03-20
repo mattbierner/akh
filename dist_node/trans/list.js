@@ -6,6 +6,7 @@ var __o = require("../base"),
     liftM = __o["liftM"],
     liftM2 = __o["liftM2"],
     __o0 = require("../structure"),
+    Functor = __o0["Functor"],
     Monoid = __o0["Monoid"],
     Monad = __o0["Monad"],
     ListT, foldr = (function(f, z, a) {
@@ -33,6 +34,12 @@ var __o = require("../base"),
                 return f(g.apply(null, arguments));
             });
         })(sequence, map);
+    Functor(Instance, (function(c, f) {
+        return new(Instance)((function() {
+            return ListT.runListT(c)
+                .map(map.bind(null, f));
+        }));
+    }));
     Monoid(Instance, new(Instance)((function() {
         return m.of([]);
     })), (function(a, b) {

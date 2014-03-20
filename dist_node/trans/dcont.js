@@ -8,23 +8,37 @@ var stream = require("nu-stream")["stream"],
     isEmpty = stream["isEmpty"],
     State = require("../state"),
     __o = require("../structure"),
+    Functor = __o["Functor"],
     Monad = __o["Monad"],
     DContT, Seg = (function(f) {
         var self = this;
         (self.frame = f);
     }),
-    P = (function(t) {
+    FSeg = (function(f) {
         var self = this;
-        (self.prompt = t);
-    }),
+        (self.frame = f);
+    });
+(FSeg.prototype = new(Seg)());
+var MSeg = (function(f) {
+    var self = this;
+    (self.frame = f);
+});
+(MSeg.prototype = new(Seg)());
+var P = (function(t) {
+    var self = this;
+    (self.prompt = t);
+}),
     empty = stream.NIL,
     push = stream.cons,
     pushSeq = stream.append,
     pushP = (function(t, k) {
         return push(new(P)(t), k);
     }),
-    pushSeg = (function(f, k) {
-        return push(new(Seg)(f), k);
+    pushFSeg = (function(f, k) {
+        return push(new(FSeg)(f), k);
+    }),
+    pushMSeg = (function(f, k) {
+        return push(new(MSeg)(f), k);
     }),
     splitSeq = (function(t, k) {
         if (isEmpty(k)) return [empty, empty];
@@ -45,8 +59,9 @@ var stream = require("nu-stream")["stream"],
         do {
             if (((typeof c) === "function")) return State.of(c(x));
             var top = first(c);
-            if ((top instanceof Seg)) return unDContT(top.frame(x), rest(c));
-            (c = ((top instanceof P) ? rest(c) : top));
+            if ((top instanceof MSeg)) return unDContT(top.frame(x), rest(c));
+            else if ((top instanceof FSeg)) return appk(rest(c), top.frame(x));
+            else(c = ((top instanceof P) ? rest(c) : top));
         }
         while (true);
     }),
@@ -61,13 +76,18 @@ var stream = require("nu-stream")["stream"],
         var self = this;
         (self.run = run);
     });
+    Functor(Instance, (function(c, f) {
+        return new(Instance)((function(k) {
+            return unDContT(c, pushFSeg(f, k));
+        }));
+    }));
     Monad(Instance, (function(x) {
         return new(Instance)((function(k) {
             return appk(k, x);
         }));
     }), (function(c, f) {
         return new(Instance)((function(k) {
-            return unDContT(c, pushSeg(f, k));
+            return unDContT(c, pushMSeg(f, k));
         }));
     }));
     (Instance.lift = (function(t) {
@@ -75,34 +95,34 @@ var stream = require("nu-stream")["stream"],
             return State.of(t.chain(appk.bind(null, k)));
         }));
     }));
-    var newPrompt = new(Instance)((function(k) {
+    (Instance.newPrompt = (Instance.prototype.newPrompt = new(Instance)((function(k) {
         return createPrompt.chain(appk.bind(null, k));
-    })),
-        pushPrompt = (function(prompt, c) {
-            return new(Instance)((function(k) {
-                return unDContT(c, pushP(prompt, k));
-            }));
-        }),
-        withSubCont = (function(prompt, f) {
-            return new(Instance)((function(k) {
-                var sub = splitSeq(prompt, k);
-                return unDContT(f(sub[0]), sub[1]);
-            }));
-        }),
-        pushSubCont = (function(subk, c) {
-            return new(Instance)((function(k) {
-                return unDContT(c, pushSeq(subk, k));
-            }));
-        });
+    }))));
+    (Instance.pushPrompt = (Instance.prototype.pushPrompt = (function(prompt, c) {
+        return new(Instance)((function(k) {
+            return unDContT(c, pushP(prompt, k));
+        }));
+    })));
+    (Instance.withSubCont = (Instance.prototype.withSubCont = (function(prompt, f) {
+        return new(Instance)((function(k) {
+            var sub = splitSeq(prompt, k);
+            return unDContT(f(sub[0]), sub[1]);
+        }));
+    })));
+    (Instance.pushSubCont = (Instance.prototype.pushSubCont = (function(subk, c) {
+        return new(Instance)((function(k) {
+            return unDContT(c, pushSeq(subk, k));
+        }));
+    })));
     (Instance.reset = (Instance.prototype.reset = (function(f) {
-        return newPrompt.chain((function(p) {
-            return pushPrompt(p, f(p));
+        return Instance.newPrompt.chain((function(p) {
+            return Instance.pushPrompt(p, f(p));
         }));
     })));
     (Instance.shift = (Instance.prototype.shift = (function(p, f) {
-        return withSubCont(p, (function(k) {
-            return pushPrompt(p, f((function(c) {
-                return pushPrompt(p, pushSubCont(k, c));
+        return Instance.withSubCont(p, (function(k) {
+            return Instance.pushPrompt(p, f((function(c) {
+                return Instance.pushPrompt(p, Instance.pushSubCont(k, c));
             })));
         }));
     })));

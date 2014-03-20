@@ -1,8 +1,16 @@
 package (
+    Functor
     Monad
     Monoid) {
 
-Monoid = \instance zero plus-> {
+Functor = \instance map -> {
+    instance.map = map;
+    instance.prototype.map = \f =self-> map(self, f);
+    
+    return instance;
+};
+    
+Monoid = \instance zero plus -> {
     instance.zero = instance.prototype.zero = zero;
     
     instance.concat = plus;

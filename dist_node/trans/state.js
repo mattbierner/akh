@@ -3,6 +3,7 @@
  * DO NOT EDIT
 */"use strict";
 var __o = require("../structure"),
+    Functor = __o["Functor"],
     Monad = __o["Monad"],
     Monoid = __o["Monoid"],
     StateT, Pair = (function(x, s) {
@@ -16,6 +17,16 @@ var __o = require("../structure"),
         var self = this;
         (self.run = run);
     });
+    Functor(Instance, (function(c, f) {
+        return new(Instance)((function(s) {
+            return StateT.runStateT(c, s)
+                .map((function(__o) {
+                    var x = __o["x"],
+                        s = __o["s"];
+                    return Pair(f(x), s);
+                }));
+        }));
+    }));
     Monad(Instance, (function(x) {
         return new(Instance)((function(s) {
             return m.of(Pair(x, s));

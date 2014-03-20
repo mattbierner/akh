@@ -84,3 +84,14 @@ exports.multi_shift_abort = function(test) {
         10 * 10);
     test.done();
 };
+
+
+exports.fmap = function(test) {
+    var c = DCont.of(3)
+        .map(function(x) { return x * x; });
+    
+    test.deepEqual(
+        DCont.runDCont(c, sqr),
+        9 * 9);
+    test.done();
+};

@@ -3,7 +3,7 @@
  */
 package Identity
 with
-    import './monad' Monad
+    import './structure' {Functor Monad}
 in {
 
 /* Structure
@@ -12,20 +12,22 @@ Identity = function \x =self-> {
     self.value = x;
 };
 
-/* Running
- ******************************************************************************/
-/**
- * Run an identity computation.
- */
-Identity.runIdentity = \c -> c.value;
+Functor(Identity,
+    \c f ->
+        new Identity(f <| Identity.runIdentity c));
 
-/* Monad
- ******************************************************************************/
 Monad(Identity,
     \x ->
         new Identity(x),
     
     \c f ->
         f <| Identity.runIdentity c);
+
+/* Running
+ ******************************************************************************/
+/**
+ * Run an identity computation.
+ */
+Identity.runIdentity = \c -> c.value;
 
 }

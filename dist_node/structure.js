@@ -2,7 +2,15 @@
  * THIS FILE IS AUTO GENERATED from 'lib/structure.kep'
  * DO NOT EDIT
 */"use strict";
-var Monad, Monoid;
+var Functor, Monad, Monoid;
+(Functor = (function(instance, map) {
+    (instance.map = map);
+    (instance.prototype.map = (function(f) {
+        var self = this;
+        return map(self, f);
+    }));
+    return instance;
+}));
 (Monoid = (function(instance, zero, plus) {
     (instance.zero = (instance.prototype.zero = zero));
     (instance.concat = plus);
@@ -21,5 +29,6 @@ var Monad, Monoid;
     }));
     return instance;
 }));
+(exports["Functor"] = Functor);
 (exports["Monad"] = Monad);
 (exports["Monoid"] = Monoid);

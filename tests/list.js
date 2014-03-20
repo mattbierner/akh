@@ -94,3 +94,18 @@ exports.list_concat = function(test) {
     
     test.done();
 };
+
+
+exports.map = function(test) {
+    var c = List.zero
+        .concat(List.of(1))
+        .concat(List.of(2))
+        .map(function(x) { return x * x; })
+        .concat(List.of(3))
+
+    test.deepEqual(
+        List.runList(c),
+        [1, 4, 3]);
+    
+    test.done();
+};

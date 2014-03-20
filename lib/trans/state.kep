@@ -5,7 +5,7 @@
  */
 package StateT
 with
-    import '../structure' {Monad Monoid}
+    import '../structure' {Functor Monad Monoid}
 in {
 
 var Pair = \x s -> ({
@@ -25,7 +25,12 @@ StateT = \m -> {
         self.run = run;
     };
     
-    // monad
+    Functor(Instance,
+        \c f ->
+             new Instance\s ->
+                 StateT.runStateT(c, s)
+                     .map(\{x s} -> Pair(f x, s)));
+    
     Monad(Instance,
         \x ->
             new Instance\s ->
@@ -36,7 +41,7 @@ StateT = \m -> {
                 StateT.runStateT(c, s)
                     .chain(\{x s} ->
                         StateT.runStateT(f(x), s)));
-    // monoid
+    
     Monoid(Instance,
         new Instance\_ ->
             m.zero,
