@@ -1,7 +1,3 @@
-/*
- * THIS FILE IS AUTO GENERATED FROM 'lib/trans/state.kep'
- * DO NOT EDIT
-*/
 define(["require", "exports", "../structure"], (function(require, exports, __o) {
     "use strict";
     var Functor = __o["Functor"],
@@ -18,16 +14,6 @@ define(["require", "exports", "../structure"], (function(require, exports, __o) 
             var self = this;
             (self.run = run);
         });
-        Functor(Instance, (function(c, f) {
-            return new(Instance)((function(s) {
-                return StateT.runStateT(c, s)
-                    .map((function(__o) {
-                        var x = __o["x"],
-                            s = __o["s"];
-                        return Pair(f(x), s);
-                    }));
-            }));
-        }));
         Monad(Instance, (function(x) {
             return new(Instance)((function(s) {
                 return m.of(Pair(x, s));

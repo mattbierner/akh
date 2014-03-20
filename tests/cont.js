@@ -40,9 +40,10 @@ exports.chain = function(test) {
 };
 
 exports.simple_callcc = function(test) {
-    var c = Cont.of(3).callcc(function(k) {
-        return k(4); 
-    });
+    var c = Cont.of(3)
+        .callcc(function(k) {
+            return k(4); 
+        });
     
     test.deepEqual(
         Cont.runCont(c, sqr),
@@ -51,10 +52,11 @@ exports.simple_callcc = function(test) {
 };
 
 exports.callcc_breaks = function(test) {
-    var c = Cont.of(3).callcc(function(k) {
-        return k(4)
-            .chain(function() { return Cont.of(1); });
-    });
+    var c = Cont.of(3)
+        .callcc(function(k) {
+            return k(4)
+                .chain(function() { return Cont.of(1); });
+        });
     
     test.deepEqual(
         Cont.runCont(c, sqr),
@@ -74,5 +76,21 @@ exports.callcc_chain = function(test) {
     test.deepEqual(
         Cont.runCont(c, sqr),
         36);
+    test.done();
+};
+
+
+exports.fmap = function(test) {
+    var c = Cont.of(3)
+        .map(function(x) {
+            return x * x;
+        })
+        .chain(function(x) {
+            return Cont.of(x + 1);
+        });
+    
+    test.deepEqual(
+        Cont.runCont(c, sqr),
+        10 * 10);
     test.done();
 };

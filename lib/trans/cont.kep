@@ -18,11 +18,6 @@ ContT = \m -> {
         self.run = run;
     };
     
-    Functor(Instance,
-        \c f ->
-            new Instance\k ->
-                ContT.runCont(c, f \> k));
-    
     Monad(Instance,
         \x ->
             new Instance\k -> k(x),

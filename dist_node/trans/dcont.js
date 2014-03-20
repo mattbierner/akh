@@ -1,7 +1,3 @@
-/*
- * THIS FILE IS AUTO GENERATED FROM 'lib/trans/dcont.kep'
- * DO NOT EDIT
-*/
 "use strict";
 var stream = require("nu-stream")["stream"],
     first = stream["first"],
@@ -77,11 +73,6 @@ var P = (function(t) {
         var self = this;
         (self.run = run);
     });
-    Functor(Instance, (function(c, f) {
-        return new(Instance)((function(k) {
-            return unDContT(c, pushFSeg(f, k));
-        }));
-    }));
     Monad(Instance, (function(x) {
         return new(Instance)((function(k) {
             return appk(k, x);

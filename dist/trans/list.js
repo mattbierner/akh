@@ -1,7 +1,3 @@
-/*
- * THIS FILE IS AUTO GENERATED FROM 'lib/trans/list.kep'
- * DO NOT EDIT
-*/
 define(["require", "exports", "../base", "../structure"], (function(require, exports, __o, __o0) {
     "use strict";
     var liftM = __o["liftM"],
@@ -34,12 +30,6 @@ define(["require", "exports", "../base", "../structure"], (function(require, exp
                     return f(g.apply(null, arguments));
                 });
             })(sequence, map);
-        Functor(Instance, (function(c, f) {
-            return new(Instance)((function() {
-                return ListT.runListT(c)
-                    .map(map.bind(null, f));
-            }));
-        }));
         Monoid(Instance, new(Instance)((function() {
             return m.of([]);
         })), (function(a, b) {

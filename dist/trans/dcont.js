@@ -1,7 +1,3 @@
-/*
- * THIS FILE IS AUTO GENERATED FROM 'lib/trans/dcont.kep'
- * DO NOT EDIT
-*/
 define(["require", "exports", "nu-stream/stream", "../state", "../structure"], (function(require, exports, stream,
     State, __o) {
     "use strict";
@@ -76,11 +72,6 @@ define(["require", "exports", "nu-stream/stream", "../state", "../structure"], (
             var self = this;
             (self.run = run);
         });
-        Functor(Instance, (function(c, f) {
-            return new(Instance)((function(k) {
-                return unDContT(c, pushFSeg(f, k));
-            }));
-        }));
         Monad(Instance, (function(x) {
             return new(Instance)((function(k) {
                 return appk(k, x);

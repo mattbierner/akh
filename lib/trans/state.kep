@@ -25,12 +25,6 @@ StateT = \m -> {
         self.run = run;
     };
     
-    Functor(Instance,
-        \c f ->
-             new Instance\s ->
-                 StateT.runStateT(c, s)
-                     .map(\{x s} -> Pair(f x, s)));
-    
     Monad(Instance,
         \x ->
             new Instance\s ->

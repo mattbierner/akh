@@ -1,11 +1,36 @@
 package (
+    Applicative
+    Chain
     Functor
     Monad
-    Monoid) {
+    Monoid
+    Semigroup) {
+
+
+Applicative = \instance of ap -> {
+    instance.of = instance.prototype.of = of;
+    
+    instance.ap = ap;
+    instance.prototype.ap = \b =self-> ap(self, b);
+    
+    // Derived
+    Functor(instance,
+        instance.map || \f m ->
+            of(f).ap(m));
+    
+    return instance;
+};
+
+Chain = \instance chain -> {
+    instance.chain = chain;
+    instance.prototype.chain = \f =self-> chain(self, f);
+    
+    return instance;
+};
 
 Functor = \instance map -> {
     instance.map = map;
-    instance.prototype.map = \f =self-> map(self, f);
+    instance.prototype.map = \f =self-> map(f, self);
     
     return instance;
 };
@@ -13,8 +38,8 @@ Functor = \instance map -> {
 Monoid = \instance zero plus -> {
     instance.zero = instance.prototype.zero = zero;
     
-    instance.concat = plus;
-    instance.prototype.concat = \c =self-> plus(self, c);
+    Semigroup(instance,
+        plus);
     
     return instance;
 };
@@ -22,9 +47,26 @@ Monoid = \instance zero plus -> {
 Monad = \instance of chain -> {
     instance.of = instance.prototype.of = of;
     
-    instance.chain = chain;
-    instance.prototype.chain = \f =self-> chain(self, f);
+    Chain(instance,
+        chain);
     
+    // Derived
+    Functor(instance,
+        \f m ->
+            chain(m, f \> m.of));
+    
+    Applicative(instance,
+        of,
+        \f m ->
+            chain(f, \f -> m.map(f)));
+
+    return instance;
+};
+
+Semigroup = \instance plus -> {
+    instance.concat = plus;
+    instance.prototype.concat = \c =self-> plus(self, c);
+
     return instance;
 };
 

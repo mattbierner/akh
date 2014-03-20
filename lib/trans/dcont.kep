@@ -142,11 +142,6 @@ DContT = \m -> {
         self.run = run;
     };
     
-    Functor(Instance,
-        \c f ->
-            new Instance\k ->
-                unDContT(c, pushFSeg(f, k)));
-    
     Monad(Instance,
         \x ->
             new Instance\k -> appk(k, x),

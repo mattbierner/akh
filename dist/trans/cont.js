@@ -1,7 +1,3 @@
-/*
- * THIS FILE IS AUTO GENERATED FROM 'lib/trans/cont.kep'
- * DO NOT EDIT
-*/
 define(["require", "exports", "../structure"], (function(require, exports, __o) {
     "use strict";
     var Functor = __o["Functor"],
@@ -12,15 +8,6 @@ define(["require", "exports", "../structure"], (function(require, exports, __o) 
                 var self = this;
                 (self.run = run);
             });
-        Functor(Instance, (function(c, f) {
-            return new(Instance)((function(k) {
-                return ContT.runCont(c, (function(f, g) {
-                    return (function(x) {
-                        return f(g(x));
-                    });
-                })(k, f));
-            }));
-        }));
         Monad(Instance, (function(x) {
             return new(Instance)((function(k) {
                 return k(x);

@@ -37,12 +37,6 @@ ListT = \m -> {
     
     var mapM := map \>> sequence;
     
-    Functor(Instance,
-        \c f ->
-            new Instance\->
-                ListT.runListT(c)
-                    .map(map @ f));
-    
     Monoid(Instance,
         new Instance\->
             m.of [],

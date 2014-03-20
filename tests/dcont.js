@@ -88,10 +88,13 @@ exports.multi_shift_abort = function(test) {
 
 exports.fmap = function(test) {
     var c = DCont.of(3)
-        .map(function(x) { return x * x; });
+        .map(function(x) { return x * x; })
+        .chain(function(x) {
+            return DCont.of(x + 1);
+        });
     
     test.deepEqual(
         DCont.runDCont(c, sqr),
-        9 * 9);
+        10 * 10);
     test.done();
 };
