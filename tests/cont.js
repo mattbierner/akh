@@ -13,7 +13,7 @@ exports.simple_of = function(test) {
     test.done();
 };
 
-exports.simple_bind = function(test) {
+exports.simple_chain = function(test) {
     var c = Cont.of(3).chain(function(x) {
         return Cont.of(x + 5); 
     });
@@ -21,6 +21,21 @@ exports.simple_bind = function(test) {
     test.deepEqual(
         Cont.runCont(c, sqr),
         64);
+    test.done();
+};
+
+exports.chain = function(test) {
+    var c = Cont.of(3)
+        .chain(function(x) {
+            return Cont.of(x + 5); 
+        })
+        .chain(function(x) {
+            return Cont.of(x / 2);
+        });
+    
+    test.deepEqual(
+        Cont.runCont(c, sqr),
+        16);
     test.done();
 };
 

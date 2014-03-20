@@ -8,6 +8,8 @@ package DContT
 with
     import 'nu-stream::stream' stream#{first rest isEmpty},
     
+    import '../state' State,
+
     import '../structure' {Monad}
 in {
 
@@ -57,20 +59,23 @@ var splitSeq = \t k -> {
     if (isEmpty k)
         return [empty, empty];
     
-    var top = first k,
-        rest = rest k;
+    var x = first k,
+        xs = rest k;
     
-    if (top instanceof P && top.prompt === t)
-        return [empty, rest];
+    if (x instanceof P && x.prompt === t)
+        return [empty, xs];
     
-    var sub = splitSeq(t, rest);
-    return [push(top, sub[0]), sub[1]];
+    var sub = splitSeq(t, xs);
+    return [push(x, sub.(0)), sub.(1)];
 };
 
 /* Operations
  ******************************************************************************/
-var runDContT = \m k ->
+var unDContT = \m k ->
     m.run(k);
+
+var runDContT = \m k ->
+    State.evalState(unDContT(m, k), 1);
 
 /**
  * Apply continuation `k`
@@ -86,7 +91,7 @@ var appk = \k x -> {
 
         var top := first c;
         if (top instanceof Seg)
-            return runDContT(top.frame(x), rest c);
+            return unDContT(top.frame(x), rest c);
         
         c = ?top instanceof P 
             :rest c
@@ -94,38 +99,45 @@ var appk = \k x -> {
     } while (true);
 };
 
+/* Prompt
+ ******************************************************************************/
+var createPrompt = State.get
+    .chain\x ->
+        State.put(x + 1)
+            .chain(\-> State.of x);
+
 /* Transformer
  ******************************************************************************/
 /**
+ * Delimited continuation monad transformer.
  * 
+ * @param m Base monad.
  */
 DContT = \m -> {
     var Instance = function \run =self-> {
         self.run = run;
     };
     
-    // of
-    var of = \x ->
-        new Instance(\k -> appk(k, x));
-    
-    Instance.prototype.of = of;
-    Instance.of = of;
-    
-    // Chain
-    Instance.prototype.chain = \f =self->
-        new Instance(\k ->
-            runDContT(self, pushSeg(f, k)));
+    // monad
+    Monad(Instance,
+        \x ->
+            new Instance\k -> State.of <| appk(k, x),
+
+        \c f ->
+            new Instance\k ->
+                runDContT(c, pushSeg(f, k)));
    
     // Lift
     Instance.lift = \t ->
-        new Instance(\k ->
-            t.chain(appk).lift(k));
+        new Instance\k ->
+            t.chain(appk).lift(k);
     
     // Primitive Continuation Operations
     /**
      * Create a new unique prompt.
      */
-    var newPrompt = null;
+    var newPrompt = new Instance\k ->
+        createPrompt.chain(appk @ k);
     
     /**
      * Pushes prompt onto the stack and evaluate `c`.
@@ -134,8 +146,8 @@ DContT = \m -> {
      * @param c Computation.
      */
     var pushPrompt = \prompt c ->
-        new Instance(\k ->
-            c <| pushP(prompt, k));
+        new Instance\k ->
+            unDContT(c, pushP(prompt, k));
     
     /**
      * Capture the continuation delimited by `prompt` and call `f` with it.
@@ -144,10 +156,10 @@ DContT = \m -> {
      * @param f Function mapping delimited continuation to computation.
      */
     var withSubCont = \prompt f  ->
-        new Instance(\k -> let
+        new Instance\k -> let
             sub = splitSeq(prompt, k)
         in
-            runDContT(f(sub.(0)), sub.(1)));
+            unDContT(f(sub.(0)), sub.(1));
     
     /**
      * Push an entire sub continuation onto the stack and evaluate `c`.
@@ -155,10 +167,25 @@ DContT = \m -> {
      * @param subk Sub continuation.
      * @param c Computation
      */
-    var pushSubCont = \subk, c ->
-        new Instance(\k ->
-            c <| pushSeq(subk, k));
+    var pushSubCont = \subk c ->
+        new Instance\k ->
+            unDContT(c, pushSeq(subk, k));
     
+    Instance.reset = \f->
+        newPrompt.chain\p -> 
+            pushPrompt(p, f(p));
+    
+    /**
+     * Capture the continuation delimited by `p`
+     * 
+     * @param p Prompt.
+     * @param f Function taking current delimited continuation.
+     */
+    Instance.shift = \p f ->
+        withSubCont(p, \k ->
+            pushPrompt(p, f(\c ->
+                pushPrompt(p, pushSubCont(k, c)))));
+        
     return Instance;
 };
 
@@ -170,6 +197,7 @@ DContT = \m -> {
  * @param m ContT computation.
  * @param k Outer continuation.
  */
-DContT.runDContT = runDContT;
+DContT.runDContT = \m k ->
+    runDContT(m, push(k, empty));
 
 }

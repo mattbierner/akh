@@ -19,14 +19,12 @@ var flatten := Function.prototype.apply.bind(Array.prototype.concat, []);
 
 var flip := \f -> \x y -> f(y, x);
 
-var cons := \x xs -> [x].concat(xs);
-
 var flattenM := liftM @ flatten;
 
 /* Transformer
  ******************************************************************************/
 /**
- * State monad transformer.
+ * List monad transformer.
  * 
  * @param m Base monad.
  */

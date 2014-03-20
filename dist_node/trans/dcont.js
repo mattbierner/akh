@@ -6,6 +6,7 @@ var stream = require("nu-stream")["stream"],
     first = stream["first"],
     rest = stream["rest"],
     isEmpty = stream["isEmpty"],
+    State = require("../state"),
     __o = require("../structure"),
     Monad = __o["Monad"],
     DContT, Seg = (function(f) {
@@ -27,41 +28,46 @@ var stream = require("nu-stream")["stream"],
     }),
     splitSeq = (function(t, k) {
         if (isEmpty(k)) return [empty, empty];
-        var top = first(k),
-            rest = rest(k);
-        if (((top instanceof P) && (top.prompt === t))) return [empty, rest];
-        var sub = splitSeq(t, rest);
-        return [push(top, sub([0])), sub([1])];
+        var x = first(k),
+            xs = rest(k);
+        if (((x instanceof P) && (x.prompt === t))) return [empty, xs];
+        var sub = splitSeq(t, xs);
+        return [push(x, sub[0]), sub[1]];
+    }),
+    unDContT = (function(m, k) {
+        return m.run(k);
     }),
     runDContT = (function(m, k) {
-        return m.run(k);
+        return State.evalState(unDContT(m, k), 1);
     }),
     appk = (function(k, x) {
         var c = k;
         do {
             if (((typeof c) === "function")) return c(x);
             var top = first(c);
-            if ((top instanceof Seg)) return runDContT(top.frame(x), rest(c));
+            if ((top instanceof Seg)) return unDContT(top.frame(x), rest(c));
             (c = ((top instanceof P) ? rest(c) : top));
         }
         while (true);
-    });
+    }),
+    createPrompt = State.get.chain((function(x) {
+        return State.put((x + 1))
+            .chain((function() {
+                return State.of(x);
+            }));
+    }));
 (DContT = (function(m) {
     var Instance = (function(run) {
         var self = this;
         (self.run = run);
-    }),
-        of = (function(x) {
-            return new(Instance)((function(k) {
-                return appk(k, x);
-            }));
-        });
-    (Instance.prototype.of = of);
-    (Instance.of = of);
-    (Instance.prototype.chain = (function(f) {
-        var self = this;
+    });
+    Monad(Instance, (function(x) {
         return new(Instance)((function(k) {
-            return runDContT(self, pushSeg(f, k));
+            return State.of(appk(k, x));
+        }));
+    }), (function(c, f) {
+        return new(Instance)((function(k) {
+            return runDContT(c, pushSeg(f, k));
         }));
     }));
     (Instance.lift = (function(t) {
@@ -70,24 +76,40 @@ var stream = require("nu-stream")["stream"],
                 .lift(k);
         }));
     }));
-    var newPrompt = null,
+    var newPrompt = new(Instance)((function(k) {
+        return createPrompt.chain(appk.bind(null, k));
+    })),
         pushPrompt = (function(prompt, c) {
             return new(Instance)((function(k) {
-                return c(pushP(prompt, k));
+                return unDContT(c, pushP(prompt, k));
             }));
         }),
         withSubCont = (function(prompt, f) {
             return new(Instance)((function(k) {
                 var sub = splitSeq(prompt, k);
-                return runDContT(f(sub[0]), sub[1]);
+                return unDContT(f(sub[0]), sub[1]);
             }));
         }),
         pushSubCont = (function(subk, c) {
             return new(Instance)((function(k) {
-                return c(pushSeq(subk, k));
+                return unDContT(c, pushSeq(subk, k));
             }));
         });
+    (Instance.reset = (function(f) {
+        return newPrompt.chain((function(p) {
+            return pushPrompt(p, f(p));
+        }));
+    }));
+    (Instance.shift = (function(p, f) {
+        return withSubCont(p, (function(k) {
+            return pushPrompt(p, f((function(c) {
+                return pushPrompt(p, pushSubCont(k, c));
+            })));
+        }));
+    }));
     return Instance;
 }));
-(DContT.runDContT = runDContT);
+(DContT.runDContT = (function(m, k) {
+    return runDContT(m, push(k, empty));
+}));
 (module.exports = DContT);

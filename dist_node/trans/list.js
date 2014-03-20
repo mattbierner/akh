@@ -21,9 +21,6 @@ var __o = require("../base"),
             return f(y, x);
         });
     }),
-    cons = (function(x, xs) {
-        return [x].concat(xs);
-    }),
     flattenM = liftM.bind(null, flatten);
 (ListT = (function(m) {
     var Instance = (function(run) {
