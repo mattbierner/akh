@@ -41,7 +41,7 @@
         "test": "node test.js",
         
         "build": "npm run build-amd && npm run build-node",
-        "build-amd": "khepri lib -o dist",
-        "build-node": "khepri lib -o dist_node --package_manager=node"
+        "build-amd": "./node_modules/.bin/khepri lib -o dist",
+        "build-node": "./node_modules/.bin/khepri lib -o dist_node --package_manager=node"
     }
 }
