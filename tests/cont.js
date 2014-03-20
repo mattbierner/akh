@@ -63,11 +63,13 @@ exports.callcc_breaks = function(test) {
 };
 
 exports.callcc_chain = function(test) {
-    var c = Cont.of(3).callcc(function(k) {
-        return k(5);
-    }).chain(function(x) {
-        return Cont.of(x + 1);
-    });
+    var c = Cont.of(3)
+        .callcc(function(k) {
+            return k(5);
+        })
+        .chain(function(x) {
+            return Cont.of(x + 1);
+        });
     
     test.deepEqual(
         Cont.runCont(c, sqr),

@@ -3,7 +3,7 @@
  */
 package ContT
 with
-    import '../structure' {Monad}
+    import '../structure' {Monoid Monad}
 in {
 
 /* Transformer

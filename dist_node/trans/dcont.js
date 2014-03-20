@@ -43,7 +43,7 @@ var stream = require("nu-stream")["stream"],
     appk = (function(k, x) {
         var c = k;
         do {
-            if (((typeof c) === "function")) return c(x);
+            if (((typeof c) === "function")) return State.of(c(x));
             var top = first(c);
             if ((top instanceof Seg)) return unDContT(top.frame(x), rest(c));
             (c = ((top instanceof P) ? rest(c) : top));
@@ -63,17 +63,16 @@ var stream = require("nu-stream")["stream"],
     });
     Monad(Instance, (function(x) {
         return new(Instance)((function(k) {
-            return State.of(appk(k, x));
+            return appk(k, x);
         }));
     }), (function(c, f) {
         return new(Instance)((function(k) {
-            return runDContT(c, pushSeg(f, k));
+            return unDContT(c, pushSeg(f, k));
         }));
     }));
     (Instance.lift = (function(t) {
         return new(Instance)((function(k) {
-            return t.chain(appk)
-                .lift(k);
+            return State.of(t.chain(appk.bind(null, k)));
         }));
     }));
     var newPrompt = new(Instance)((function(k) {
@@ -95,18 +94,18 @@ var stream = require("nu-stream")["stream"],
                 return unDContT(c, pushSeq(subk, k));
             }));
         });
-    (Instance.reset = (function(f) {
+    (Instance.reset = (Instance.prototype.reset = (function(f) {
         return newPrompt.chain((function(p) {
             return pushPrompt(p, f(p));
         }));
-    }));
-    (Instance.shift = (function(p, f) {
+    })));
+    (Instance.shift = (Instance.prototype.shift = (function(p, f) {
         return withSubCont(p, (function(k) {
             return pushPrompt(p, f((function(c) {
                 return pushPrompt(p, pushSubCont(k, c));
             })));
         }));
-    }));
+    })));
     return Instance;
 }));
 (DContT.runDContT = (function(m, k) {

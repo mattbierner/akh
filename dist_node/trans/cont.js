@@ -3,6 +3,7 @@
  * DO NOT EDIT
 */"use strict";
 var __o = require("../structure"),
+    Monoid = __o["Monoid"],
     Monad = __o["Monad"],
     ContT;
 (ContT = (function(m) {

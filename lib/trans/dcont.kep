@@ -87,7 +87,7 @@ var appk = \k x -> {
     var c = k;
     do {
         if (typeof c === 'function')
-            return c(x);
+            return State.of <| c(x);
 
         var top := first c;
         if (top instanceof Seg)
@@ -121,16 +121,16 @@ DContT = \m -> {
     // monad
     Monad(Instance,
         \x ->
-            new Instance\k -> State.of <| appk(k, x),
+            new Instance\k -> appk(k, x),
 
         \c f ->
             new Instance\k ->
-                runDContT(c, pushSeg(f, k)));
+                unDContT(c, pushSeg(f, k)));
    
     // Lift
     Instance.lift = \t ->
         new Instance\k ->
-            t.chain(appk).lift(k);
+            State.of <| t.chain(appk @ k);
     
     // Primitive Continuation Operations
     /**
@@ -171,7 +171,7 @@ DContT = \m -> {
         new Instance\k ->
             unDContT(c, pushSeq(subk, k));
     
-    Instance.reset = \f->
+    Instance.reset = Instance.prototype.reset = \f->
         newPrompt.chain\p -> 
             pushPrompt(p, f(p));
     
@@ -181,7 +181,7 @@ DContT = \m -> {
      * @param p Prompt.
      * @param f Function taking current delimited continuation.
      */
-    Instance.shift = \p f ->
+    Instance.shift = Instance.prototype.shift = \p f ->
         withSubCont(p, \k ->
             pushPrompt(p, f(\c ->
                 pushPrompt(p, pushSubCont(k, c)))));
