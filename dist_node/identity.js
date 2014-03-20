@@ -1,4 +1,7 @@
-"use strict";
+/*
+ * THIS FILE IS AUTO GENERATED from 'lib/identity.kep'
+ * DO NOT EDIT
+*/"use strict";
 var __o = require("./structure"),
     Functor = __o["Functor"],
     Monad = __o["Monad"],
