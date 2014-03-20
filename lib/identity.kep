@@ -12,10 +12,6 @@ Identity = function \x =self-> {
     self.value = x;
 };
 
-Functor(Identity,
-    \c f ->
-        new Identity(f <| Identity.runIdentity c));
-
 Monad(Identity,
     \x ->
         new Identity(x),

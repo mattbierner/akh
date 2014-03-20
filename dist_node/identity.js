@@ -1,7 +1,3 @@
-/*
- * THIS FILE IS AUTO GENERATED FROM 'lib/identity.kep'
- * DO NOT EDIT
-*/
 "use strict";
 var __o = require("./structure"),
     Functor = __o["Functor"],
@@ -10,9 +6,6 @@ var __o = require("./structure"),
 (Identity = (function(x) {
     var self = this;
     (self.value = x);
-}));
-Functor(Identity, (function(c, f) {
-    return new(Identity)(f(Identity.runIdentity(c)));
 }));
 Monad(Identity, (function(x) {
     return new(Identity)(x);

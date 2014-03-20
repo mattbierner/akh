@@ -26,4 +26,24 @@ Collection of simple monad and monad transformers that implement [Fantasy Land's
 * DCont - `akh::dcont` - Delimited continuation computation. (Monad, Functor)
 
 
+
+## Contributing
+
+
+### Code
+Akh is written in Khepri. [Khepri][khepri] is an ECMAScript language
+focused on functional programming that compiles to Javascript.
+Khepri sources are in `lib` directory without node output packages in `dist_node`
+and AMD package output in `dist`.
+
+```
+# Compile all Khepri files
+$ npm run build
+
+# Run tests
+$ npm test
+```
+
+
 [fl]: https://github.com/fantasyland/fantasy-land
+[khepri]: https://github.com/mattbierner/khepri

@@ -1,3 +1,7 @@
+/*
+ * THIS FILE IS AUTO GENERATED FROM 'lib/trans/cont.kep'
+ * DO NOT EDIT
+*/
 "use strict";
 var __o = require("../structure"),
     Functor = __o["Functor"],

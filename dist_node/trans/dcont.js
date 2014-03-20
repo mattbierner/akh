@@ -1,3 +1,7 @@
+/*
+ * THIS FILE IS AUTO GENERATED FROM 'lib/trans/dcont.kep'
+ * DO NOT EDIT
+*/
 "use strict";
 var stream = require("nu-stream")["stream"],
     first = stream["first"],

@@ -1,3 +1,7 @@
+/*
+ * THIS FILE IS AUTO GENERATED FROM 'lib/structure.kep'
+ * DO NOT EDIT
+*/
 "use strict";
 var Applicative, Chain, Functor, Monad, Monoid, Semigroup;
 (Applicative = (function(instance, of, ap) {

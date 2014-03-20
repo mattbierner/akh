@@ -1,3 +1,7 @@
+/*
+ * THIS FILE IS AUTO GENERATED FROM 'lib/structure.kep'
+ * DO NOT EDIT
+*/
 define(["require", "exports"], (function(require, exports) {
     "use strict";
     var Applicative, Chain, Functor, Monad, Monoid, Semigroup;
