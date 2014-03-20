@@ -1,4 +1,7 @@
-"use strict";
+/*
+ * THIS FILE IS AUTO GENERATED from 'lib/trans/list.kep'
+ * DO NOT EDIT
+*/"use strict";
 var __o = require("../base"),
     liftM = __o["liftM"],
     liftM2 = __o["liftM2"],

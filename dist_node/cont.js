@@ -1,7 +1,3 @@
-/*
- * THIS FILE IS AUTO GENERATED FROM 'lib/cont.kep'
- * DO NOT EDIT
-*/
 "use strict";
 var Identity = require("./identity"),
     ContT = require("./trans/cont"),
@@ -13,8 +9,10 @@ var Identity = require("./identity"),
         return f(g.apply(null, arguments));
     });
 })(Identity.runIdentity, (function(m, k) {
-    return runContT(m, (function(x) {
-        return new(Identity)(k(x));
-    }));
+    return runContT(m, (function(f, g) {
+        return (function(x) {
+            return f(g(x));
+        });
+    })(Identity.of, k));
 })));
 (module.exports = Cont);

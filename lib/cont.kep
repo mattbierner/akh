@@ -21,7 +21,7 @@ Cont = ContT(Identity);
  */
 Cont.runCont =
     (\m k ->
-        runContT(m, \x -> new Identity(k(x))))
+        runContT(m, k \> Identity.of))
     \>> Identity.runIdentity;
 
 }
