@@ -1,0 +1,30 @@
+/**
+ * @fileOverview Either computation
+ */
+package Either
+with
+    import './identity' Identity,
+    import './trans/either' EitherT#{eitherT}
+in {
+
+/* Structure
+ ******************************************************************************/
+Either = EitherT(Identity);
+
+/* Running
+ ******************************************************************************/
+/**
+ * Perform a either computation.
+ * 
+ * @param m Either computation.
+ * @param l Left result completion.
+ * @param r Right result completion.
+ */
+Either.either =
+    (\m l r ->
+        eitherT(m,
+            l \> Identity.of,
+            r \> Identity.of))
+    \>> Identity.runIdentity;
+
+}

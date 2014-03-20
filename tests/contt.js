@@ -3,7 +3,9 @@ var List = require('../index').list;
 
 var run = function(c, k) {
     return List.runList(
-        ContT.runContT(c, function(x) { return List.of(k(x))}));
+        ContT.runContT(
+            c,
+            function(x) { return List.of(k(x))}));
 };
 
 var id = function(x) { return x; }

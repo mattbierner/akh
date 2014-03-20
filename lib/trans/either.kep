@@ -1,0 +1,83 @@
+/**
+ * @fileOverview Either monad transformer.
+ */
+package EitherT
+with
+    import '../base' {liftM},
+    import '../structure' {Monad Monoid}
+in {
+
+var Right = \x -> ({'right': true, 'x': x});
+
+var Left = \x -> ({'right': false, 'x': x});
+
+var runEitherT = \m ->
+    m.run();
+
+/* Transformer
+ ******************************************************************************/
+/**
+ * State monad transformer.
+ * 
+ * @param m Base monad.
+ */
+EitherT = \m -> {
+    var Instance = function \run =self-> {
+        self.run = run;
+    };
+    
+    Monad(Instance,
+        \x ->
+            new Instance\->
+                m.of <| Right x,
+        
+        \c f ->
+            new Instance\->
+                runEitherT(c)
+                    .chain\{right x} ->
+                        ?right
+                            :runEitherT <| f x
+                            :m.of <| Right x);
+    
+    Monoid(Instance,
+        new Instance\ ->
+            m.of <| Left m.zero,
+        
+        \a b ->
+            new Instance\->
+                runEitherT(a)
+                    .chain\{right x} ->
+                        ?right
+                            :m.of <| Right x
+                            :runEitherT b);
+    
+    // Either
+    Instance.right = Instance.prototype.right = Instance.of;
+    
+    Instance.left = Instance.prototype.left = \x ->
+        new Instance\->
+            m.of <| Left x;
+    
+    // Lift
+    Instance.lift = \t ->
+        new Instance\->
+            liftM(Right, t);
+    
+    return Instance;
+};
+
+/* Running
+ ******************************************************************************/
+/**
+ * Perform an either computation with mapping functions.
+ * 
+ * @param m EitherT computation.
+ * @param l Left completion function that maps left value to inner monad.
+ * @param r Right completion function that maps right value to inner monad.
+ */
+EitherT.eitherT = \m l r ->
+    runEitherT(m)
+        .chain\{right x} ->
+            ?right : r x : l x;
+
+}

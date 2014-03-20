@@ -20,7 +20,7 @@ ContT = \m -> {
     
     Monad(Instance,
         \x ->
-            new Instance\k -> k(x),
+            new Instance\k -> k x,
         
         \c f ->
             new Instance\k ->
@@ -52,8 +52,8 @@ ContT = \m -> {
 /**
  * Perform a continuation computation and complete with `k`.
  * 
- * @param m ContT computation.
  * @param k Outer continuation.
+ * @param m ContT computation.
  */
 ContT.runContT = \m k ->
     m.run(k);
