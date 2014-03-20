@@ -1,7 +1,3 @@
-/*
- * THIS FILE IS AUTO GENERATED FROM 'lib/list.kep'
- * DO NOT EDIT
-*/
 "use strict";
 var Identity = require("./identity"),
     ListT = require("./trans/list"),

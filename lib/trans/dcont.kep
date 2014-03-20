@@ -65,8 +65,10 @@ var splitSeq = \t k -> {
     if (x instanceof P && x.prompt === t)
         return [empty, xs];
     
-    var sub = splitSeq(t, xs);
-    return [push(x, sub.(0)), sub.(1)];
+    return let
+        [a, b] = splitSeq(t, xs)
+    in
+        [push(x, a), b];
 };
 
 /* Operations
@@ -120,7 +122,8 @@ DContT = \m -> {
     
     Monad(Instance,
         \x ->
-            new Instance\k -> appk(k, x),
+            new Instance\k ->
+                appk(k, x),
 
         \c f ->
             new Instance\k ->
@@ -156,9 +159,9 @@ DContT = \m -> {
      */
     Instance.withSubCont = Instance.prototype.withSubCont = \prompt f ->
         new Instance\k -> let
-            sub = splitSeq(prompt, k)
+            [x, xs] = splitSeq(prompt, k)
         in
-            unDContT(f(sub.(0)), sub.(1));
+            unDContT(f x, xs);
     
     /**
      * Push an entire sub continuation onto the stack and evaluate `c`.
@@ -169,7 +172,8 @@ DContT = \m -> {
     Instance.pushSubCont = Instance.prototype.pushSubCont = \subk c ->
         new Instance\k ->
             unDContT(c, pushSeq(subk, k));
-    
+            
+    // Shift and Reset
     /**
      * Delimit a continuation
      * 
@@ -179,7 +183,7 @@ DContT = \m -> {
     Instance.reset = Instance.prototype.reset = \f->
         Instance.newPrompt
             .chain\p -> 
-                Instance.pushPrompt(p, f(p));
+                Instance.pushPrompt(p, f p);
     
     /**
      * Capture the continuation delimited by `p`
@@ -187,10 +191,10 @@ DContT = \m -> {
      * @param p Prompt.
      * @param f Function taking current delimited continuation.
      */
-    Instance.shift = Instance.prototype.shift = \p f ->
-        Instance.withSubCont(p, \k ->
-            Instance.pushPrompt(p, f(\c ->
-                Instance.pushPrompt(p, Instance.pushSubCont(k, c)))));
+    Instance.shift = Instance.prototype.shift = \p f =t->
+        t.withSubCont(p, \k ->
+            t.pushPrompt(p, f(\c ->
+                t.pushPrompt(p, t.pushSubCont(k, c)))));
     
     return Instance;
 };

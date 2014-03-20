@@ -1,7 +1,3 @@
-/*
- * THIS FILE IS AUTO GENERATED FROM 'lib/list.kep'
- * DO NOT EDIT
-*/
 define(["require", "exports", "./identity", "./trans/list"], (function(require, exports, Identity, ListT) {
     "use strict";
     var runListT = ListT["runListT"],

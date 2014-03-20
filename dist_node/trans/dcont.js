@@ -29,8 +29,10 @@ var stream = require("nu-stream")["stream"],
         var x = first(k),
             xs = rest(k);
         if (((x instanceof P) && (x.prompt === t))) return [empty, xs];
-        var sub = splitSeq(t, xs);
-        return [push(x, sub[0]), sub[1]];
+        var __o = splitSeq(t, xs),
+            a = __o[0],
+            b = __o[1];
+        return [push(x, a), b];
     }),
     unDContT = (function(m, k) {
         return m.run(k);
@@ -83,8 +85,10 @@ var stream = require("nu-stream")["stream"],
     })));
     (Instance.withSubCont = (Instance.prototype.withSubCont = (function(prompt, f) {
         return new(Instance)((function(k) {
-            var sub = splitSeq(prompt, k);
-            return unDContT(f(sub[0]), sub[1]);
+            var __o = splitSeq(prompt, k),
+                x = __o[0],
+                xs = __o[1];
+            return unDContT(f(x), xs);
         }));
     })));
     (Instance.pushSubCont = (Instance.prototype.pushSubCont = (function(subk, c) {
@@ -98,9 +102,10 @@ var stream = require("nu-stream")["stream"],
         }));
     })));
     (Instance.shift = (Instance.prototype.shift = (function(p, f) {
-        return Instance.withSubCont(p, (function(k) {
-            return Instance.pushPrompt(p, f((function(c) {
-                return Instance.pushPrompt(p, Instance.pushSubCont(k, c));
+        var t = this;
+        return t.withSubCont(p, (function(k) {
+            return t.pushPrompt(p, f((function(c) {
+                return t.pushPrompt(p, t.pushSubCont(k, c));
             })));
         }));
     })));

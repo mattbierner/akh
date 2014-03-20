@@ -67,7 +67,7 @@ ListT = \m -> {
 /* Running
  ******************************************************************************/
 /**
- * Perform a stateful computation and return resulting value, state pair.
+ * Perform a list computation.
  * 
  * @param m ListT computation.
  * @param s Initial state.

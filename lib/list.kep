@@ -14,7 +14,7 @@ List = ListT(Identity);
 /* Running
  ******************************************************************************/
 /**
- * Perform a list computation .
+ * Perform a list computation.
  * 
  * @param m Computation.
  */
