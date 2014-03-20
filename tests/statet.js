@@ -44,3 +44,13 @@ exports.lift = function(test) {
     test.done();
 };
 
+
+exports.concat = function(test) {
+    var c = M.of(3)
+        .concat(M.of(5));
+    
+    test.deepEqual(
+        evalState(c, 's'),
+        [3, 5]);
+    test.done();
+};

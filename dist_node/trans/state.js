@@ -4,6 +4,7 @@
 */"use strict";
 var __o = require("../structure"),
     Monad = __o["Monad"],
+    Monoid = __o["Monoid"],
     StateT, Pair = (function(x, s) {
         return ({
             "x": x,
@@ -27,6 +28,14 @@ var __o = require("../structure"),
                         s = __o["s"];
                     return StateT.runStateT(f(x), s);
                 }));
+        }));
+    }));
+    Monoid(Instance, new(Instance)((function(_) {
+        return m.zero;
+    })), (function(a, b) {
+        return new(Instance)((function(s) {
+            return StateT.runStateT(a, s)
+                .concat(StateT.runStateT(b, s));
         }));
     }));
     (Instance.get = new(Instance)((function(s) {
