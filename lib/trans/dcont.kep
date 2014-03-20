@@ -220,7 +220,7 @@ DContT = \m -> {
         Instance.withSubCont(p, \k ->
             Instance.pushPrompt(p, f(\c ->
                 Instance.pushPrompt(p, Instance.pushSubCont(k, c)))));
-        
+    
     return Instance;
 };
 

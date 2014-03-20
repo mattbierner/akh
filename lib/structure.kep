@@ -9,7 +9,7 @@ Functor = \instance map -> {
     
     return instance;
 };
-    
+
 Monoid = \instance zero plus -> {
     instance.zero = instance.prototype.zero = zero;
     

@@ -1,4 +1,7 @@
-define(["require", "exports", "nu-stream/stream", "../state", "../structure"], (function(require, exports, stream,
+/*
+ * THIS FILE IS AUTO GENERATED from 'lib/trans/dcont.kep'
+ * DO NOT EDIT
+*/define(["require", "exports", "nu-stream/stream", "../state", "../structure"], (function(require, exports, stream,
     State, __o) {
     "use strict";
     var first = stream["first"],

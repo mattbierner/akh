@@ -1,4 +1,7 @@
-define(["require", "exports"], (function(require, exports) {
+/*
+ * THIS FILE IS AUTO GENERATED from 'lib/structure.kep'
+ * DO NOT EDIT
+*/define(["require", "exports"], (function(require, exports) {
     "use strict";
     var Functor, Monad, Monoid;
     (Functor = (function(instance, map) {
