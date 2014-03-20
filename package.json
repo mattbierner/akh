@@ -26,12 +26,11 @@
     ],
     
     "dependencies": {
+        "nu-stream": ">=3.1.0",
         "require-directory": "1.2.x"
     },
     
    "devDependencies": {
-        "nu-stream": ">=3.1.0",
-        
         "nodeunit": "0.8.x"
     },
     
