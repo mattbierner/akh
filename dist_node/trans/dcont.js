@@ -1,7 +1,3 @@
-/*
- * THIS FILE IS AUTO GENERATED FROM 'lib/trans/dcont.kep'
- * DO NOT EDIT
-*/
 "use strict";
 var stream = require("nu-stream")["stream"],
     first = stream["first"],
@@ -15,31 +11,18 @@ var stream = require("nu-stream")["stream"],
         var self = this;
         (self.frame = f);
     }),
-    FSeg = (function(f) {
+    P = (function(t) {
         var self = this;
-        (self.frame = f);
-    });
-(FSeg.prototype = new(Seg)());
-var MSeg = (function(f) {
-    var self = this;
-    (self.frame = f);
-});
-(MSeg.prototype = new(Seg)());
-var P = (function(t) {
-    var self = this;
-    (self.prompt = t);
-}),
+        (self.prompt = t);
+    }),
     empty = stream.NIL,
     push = stream.cons,
     pushSeq = stream.append,
     pushP = (function(t, k) {
         return push(new(P)(t), k);
     }),
-    pushFSeg = (function(f, k) {
-        return push(new(FSeg)(f), k);
-    }),
-    pushMSeg = (function(f, k) {
-        return push(new(MSeg)(f), k);
+    pushSeg = (function(f, k) {
+        return push(new(Seg)(f), k);
     }),
     splitSeq = (function(t, k) {
         if (isEmpty(k)) return [empty, empty];
@@ -60,9 +43,8 @@ var P = (function(t) {
         do {
             if (((typeof c) === "function")) return State.of(c(x));
             var top = first(c);
-            if ((top instanceof MSeg)) return unDContT(top.frame(x), rest(c));
-            else if ((top instanceof FSeg)) return appk(rest(c), top.frame(x));
-            else(c = ((top instanceof P) ? rest(c) : top));
+            if ((top instanceof Seg)) return unDContT(top.frame(x), rest(c));
+            (c = ((top instanceof P) ? rest(c) : top));
         }
         while (true);
     }),
@@ -83,7 +65,7 @@ var P = (function(t) {
         }));
     }), (function(c, f) {
         return new(Instance)((function(k) {
-            return unDContT(c, pushMSeg(f, k));
+            return unDContT(c, pushSeg(f, k));
         }));
     }));
     (Instance.lift = (function(t) {

@@ -1,7 +1,3 @@
-/*
- * THIS FILE IS AUTO GENERATED FROM 'lib/trans/dcont.kep'
- * DO NOT EDIT
-*/
 define(["require", "exports", "nu-stream/stream", "../state", "../structure"], (function(require, exports, stream,
     State, __o) {
     "use strict";
@@ -14,31 +10,18 @@ define(["require", "exports", "nu-stream/stream", "../state", "../structure"], (
             var self = this;
             (self.frame = f);
         }),
-        FSeg = (function(f) {
+        P = (function(t) {
             var self = this;
-            (self.frame = f);
-        });
-    (FSeg.prototype = new(Seg)());
-    var MSeg = (function(f) {
-        var self = this;
-        (self.frame = f);
-    });
-    (MSeg.prototype = new(Seg)());
-    var P = (function(t) {
-        var self = this;
-        (self.prompt = t);
-    }),
+            (self.prompt = t);
+        }),
         empty = stream.NIL,
         push = stream.cons,
         pushSeq = stream.append,
         pushP = (function(t, k) {
             return push(new(P)(t), k);
         }),
-        pushFSeg = (function(f, k) {
-            return push(new(FSeg)(f), k);
-        }),
-        pushMSeg = (function(f, k) {
-            return push(new(MSeg)(f), k);
+        pushSeg = (function(f, k) {
+            return push(new(Seg)(f), k);
         }),
         splitSeq = (function(t, k) {
             if (isEmpty(k)) return [empty, empty];
@@ -59,9 +42,8 @@ define(["require", "exports", "nu-stream/stream", "../state", "../structure"], (
             do {
                 if (((typeof c) === "function")) return State.of(c(x));
                 var top = first(c);
-                if ((top instanceof MSeg)) return unDContT(top.frame(x), rest(c));
-                else if ((top instanceof FSeg)) return appk(rest(c), top.frame(x));
-                else(c = ((top instanceof P) ? rest(c) : top));
+                if ((top instanceof Seg)) return unDContT(top.frame(x), rest(c));
+                (c = ((top instanceof P) ? rest(c) : top));
             }
             while (true);
         }),
@@ -82,7 +64,7 @@ define(["require", "exports", "nu-stream/stream", "../state", "../structure"], (
             }));
         }), (function(c, f) {
             return new(Instance)((function(k) {
-                return unDContT(c, pushMSeg(f, k));
+                return unDContT(c, pushSeg(f, k));
             }));
         }));
         (Instance.lift = (function(t) {
