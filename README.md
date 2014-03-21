@@ -29,7 +29,6 @@ Collection of simple monad and monad transformers that implement [Fantasy Land's
 * ErrorT - `akh::error` - Error computation. (Monad, Functor, Applicative Functor)
 
 
-
 ## Contribute
 Improvement and additions to Akh are welcome. Please report any [issues][issues]
 or send a pull request.

@@ -9,8 +9,8 @@ with
     import 'nu-stream::stream' stream#{first rest isEmpty},
     
     import '../unique' Unique,
-
-    import '../structure' {Monad}
+    import '../structure' {Monad},
+    import '../_tail' {Tail trampoline}
 in {
 
 /* Records
@@ -74,9 +74,9 @@ var splitSeq = \t k -> {
 /* Operations
  ******************************************************************************/
 var unDContT = \m k ->
-    m.run(k);
+    new Tail(m.run, k);
 
-var runDContT = unDContT \>> Unique.runUnique;
+var runDContT = unDContT \>> trampoline \> Unique.runUnique;
 
 /**
  * Apply continuation `k`
@@ -131,7 +131,7 @@ DContT = \m -> {
      * Create a new unique prompt.
      */
     Instance.newPrompt = Instance.prototype.newPrompt = new Instance\k ->
-        Unique.unique.chain(appk @ k);
+        Unique.unique.chain(appk @ k \> trampoline );
     
     /**
      * Pushes prompt onto the stack and evaluate `c`.

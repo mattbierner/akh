@@ -2,13 +2,15 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/dcont.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "nu-stream/stream", "../unique", "../structure"], (function(require, exports, stream,
-    Unique, __o) {
+define(["require", "exports", "nu-stream/stream", "../unique", "../structure", "../_tail"], (function(require, exports,
+    stream, Unique, __o, __o0) {
     "use strict";
     var first = stream["first"],
         rest = stream["rest"],
         isEmpty = stream["isEmpty"],
         Monad = __o["Monad"],
+        Tail = __o0["Tail"],
+        trampoline = __o0["trampoline"],
         DContT, Seg = (function(f) {
             var self = this;
             (self.frame = f);
@@ -37,13 +39,17 @@ define(["require", "exports", "nu-stream/stream", "../unique", "../structure"], 
             return [push(x, a), b];
         }),
         unDContT = (function(m, k) {
-            return m.run(k);
+            return new(Tail)(m.run, k);
         }),
         runDContT = (function(f, g) {
             return (function() {
                 return f(g.apply(null, arguments));
             });
-        })(Unique.runUnique, unDContT),
+        })((function(f, g) {
+            return (function(x) {
+                return f(g(x));
+            });
+        })(Unique.runUnique, trampoline), unDContT),
         appk = (function(k, x) {
             var c = k;
             do {
@@ -74,7 +80,11 @@ define(["require", "exports", "nu-stream/stream", "../unique", "../structure"], 
             }));
         }));
         (Instance.newPrompt = (Instance.prototype.newPrompt = new(Instance)((function(k) {
-            return Unique.unique.chain(appk.bind(null, k));
+            return Unique.unique.chain((function(f, g) {
+                return (function(x) {
+                    return f(g(x));
+                });
+            })(trampoline, appk.bind(null, k)));
         }))));
         (Instance.pushPrompt = (Instance.prototype.pushPrompt = (function(prompt, c) {
             return new(Instance)((function(k) {

@@ -39,7 +39,7 @@ exports.chain = function(test) {
     test.done();
 };
 
-/*
+
 exports.many_chain = function(test) {
     var c = DCont.of(0);
     
@@ -48,13 +48,18 @@ exports.many_chain = function(test) {
             return DCont.of(x + 1);
         });
     }
+    
+    try {
+        DCont.runDCont(c, sqr);
+    } catch (e) {
+        console.log('x', e);
+    }
 
     test.deepEqual(
         DCont.runDCont(c, sqr),
         10000 * 10000);
     test.done();
 };
-*/
 
 exports.single_shift_reset = function(test) {
     var c = DCont

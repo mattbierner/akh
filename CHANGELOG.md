@@ -1,5 +1,19 @@
 # ChangeLog
 
+## 0.5.0 - March 20, 2014
+* Temp fix for call stack on `ContT` and `DContT`.
+** Wrap other structures for long running computations in `ContT`.
+* Added State.modify.
+* Added `IdentityT`.
+* Added top level generic versions of ops in base that determine type using argument.
+* Split out DContT's unique id the logic to its own monad and transformer.
+
+## 0.4.0 - March 20, 2014
+* Added `EitherT`.
+* Added `ErrorT`
+* Added `Either`
+* Added `Error`.
+
 ## 0.3.0 - March 20, 2014
 * Fixed #5 nu-stream not included.
 * Added applicative functor to all monads using derived interfaces (thanks [joneshf](https://github.com/joneshf)).
