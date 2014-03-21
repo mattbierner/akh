@@ -20,9 +20,10 @@
         "lib": "dist_node/"
     },
     "files": [
-        "bin/",
         "dist_node",
-        "index.js"
+        "index.js",
+        "test.js",
+        "tests"
     ],
     
     "dependencies": {
