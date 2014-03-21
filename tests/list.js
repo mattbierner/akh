@@ -20,7 +20,24 @@ exports.of_array = function(test) {
     test.done();
 };
 
-exports.simple_chain = function(test) {
+exports.chain_simple = function(test) {
+    var c = List.of(3)
+        .chain(function(x) {
+            return List.of(x * 2);
+        })
+        .chain(function(x) {
+            return List.of(x + 1);
+        });
+
+    test.deepEqual(
+        List.runList(c),
+        [7]);
+    
+    test.done();
+};
+
+
+exports.chain_flatten = function(test) {
     var c = List.of(3).chain(function(x) {
         return List.of([x, x * 2]);
     });

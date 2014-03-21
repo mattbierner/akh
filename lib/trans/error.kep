@@ -1,9 +1,10 @@
 /**
- * @fileOverview Either monad transformer.
+ * @fileOverview Error monad transformer.
+ * 
+ * @TODO: Most of this code is duplicated from Either.
  */
-package EitherT
+package ErrorT
 with
-    import '../base' {liftM},
     import '../structure' {Monad Monoid}
 in {
 
@@ -11,17 +12,17 @@ var Right = \x -> ({'right': true, 'x': x});
 
 var Left = \x -> ({'right': false, 'x': x});
 
-var runEitherT = \m ->
+var runErrorT = \m ->
     m.run();
 
 /* Transformer
  ******************************************************************************/
 /**
- * Either monad transformer.
+ * Error monad transformer.
  * 
  * @param m Base monad.
  */
-EitherT = \m -> {
+ErrorT = \m -> {
     var Instance = function \run =self-> {
         self.run = run;
     };
@@ -33,10 +34,10 @@ EitherT = \m -> {
         
         \c f ->
             new Instance\->
-                runEitherT(c)
+                runErrorT(c)
                     .chain\{right x} ->
                         ?right
-                            :runEitherT <| f x
+                            :runErrorT <| f x
                             :m.of <| Left x);
     
     Monoid(Instance,
@@ -45,18 +46,22 @@ EitherT = \m -> {
         
         \a b ->
             new Instance\->
-                runEitherT(a)
+                runErrorT(a)
                     .chain\{right x} ->
                         ?right
                             :m.of <| Right x
-                            :runEitherT b);
+                            :runErrorT b);
     
-    // Either
-    Instance.right = Instance.prototype.right = Instance.of;
-    
-    Instance.left = Instance.prototype.left = \x ->
+    // Error
+    Instance.fail = Instance.prototype.fail = \x ->
         new Instance\->
             m.of <| Left x;
+    
+    Instance.handle = \m e ->
+        new Instance\->
+            Instance.runErrorT(m, e, m.of);
+    
+    Instance.prototype.handle= \e =m-> Instance.handle(m, e);;
     
     // Lift
     Instance.lift = \t ->
@@ -69,15 +74,15 @@ EitherT = \m -> {
 /* Running
  ******************************************************************************/
 /**
- * Perform an either computation with mapping functions.
+ * Perform an error computation with mapping functions.
  * 
- * @param m EitherT computation.
- * @param l Left completion function that maps left value to inner monad.
- * @param r Right completion function that maps right value to inner monad.
+ * @param m ErrorT computation.
+ * @param ok Success completion function that maps left value to inner monad.
+ * @param err Failure completion function that maps right value to inner monad.
  */
-EitherT.eitherT = \m l r ->
-    runEitherT(m)
+ErrorT.runErrorT = \m ok err ->
+    runErrorT(m)
         .chain\{right x} ->
-            ?right : r x : l x;
+            ?right : ok x : err x;
 
 }

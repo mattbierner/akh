@@ -16,6 +16,8 @@ Collection of simple monad and monad transformers that implement [Fantasy Land's
 * ListT - `akh::trans::list` - List transformer. (Monad, Monoid, Functor, Applicative Functor)
 * ContT - `akh::trans::cont` - Continuation transformer. (Monad, Functor, Applicative Functor)
 * DContT - `akh::trans::dcont` - Delimited continuation transformer. (Monad, Functor, Applicative Functor)
+* EitherT - `akh::trans::either` - Either transformer. (Monad, Monoid, Functor, Applicative Functor)
+* ErrorT - `akh::trans::error` - Error transformer. (Monad, Monoid, Functor, Applicative Functor)
 
 ### Monads
 * Identity - `akh::identity` - Identity computation. (Monad, Functor, Applicative Functor)
@@ -23,6 +25,9 @@ Collection of simple monad and monad transformers that implement [Fantasy Land's
 * List - `akh::list` - List computation. (Monad, Monoid, Functor, Applicative Functor)
 * Cont - `akh::cont` - Continuation computation. (Monad, Functor, Applicative Functor)
 * DCont - `akh::dcont` - Delimited continuation computation. (Monad, Functor, Applicative Functor)
+* EitherT - `akh::either` - Either computation. (Monad, Functor, Applicative Functor)
+* ErrorT - `akh::error` - Error computation. (Monad, Functor, Applicative Functor)
+
 
 
 ## Contribute

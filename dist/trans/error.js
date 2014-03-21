@@ -1,13 +1,12 @@
 /*
- * THIS FILE IS AUTO GENERATED FROM 'lib/trans/either.kep'
+ * THIS FILE IS AUTO GENERATED FROM 'lib/trans/error.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../base", "../structure"], (function(require, exports, __o, __o0) {
+define(["require", "exports", "../structure"], (function(require, exports, __o) {
     "use strict";
-    var liftM = __o["liftM"],
-        Monad = __o0["Monad"],
-        Monoid = __o0["Monoid"],
-        EitherT, Right = (function(x) {
+    var Monad = __o["Monad"],
+        Monoid = __o["Monoid"],
+        ErrorT, Right = (function(x) {
             return ({
                 "right": true,
                 "x": x
@@ -19,10 +18,10 @@ define(["require", "exports", "../base", "../structure"], (function(require, exp
                 "x": x
             });
         }),
-        runEitherT = (function(m) {
+        runErrorT = (function(m) {
             return m.run();
         });
-    (EitherT = (function(m) {
+    (ErrorT = (function(m) {
         var Instance = (function(run) {
             var self = this;
             (self.run = run);
@@ -33,11 +32,11 @@ define(["require", "exports", "../base", "../structure"], (function(require, exp
             }));
         }), (function(c, f) {
             return new(Instance)((function() {
-                return runEitherT(c)
+                return runErrorT(c)
                     .chain((function(__o) {
                         var right = __o["right"],
                             x = __o["x"];
-                        return (right ? runEitherT(f(x)) : m.of(Left(x)));
+                        return (right ? runErrorT(f(x)) : m.of(Left(x)));
                     }));
             }));
         }));
@@ -45,20 +44,28 @@ define(["require", "exports", "../base", "../structure"], (function(require, exp
             return m.of(Left(m.zero));
         })), (function(a, b) {
             return new(Instance)((function() {
-                return runEitherT(a)
+                return runErrorT(a)
                     .chain((function(__o) {
                         var right = __o["right"],
                             x = __o["x"];
-                        return (right ? m.of(Right(x)) : runEitherT(b));
+                        return (right ? m.of(Right(x)) : runErrorT(b));
                     }));
             }));
         }));
-        (Instance.right = (Instance.prototype.right = Instance.of));
-        (Instance.left = (Instance.prototype.left = (function(x) {
+        (Instance.fail = (Instance.prototype.fail = (function(x) {
             return new(Instance)((function() {
                 return m.of(Left(x));
             }));
         })));
+        (Instance.handle = (function(m, e) {
+            return new(Instance)((function() {
+                return Instance.runErrorT(m, e, m.of);
+            }));
+        }));
+        (Instance.prototype.handle = (function(e) {
+            var m = this;
+            return Instance.handle(m, e);
+        }));
         (Instance.lift = (function(t) {
             return new(Instance)((function() {
                 return t.map(Right);
@@ -66,13 +73,13 @@ define(["require", "exports", "../base", "../structure"], (function(require, exp
         }));
         return Instance;
     }));
-    (EitherT.eitherT = (function(m, l, r) {
-        return runEitherT(m)
+    (ErrorT.runErrorT = (function(m, ok, err) {
+        return runErrorT(m)
             .chain((function(__o) {
                 var right = __o["right"],
                     x = __o["x"];
-                return (right ? r(x) : l(x));
+                return (right ? ok(x) : err(x));
             }));
     }));
-    return EitherT;
+    return ErrorT;
 }));
