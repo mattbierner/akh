@@ -38,7 +38,7 @@ var __o = require("../base"),
                 .chain((function(__o) {
                     var right = __o["right"],
                         x = __o["x"];
-                    return (right ? runEitherT(f(x)) : m.of(Right(x)));
+                    return (right ? runEitherT(f(x)) : m.of(Left(x)));
                 }));
         }));
     }));

@@ -17,7 +17,7 @@ var runEitherT = \m ->
 /* Transformer
  ******************************************************************************/
 /**
- * State monad transformer.
+ * Either monad transformer.
  * 
  * @param m Base monad.
  */
@@ -37,7 +37,7 @@ EitherT = \m -> {
                     .chain\{right x} ->
                         ?right
                             :runEitherT <| f x
-                            :m.of <| Right x);
+                            :m.of <| Left x);
     
     Monoid(Instance,
         new Instance\ ->
