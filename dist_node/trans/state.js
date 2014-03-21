@@ -4,7 +4,6 @@
 */
 "use strict";
 var __o = require("../structure"),
-    Functor = __o["Functor"],
     Monad = __o["Monad"],
     Monoid = __o["Monoid"],
     StateT, Pair = (function(x, s) {
@@ -12,6 +11,9 @@ var __o = require("../structure"),
             "x": x,
             "s": s
         });
+    }),
+    runStateT = (function(m, s) {
+        return m.run(s);
     });
 (StateT = (function(m) {
     var Instance = (function(run) {
@@ -24,11 +26,11 @@ var __o = require("../structure"),
         }));
     }), (function(c, f) {
         return new(Instance)((function(s) {
-            return StateT.runStateT(c, s)
+            return runStateT(c, s)
                 .chain((function(__o) {
                     var x = __o["x"],
                         s = __o["s"];
-                    return StateT.runStateT(f(x), s);
+                    return runStateT(f(x), s);
                 }));
         }));
     }));
@@ -36,8 +38,8 @@ var __o = require("../structure"),
         return m.zero;
     })), (function(a, b) {
         return new(Instance)((function(s) {
-            return StateT.runStateT(a, s)
-                .concat(StateT.runStateT(b, s));
+            return runStateT(a, s)
+                .concat(runStateT(b, s));
         }));
     }));
     (Instance.get = new(Instance)((function(s) {
@@ -57,9 +59,7 @@ var __o = require("../structure"),
     }));
     return Instance;
 }));
-(StateT.runStateT = (function(m, s) {
-    return m.run(s);
-}));
+(StateT.runStateT = runStateT);
 (StateT.evalStateT = (function(f, g) {
     return (function() {
         return f(g.apply(null, arguments));

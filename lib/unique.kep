@@ -1,0 +1,23 @@
+/**
+ * @fileOverview Identity computation.
+ */
+package Unique
+with
+    import './trans/unique' UniqueT,
+    import './identity' Identity
+in {
+
+/* Structure
+ ******************************************************************************/
+Unique = UniqueT(Identity);
+
+
+/* Running
+ ******************************************************************************/
+/**
+ * Run an identity computation.
+ */
+Unique.runUnique = \m ->
+    Identity.runIdentity(UniqueT.runUniqueT m);
+
+}

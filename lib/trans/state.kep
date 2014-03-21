@@ -5,13 +5,17 @@
  */
 package StateT
 with
-    import '../structure' {Functor Monad Monoid}
+    import '../structure' {Monad Monoid}
 in {
 
 var Pair = \x s -> ({
     'x': x,
     's': s
 });
+
+var runStateT = \m s ->
+    m.run(s);
+
 
 /* Transformer
  ******************************************************************************/
@@ -28,13 +32,13 @@ StateT = \m -> {
     Monad(Instance,
         \x ->
             new Instance\s ->
-                m.of(Pair(x, s)),
+                m.of <| Pair(x, s),
         
         \c f ->
             new Instance\s ->
-                StateT.runStateT(c, s)
-                    .chain(\{x s} ->
-                        StateT.runStateT(f(x), s)));
+                runStateT(c, s)
+                    .chain\{x s} ->
+                        runStateT(f x, s));
     
     Monoid(Instance,
         new Instance\_ ->
@@ -42,21 +46,22 @@ StateT = \m -> {
         
         \a b ->
             new Instance\s ->
-                StateT.runStateT(a, s)
-                    .concat(StateT.runStateT(b, s)));
+                runStateT(a, s)
+                    .concat(runStateT(b, s)));
     
     // State operations
     Instance.get = new Instance\s ->
-        m.of(Pair(s, s));
+        m.of <| Pair(s, s);
     
     Instance.put = \s ->
         new Instance\_ ->
-            m.of(Pair(s, s));
+            m.of <| Pair(s, s);
     
     // Lift
     Instance.lift = \t ->
         new Instance\s ->
-            t.chain(\x -> m.of(Pair(x, s)));
+            t.chain\x ->
+                m.of <| Pair(x, s);
     
     return Instance;
 };
@@ -69,8 +74,7 @@ StateT = \m -> {
  * @param m StateT computation.
  * @param s Initial state.
  */
-StateT.runStateT = \m s ->
-    m.run(s);
+StateT.runStateT = runStateT;
 
 /**
  * Perform a stateful computation and return resulting value.

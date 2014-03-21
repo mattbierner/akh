@@ -3,8 +3,12 @@
  */
 package ContT
 with
-    import '../structure' {Functor Monad}
+    import '../structure' {Monad},
+    import '../_tail' {Tail trampoline}
 in {
+
+var runContT = \m k ->
+    new Tail(m.run, k);
 
 /* Transformer
  ******************************************************************************/
@@ -24,8 +28,8 @@ ContT = \m -> {
         
         \c f ->
             new Instance\k ->
-                ContT.runContT(c, \x ->
-                    ContT.runContT(f x, k)));
+                runContT(c, \x ->
+                    runContT(f x, k)));
     
     // Callcc
     Instance.callcc = Instance.prototype.callcc = let
@@ -35,12 +39,12 @@ ContT = \m -> {
     in
         \f ->
             new Instance\k ->
-                ContT.runContT(
+                runContT(
                     f <| reify k,
                     k);
     
     // Lift
-    Instance.lift = \t ->
+    Instance.lift = Instance.prototype.lift = \t ->
         new Instance\k ->
             t.chain(k);
     
@@ -55,7 +59,6 @@ ContT = \m -> {
  * @param k Outer continuation.
  * @param m ContT computation.
  */
-ContT.runContT = \m k ->
-    m.run(k);
+ContT.runContT = runContT \>> trampoline;
 
 }

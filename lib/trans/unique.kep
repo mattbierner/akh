@@ -1,0 +1,31 @@
+/**
+ * @fileOverview Identity computation.
+ */
+package UniqueT
+with
+    import './state' StateT
+in {
+
+/* Structure
+ ******************************************************************************/
+UniqueT = \m -> {
+    var Instance = StateT(m);
+    
+    Instance.unique = Instance.prototype.unique =
+        Instance.get.chain \ x ->
+            Instance.put(x + 1)
+                .chain\-> Instance.of x;
+    
+    return Instance;
+};
+
+
+/* Running
+ ******************************************************************************/
+/**
+ * Run an identity computation.
+ */
+UniqueT.runUniqueT = \m ->
+     StateT.evalStateT(m, 1);
+
+}

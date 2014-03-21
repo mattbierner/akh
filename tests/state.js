@@ -46,3 +46,18 @@ exports.put = function(test) {
         3);
     test.done();
 };
+
+exports.many_chain = function(test) {
+    var c = State.of(0);
+    
+    for (var i = 0; i < 10000; ++i) {
+        c = c.chain(function(x) {
+            return State.of(x + 1);
+        });
+    }
+    
+    test.deepEqual(
+        State.runState(c, 's'),
+        {'x': 10000, 's': 's'});
+    test.done();
+};

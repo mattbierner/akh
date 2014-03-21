@@ -1,4 +1,9 @@
 package (
+    chain
+    map
+    ap
+    concat
+    
     liftM
     liftM2
     
@@ -9,21 +14,15 @@ package (
     foldM)
 {
 
-var flip := \f -> \x y -> f(y, x);
+/* Generic versions of ops
+ ******************************************************************************/
+chain = \c f -> c.chain(f);
 
-var reducer := \f a -> Array.prototype.reduceRight.call(a, f);
+map = \f m -> m.map(f);
 
-var foldr := \f z a -> Array.prototype.reduceRight.call(a, f, z);
+ap = \f a -> f.ap(a);
 
-var map := \f a -> Array.prototype.map.call(a, f);
-
-var concat := Function.prototype.call.bind(Array.prototype.concat);
-
-var flatten := Function.prototype.apply.bind(Array.prototype.concat, []);
-
-
-var cons := \x xs -> [x].concat(xs);
-
+concat = \a b -> a.concat(b);
 
 /* Lifting
  ******************************************************************************/
@@ -35,7 +34,7 @@ liftM2 = \f m1 m2 ->
     m2.chain \ y ->
     m1.of(f(x, y));
 
-/* Lifting
+/* Sequencing
  ******************************************************************************/
 /**
  * Perform `p` then `q`. Return result from `q`.
@@ -53,5 +52,6 @@ sequencea = \arr -> Array.prototype.reduce.call(arr, next);
  * Perform a sequence of computations from arguments left to right.
  */
 sequence = \args(...) -> sequencea(args);
+
 
 }

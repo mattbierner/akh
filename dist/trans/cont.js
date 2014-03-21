@@ -2,11 +2,14 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/cont.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../structure"], (function(require, exports, __o) {
+define(["require", "exports", "../structure", "../_tail"], (function(require, exports, __o, __o0) {
     "use strict";
-    var Functor = __o["Functor"],
-        Monad = __o["Monad"],
-        ContT;
+    var Monad = __o["Monad"],
+        Tail = __o0["Tail"],
+        trampoline = __o0["trampoline"],
+        ContT, runContT = (function(m, k) {
+            return new(Tail)(m.run, k);
+        });
     (ContT = (function(m) {
         var reify, Instance = (function(run) {
                 var self = this;
@@ -18,8 +21,8 @@ define(["require", "exports", "../structure"], (function(require, exports, __o) 
             }));
         }), (function(c, f) {
             return new(Instance)((function(k) {
-                return ContT.runContT(c, (function(x) {
-                    return ContT.runContT(f(x), k);
+                return runContT(c, (function(x) {
+                    return runContT(f(x), k);
                 }));
             }));
         }));
@@ -31,18 +34,20 @@ define(["require", "exports", "../structure"], (function(require, exports, __o) 
             });
         })), (function(f) {
             return new(Instance)((function(k) {
-                return ContT.runContT(f(reify(k)), k);
+                return runContT(f(reify(k)), k);
             }));
         }))));
-        (Instance.lift = (function(t) {
+        (Instance.lift = (Instance.prototype.lift = (function(t) {
             return new(Instance)((function(k) {
                 return t.chain(k);
             }));
-        }));
+        })));
         return Instance;
     }));
-    (ContT.runContT = (function(m, k) {
-        return m.run(k);
-    }));
+    (ContT.runContT = (function(f, g) {
+        return (function() {
+            return f(g.apply(null, arguments));
+        });
+    })(trampoline, runContT));
     return ContT;
 }));

@@ -3,25 +3,19 @@
  * DO NOT EDIT
 */
 "use strict";
-var liftM, liftM2, next, sequencea, sequence, mapM, foldM, flip = (function(f) {
-        return (function(x, y) {
-            return f(y, x);
-        });
-    }),
-    reducer = (function(f, a) {
-        return Array.prototype.reduceRight.call(a, f);
-    }),
-    foldr = (function(f, z, a) {
-        return Array.prototype.reduceRight.call(a, f, z);
-    }),
-    map = (function(f, a) {
-        return Array.prototype.map.call(a, f);
-    }),
-    concat = Function.prototype.call.bind(Array.prototype.concat),
-    flatten = Function.prototype.apply.bind(Array.prototype.concat, []),
-    cons = (function(x, xs) {
-        return [x].concat(xs);
-    });
+var chain, map, ap, concat, liftM, liftM2, next, sequencea, sequence, mapM, foldM;
+(chain = (function(c, f) {
+    return c.chain(f);
+}));
+(map = (function(f, m) {
+    return m.map(f);
+}));
+(ap = (function(f, a) {
+    return f.ap(a);
+}));
+(concat = (function(a, b) {
+    return a.concat(b);
+}));
 (liftM = (function(f, m) {
     return m.chain((function(f, g) {
         return (function(x) {
@@ -48,6 +42,10 @@ var liftM, liftM2, next, sequencea, sequence, mapM, foldM, flip = (function(f) {
     var args = arguments;
     return sequencea(args);
 }));
+(exports["chain"] = chain);
+(exports["map"] = map);
+(exports["ap"] = ap);
+(exports["concat"] = concat);
 (exports["liftM"] = liftM);
 (exports["liftM2"] = liftM2);
 (exports["next"] = next);

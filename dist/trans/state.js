@@ -4,14 +4,16 @@
 */
 define(["require", "exports", "../structure"], (function(require, exports, __o) {
     "use strict";
-    var Functor = __o["Functor"],
-        Monad = __o["Monad"],
+    var Monad = __o["Monad"],
         Monoid = __o["Monoid"],
         StateT, Pair = (function(x, s) {
             return ({
                 "x": x,
                 "s": s
             });
+        }),
+        runStateT = (function(m, s) {
+            return m.run(s);
         });
     (StateT = (function(m) {
         var Instance = (function(run) {
@@ -24,11 +26,11 @@ define(["require", "exports", "../structure"], (function(require, exports, __o) 
             }));
         }), (function(c, f) {
             return new(Instance)((function(s) {
-                return StateT.runStateT(c, s)
+                return runStateT(c, s)
                     .chain((function(__o) {
                         var x = __o["x"],
                             s = __o["s"];
-                        return StateT.runStateT(f(x), s);
+                        return runStateT(f(x), s);
                     }));
             }));
         }));
@@ -36,8 +38,8 @@ define(["require", "exports", "../structure"], (function(require, exports, __o) 
             return m.zero;
         })), (function(a, b) {
             return new(Instance)((function(s) {
-                return StateT.runStateT(a, s)
-                    .concat(StateT.runStateT(b, s));
+                return runStateT(a, s)
+                    .concat(runStateT(b, s));
             }));
         }));
         (Instance.get = new(Instance)((function(s) {
@@ -57,9 +59,7 @@ define(["require", "exports", "../structure"], (function(require, exports, __o) 
         }));
         return Instance;
     }));
-    (StateT.runStateT = (function(m, s) {
-        return m.run(s);
-    }));
+    (StateT.runStateT = runStateT);
     (StateT.evalStateT = (function(f, g) {
         return (function() {
             return f(g.apply(null, arguments));

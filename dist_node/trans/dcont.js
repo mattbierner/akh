@@ -1,14 +1,14 @@
 /*
- * THIS FILE IS AUTO GENERATED from 'lib/trans/dcont.kep'
+ * THIS FILE IS AUTO GENERATED FROM 'lib/trans/dcont.kep'
  * DO NOT EDIT
-*/"use strict";
+*/
+"use strict";
 var stream = require("nu-stream")["stream"],
     first = stream["first"],
     rest = stream["rest"],
     isEmpty = stream["isEmpty"],
-    State = require("../state"),
+    Unique = require("../unique"),
     __o = require("../structure"),
-    Functor = __o["Functor"],
     Monad = __o["Monad"],
     DContT, Seg = (function(f) {
         var self = this;
@@ -40,25 +40,22 @@ var stream = require("nu-stream")["stream"],
     unDContT = (function(m, k) {
         return m.run(k);
     }),
-    runDContT = (function(m, k) {
-        return State.evalState(unDContT(m, k), 1);
-    }),
+    runDContT = (function(f, g) {
+        return (function() {
+            return f(g.apply(null, arguments));
+        });
+    })(Unique.runUnique, unDContT),
     appk = (function(k, x) {
         var c = k;
         do {
-            if (((typeof c) === "function")) return State.of(c(x));
+            if (((typeof c) === "function")) return Unique.of(c(x));
             var top = first(c);
             if ((top instanceof Seg)) return unDContT(top.frame(x), rest(c));
             (c = ((top instanceof P) ? rest(c) : top));
         }
         while (true);
     }),
-    createPrompt = State.get.chain((function(x) {
-        return State.put((x + 1))
-            .chain((function() {
-                return State.of(x);
-            }));
-    }));
+    createPrompt = Unique.unique;
 (DContT = (function(m) {
     var Instance = (function(run) {
         var self = this;
@@ -75,7 +72,7 @@ var stream = require("nu-stream")["stream"],
     }));
     (Instance.lift = (function(t) {
         return new(Instance)((function(k) {
-            return State.of(t.chain(appk.bind(null, k)));
+            return Unique.unique(t.chain(appk.bind(null, k)));
         }));
     }));
     (Instance.newPrompt = (Instance.prototype.newPrompt = new(Instance)((function(k) {

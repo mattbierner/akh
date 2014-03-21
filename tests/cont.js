@@ -39,6 +39,25 @@ exports.chain = function(test) {
     test.done();
 };
 
+exports.many_chain = function(test) {
+    var c = Cont.of(0);
+    
+    for (var i = 0; i < 10000; ++i) {
+        c = c.chain(function(x) {
+            return Cont.of(x + 1);
+        });
+    }
+    try {
+         Cont.runCont(c, sqr);
+    }catch (e) {
+        console.log(e);
+    }
+    test.deepEqual(
+        Cont.runCont(c, sqr),
+        10000 * 10000);
+    test.done();
+};
+
 exports.simple_callcc = function(test) {
     var c = Cont.of(3)
         .callcc(function(k) {

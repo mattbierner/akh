@@ -4,9 +4,13 @@
 */
 "use strict";
 var __o = require("../structure"),
-    Functor = __o["Functor"],
     Monad = __o["Monad"],
-    ContT;
+    __o0 = require("../_tail"),
+    Tail = __o0["Tail"],
+    trampoline = __o0["trampoline"],
+    ContT, runContT = (function(m, k) {
+        return new(Tail)(m.run, k);
+    });
 (ContT = (function(m) {
     var reify, Instance = (function(run) {
             var self = this;
@@ -18,8 +22,8 @@ var __o = require("../structure"),
         }));
     }), (function(c, f) {
         return new(Instance)((function(k) {
-            return ContT.runContT(c, (function(x) {
-                return ContT.runContT(f(x), k);
+            return runContT(c, (function(x) {
+                return runContT(f(x), k);
             }));
         }));
     }));
@@ -31,17 +35,19 @@ var __o = require("../structure"),
         });
     })), (function(f) {
         return new(Instance)((function(k) {
-            return ContT.runContT(f(reify(k)), k);
+            return runContT(f(reify(k)), k);
         }));
     }))));
-    (Instance.lift = (function(t) {
+    (Instance.lift = (Instance.prototype.lift = (function(t) {
         return new(Instance)((function(k) {
             return t.chain(k);
         }));
-    }));
+    })));
     return Instance;
 }));
-(ContT.runContT = (function(m, k) {
-    return m.run(k);
-}));
+(ContT.runContT = (function(f, g) {
+    return (function() {
+        return f(g.apply(null, arguments));
+    });
+})(trampoline, runContT));
 (module.exports = ContT);

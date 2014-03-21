@@ -8,9 +8,9 @@ package DContT
 with
     import 'nu-stream::stream' stream#{first rest isEmpty},
     
-    import '../state' State,
+    import '../unique' Unique,
 
-    import '../structure' {Functor Monad}
+    import '../structure' {Monad}
 in {
 
 /* Records
@@ -76,8 +76,7 @@ var splitSeq = \t k -> {
 var unDContT = \m k ->
     m.run(k);
 
-var runDContT = \m k ->
-    State.evalState(unDContT(m, k), 1);
+var runDContT = unDContT \>> Unique.runUnique;
 
 /**
  * Apply continuation `k`
@@ -89,7 +88,7 @@ var appk = \k x -> {
     var c = k;
     do {
         if (typeof c === 'function')
-            return State.of <| c(x);
+            return Unique.of <| c x;
 
         var top := first c;
         if (top instanceof Seg)
@@ -103,10 +102,7 @@ var appk = \k x -> {
 
 /* Prompt
  ******************************************************************************/
-var createPrompt = State.get
-    .chain\x ->
-        State.put(x + 1)
-            .chain(\-> State.of x);
+var createPrompt = Unique.unique;
 
 /* Transformer
  ******************************************************************************/
@@ -132,7 +128,7 @@ DContT = \m -> {
     // Lift
     Instance.lift = \t ->
         new Instance\k ->
-            State.of <| t.chain(appk @ k);
+            Unique.unique <| t.chain(appk @ k);
     
     // Primitive Continuation Operations
     /**
@@ -172,7 +168,7 @@ DContT = \m -> {
     Instance.pushSubCont = Instance.prototype.pushSubCont = \subk c ->
         new Instance\k ->
             unDContT(c, pushSeq(subk, k));
-            
+    
     // Shift and Reset
     /**
      * Delimit a continuation
