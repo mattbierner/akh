@@ -42,21 +42,28 @@ var __o = require("../structure"),
                 .concat(runStateT(b, s));
         }));
     }));
-    (Instance.get = new(Instance)((function(s) {
+    (Instance.get = (Instance.prototype.get = new(Instance)((function(s) {
         return m.of(Pair(s, s));
-    })));
-    (Instance.put = (function(s) {
+    }))));
+    (Instance.put = (Instance.prototype.put = (function(s) {
         return new(Instance)((function(_) {
             return m.of(Pair(s, s));
         }));
-    }));
-    (Instance.lift = (function(t) {
+    })));
+    (Instance.modify = (Instance.prototype.modify = (function(f) {
+        return Instance.get.chain((function(f, g) {
+            return (function(x) {
+                return f(g(x));
+            });
+        })(Instance.put, f));
+    })));
+    (Instance.lift = (Instance.prototype.lift = (function(t) {
         return new(Instance)((function(s) {
             return t.chain((function(x) {
                 return m.of(Pair(x, s));
             }));
         }));
-    }));
+    })));
     return Instance;
 }));
 (StateT.runStateT = runStateT);

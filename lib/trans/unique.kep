@@ -14,16 +14,15 @@ UniqueT = \m -> {
     Instance.unique = Instance.prototype.unique =
         Instance.get.chain \ x ->
             Instance.put(x + 1)
-                .chain\-> Instance.of x;
+                .chain \-> Instance.of x;
     
     return Instance;
 };
 
-
 /* Running
  ******************************************************************************/
 /**
- * Run an identity computation.
+ * Run an unique computation.
  */
 UniqueT.runUniqueT = \m ->
      StateT.evalStateT(m, 1);

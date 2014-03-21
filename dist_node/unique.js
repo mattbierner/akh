@@ -7,7 +7,9 @@ var UniqueT = require("./trans/unique"),
     Identity = require("./identity"),
     Unique;
 (Unique = UniqueT(Identity));
-(Unique.runUnique = (function(m) {
-    return Identity.runIdentity(UniqueT.runUniqueT(m));
-}));
+(Unique.runUnique = (function(f, g) {
+    return (function(x) {
+        return f(g(x));
+    });
+})(Identity.runIdentity, UniqueT.runUniqueT));
 (module.exports = Unique);

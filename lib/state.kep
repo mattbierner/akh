@@ -5,6 +5,7 @@ package State
 with
     import './identity' Identity,
     import './trans/state' StateT
+
 in {
 
 /* Structure

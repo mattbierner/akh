@@ -39,6 +39,23 @@ exports.chain = function(test) {
     test.done();
 };
 
+/*
+exports.many_chain = function(test) {
+    var c = DCont.of(0);
+    
+    for (var i = 0; i < 10000; ++i) {
+        c = c.chain(function(x) {
+            return DCont.of(x + 1);
+        });
+    }
+
+    test.deepEqual(
+        DCont.runDCont(c, sqr),
+        10000 * 10000);
+    test.done();
+};
+*/
+
 exports.single_shift_reset = function(test) {
     var c = DCont
         .reset(function(p) {

@@ -6,8 +6,10 @@ define(["require", "exports", "./trans/unique", "./identity"], (function(require
     "use strict";
     var Unique;
     (Unique = UniqueT(Identity));
-    (Unique.runUnique = (function(m) {
-        return Identity.runIdentity(UniqueT.runUniqueT(m));
-    }));
+    (Unique.runUnique = (function(f, g) {
+        return (function(x) {
+            return f(g(x));
+        });
+    })(Identity.runIdentity, UniqueT.runUniqueT));
     return Unique;
 }));

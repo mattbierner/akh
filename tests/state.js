@@ -37,9 +37,10 @@ exports.get = function(test) {
 };
 
 exports.put = function(test) {
-    var c = State.of(3).chain(function(x) {
-        return State.put(x);
-    })
+    var c = State.of(3)
+        .chain(function(x) {
+            return State.put(x);
+        });
     
     test.deepEqual(
         State.execState(c, 's'),
@@ -47,6 +48,19 @@ exports.put = function(test) {
     test.done();
 };
 
+exports.modify = function(test) {
+    var c = State.of(3)
+        .chain(function(x) {
+            return State.modify(function(y) { return x * y});
+        });
+    
+    test.deepEqual(
+        State.execState(c, 4),
+        12);
+    test.done();
+};
+
+/*
 exports.many_chain = function(test) {
     var c = State.of(0);
     
@@ -60,4 +74,4 @@ exports.many_chain = function(test) {
         State.runState(c, 's'),
         {'x': 10000, 's': 's'});
     test.done();
-};
+};*/

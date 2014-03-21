@@ -16,7 +16,6 @@ var Pair = \x s -> ({
 var runStateT = \m s ->
     m.run(s);
 
-
 /* Transformer
  ******************************************************************************/
 /**
@@ -50,15 +49,19 @@ StateT = \m -> {
                     .concat(runStateT(b, s)));
     
     // State operations
-    Instance.get = new Instance\s ->
+    Instance.get = Instance.prototype.get = new Instance\s ->
         m.of <| Pair(s, s);
     
-    Instance.put = \s ->
+    Instance.put = Instance.prototype.put = \s ->
         new Instance\_ ->
             m.of <| Pair(s, s);
     
+    Instance.modify = Instance.prototype.modify = \f ->
+        Instance.get
+            .chain(f \> Instance.put);
+    
     // Lift
-    Instance.lift = \t ->
+    Instance.lift = Instance.prototype.lift = \t ->
         new Instance\s ->
             t.chain\x ->
                 m.of <| Pair(x, s);
@@ -85,7 +88,7 @@ StateT.runStateT = runStateT;
 StateT.evalStateT =
     StateT.runStateT
     \>> \n ->
-        n.chain(\{x} -> n.of(x));
+        n.chain\{x} -> n.of(x);
 
 /**
  * Perform a stateful computation and return resulting state.
@@ -96,6 +99,6 @@ StateT.evalStateT =
 StateT.execStateT =
     StateT.runStateT
     \>> \n ->
-        n.chain(\{s} -> n.of(s));
+        n.chain\{s} -> n.of(s);
 
 }

@@ -21,7 +21,7 @@ DCont = DContT(Identity);
  */
 DCont.runDCont =
     (\m k ->
-        runDContT(m, \x -> new Identity(k(x))))
+        runDContT(m, k \> Identity.of))
     \>> Identity.runIdentity;
 
 }

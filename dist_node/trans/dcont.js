@@ -54,8 +54,7 @@ var stream = require("nu-stream")["stream"],
             (c = ((top instanceof P) ? rest(c) : top));
         }
         while (true);
-    }),
-    createPrompt = Unique.unique;
+    });
 (DContT = (function(m) {
     var Instance = (function(run) {
         var self = this;
@@ -72,11 +71,11 @@ var stream = require("nu-stream")["stream"],
     }));
     (Instance.lift = (function(t) {
         return new(Instance)((function(k) {
-            return Unique.unique(t.chain(appk.bind(null, k)));
+            return Unique.of(t.chain(appk.bind(null, k)));
         }));
     }));
     (Instance.newPrompt = (Instance.prototype.newPrompt = new(Instance)((function(k) {
-        return createPrompt.chain(appk.bind(null, k));
+        return Unique.unique.chain(appk.bind(null, k));
     }))));
     (Instance.pushPrompt = (Instance.prototype.pushPrompt = (function(prompt, c) {
         return new(Instance)((function(k) {

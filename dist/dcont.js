@@ -12,9 +12,11 @@ define(["require", "exports", "./identity", "./trans/dcont"], (function(require,
             return f(g.apply(null, arguments));
         });
     })(Identity.runIdentity, (function(m, k) {
-        return runDContT(m, (function(x) {
-            return new(Identity)(k(x));
-        }));
+        return runDContT(m, (function(f, g) {
+            return (function(x) {
+                return f(g(x));
+            });
+        })(Identity.of, k));
     })));
     return DCont;
 }));

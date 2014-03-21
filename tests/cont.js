@@ -47,11 +47,7 @@ exports.many_chain = function(test) {
             return Cont.of(x + 1);
         });
     }
-    try {
-         Cont.runCont(c, sqr);
-    }catch (e) {
-        console.log(e);
-    }
+
     test.deepEqual(
         Cont.runCont(c, sqr),
         10000 * 10000);

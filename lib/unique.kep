@@ -11,13 +11,11 @@ in {
  ******************************************************************************/
 Unique = UniqueT(Identity);
 
-
 /* Running
  ******************************************************************************/
 /**
- * Run an identity computation.
+ * Run an unique computation.
  */
-Unique.runUnique = \m ->
-    Identity.runIdentity(UniqueT.runUniqueT m);
+Unique.runUnique = UniqueT.runUniqueT \> Identity.runIdentity;
 
 }

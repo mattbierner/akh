@@ -100,10 +100,6 @@ var appk = \k x -> {
     } while (true);
 };
 
-/* Prompt
- ******************************************************************************/
-var createPrompt = Unique.unique;
-
 /* Transformer
  ******************************************************************************/
 /**
@@ -128,14 +124,14 @@ DContT = \m -> {
     // Lift
     Instance.lift = \t ->
         new Instance\k ->
-            Unique.unique <| t.chain(appk @ k);
+            Unique.of <| t.chain(appk @ k);
     
     // Primitive Continuation Operations
     /**
      * Create a new unique prompt.
      */
     Instance.newPrompt = Instance.prototype.newPrompt = new Instance\k ->
-        createPrompt.chain(appk @ k);
+        Unique.unique.chain(appk @ k);
     
     /**
      * Pushes prompt onto the stack and evaluate `c`.
