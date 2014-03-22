@@ -1,7 +1,8 @@
 # ChangeLog
 
 ## 0.5.3 - March 22, 2014
-* Fixed call stack on `EitherT` and ``ErrorT.
+* Fixed call stack on `EitherT` and `ErrorT`.
+* Performance improvements.
 
 ## 0.5.2 - March 22, 2014
 * Fixed call stack on `StateT`.
