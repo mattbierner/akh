@@ -8,6 +8,7 @@ define(["require", "exports", "../structure", "../trampoline", "../base"], (func
     var Monad = __o["Monad"],
         Monoid = __o["Monoid"],
         Transformer = __o["Transformer"],
+        thunk = Trampoline["thunk"],
         run = Trampoline["run"],
         concat = __o0["concat"],
         chain = __o0["chain"],
@@ -31,7 +32,7 @@ define(["require", "exports", "../structure", "../trampoline", "../base"], (func
             }));
         }), (function(c, f) {
             return new(Instance)((function(s) {
-                return Trampoline.thunk(c.run, s)
+                return thunk(c.run, s)
                     .chain((function(t) {
                         return Trampoline.of(t.chain((function(__o) {
                             var x = __o["x"],
@@ -45,7 +46,7 @@ define(["require", "exports", "../structure", "../trampoline", "../base"], (func
             return m.zero;
         })), (function(a, b) {
             return new(Instance)((function(s) {
-                return Trampoline.thunk(a.run, s)
+                return thunk(a.run, s)
                     .chain((function(t) {
                         return runStateT(b, s)
                             .chain((function(k) {

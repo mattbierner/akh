@@ -4,7 +4,7 @@
 package EitherT
 with
     import '../structure' {Monad Monoid Transformer},
-    import '../trampoline' Trampoline
+    import '../trampoline' Trampoline#{thunk}
 in {
 
 var Right = \x -> ({'right': true, 'x': x});
@@ -12,7 +12,7 @@ var Right = \x -> ({'right': true, 'x': x});
 var Left = \x -> ({'right': false, 'x': x});
 
 var runEitherT = \m ->
-    m.run();
+    m.run;
 
 /* Transformer
  ******************************************************************************/
@@ -28,44 +28,41 @@ EitherT = \m -> {
     
     Monad(Instance,
         \x ->
-            new Instance\->
-                Trampoline.of <| m.of <| Right x,
+            new Instance (
+                Trampoline.of <| m.of <| Right x),
         
         \c f ->
-            new Instance\->
-                Trampoline
-                    .thunk(c.run)
-                    .chain\t-> t.chain\{right x} ->
+            new Instance (
+                runEitherT(c).chain \ t->
+                    t.chain \ {right x} ->
                         ?right
                             :runEitherT <| f x
-                            :Trampoline.of <| m.of <| Left x);
+                            :Trampoline.of <| m.of <| Left x));
     
     Monoid(Instance,
-        new Instance\ ->
-            m.of <| Left m.zero,
+        new Instance (
+            Trampoline.of <| m.of <| Left m.zero),
         
         \a b ->
-            new Instance\->
-                Trampoline
-                    .thunk(a.run)
-                    .chain\t ->
-                        t.chain\{right x} ->
-                            ?right
-                                :m.of <| Right x
-                                :runEitherT b);
+            new Instance (
+                runEitherT(a).chain \ t ->
+                    t.chain \ {right x} ->
+                        ?right
+                            :m.of <| Right x
+                            :runEitherT b));
     
     // Lift
     Transformer(Instance,
         \t ->
-            new Instance\->
-                Trampoline.of <| t.map(Right));
+            new Instance (
+                Trampoline.of <| t.map(Right)));
     
     // Either
     Instance.right = Instance.prototype.right = Instance.of;
     
     Instance.left = Instance.prototype.left = \x ->
-        new Instance\->
-            Trampoline.of <| m.of <| Left x;
+        new Instance (
+            Trampoline.of <| m.of <| Left x);
     
     return Instance;
 };

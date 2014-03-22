@@ -8,6 +8,7 @@ var __o = require("../structure"),
     Monoid = __o["Monoid"],
     Transformer = __o["Transformer"],
     Trampoline = require("../trampoline"),
+    thunk = Trampoline["thunk"],
     run = Trampoline["run"],
     __o0 = require("../base"),
     concat = __o0["concat"],
@@ -32,7 +33,7 @@ var __o = require("../structure"),
         }));
     }), (function(c, f) {
         return new(Instance)((function(s) {
-            return Trampoline.thunk(c.run, s)
+            return thunk(c.run, s)
                 .chain((function(t) {
                     return Trampoline.of(t.chain((function(__o) {
                         var x = __o["x"],
@@ -46,7 +47,7 @@ var __o = require("../structure"),
         return m.zero;
     })), (function(a, b) {
         return new(Instance)((function(s) {
-            return Trampoline.thunk(a.run, s)
+            return thunk(a.run, s)
                 .chain((function(t) {
                     return runStateT(b, s)
                         .chain((function(k) {

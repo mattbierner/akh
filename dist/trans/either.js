@@ -7,6 +7,7 @@ define(["require", "exports", "../structure", "../trampoline"], (function(requir
     var Monad = __o["Monad"],
         Monoid = __o["Monoid"],
         Transformer = __o["Transformer"],
+        thunk = Trampoline["thunk"],
         EitherT, Right = (function(x) {
             return ({
                 "right": true,
@@ -20,7 +21,7 @@ define(["require", "exports", "../structure", "../trampoline"], (function(requir
             });
         }),
         runEitherT = (function(m) {
-            return m.run();
+            return m.run;
         });
     (EitherT = (function(m) {
         var Instance = (function(run) {
@@ -28,47 +29,34 @@ define(["require", "exports", "../structure", "../trampoline"], (function(requir
             (self.run = run);
         });
         Monad(Instance, (function(x) {
-            return new(Instance)((function() {
-                return Trampoline.of(m.of(Right(x)));
-            }));
+            return new(Instance)(Trampoline.of(m.of(Right(x))));
         }), (function(c, f) {
-            return new(Instance)((function() {
-                return Trampoline.thunk(c.run)
-                    .chain((function(t) {
-                        return t.chain((function(__o) {
-                            var right = __o["right"],
-                                x = __o["x"];
-                            return (right ? runEitherT(f(x)) :
-                                Trampoline.of(m.of(Left(x))));
-                        }));
+            return new(Instance)(runEitherT(c)
+                .chain((function(t) {
+                    return t.chain((function(__o) {
+                        var right = __o["right"],
+                            x = __o["x"];
+                        return (right ? runEitherT(f(x)) : Trampoline.of(m.of(
+                            Left(x))));
                     }));
-            }));
+                })));
         }));
-        Monoid(Instance, new(Instance)((function() {
-            return m.of(Left(m.zero));
-        })), (function(a, b) {
-            return new(Instance)((function() {
-                return Trampoline.thunk(a.run)
-                    .chain((function(t) {
-                        return t.chain((function(__o) {
-                            var right = __o["right"],
-                                x = __o["x"];
-                            return (right ? m.of(Right(x)) : runEitherT(
-                                b));
-                        }));
+        Monoid(Instance, new(Instance)(Trampoline.of(m.of(Left(m.zero)))), (function(a, b) {
+            return new(Instance)(runEitherT(a)
+                .chain((function(t) {
+                    return t.chain((function(__o) {
+                        var right = __o["right"],
+                            x = __o["x"];
+                        return (right ? m.of(Right(x)) : runEitherT(b));
                     }));
-            }));
+                })));
         }));
         Transformer(Instance, (function(t) {
-            return new(Instance)((function() {
-                return Trampoline.of(t.map(Right));
-            }));
+            return new(Instance)(Trampoline.of(t.map(Right)));
         }));
         (Instance.right = (Instance.prototype.right = Instance.of));
         (Instance.left = (Instance.prototype.left = (function(x) {
-            return new(Instance)((function() {
-                return Trampoline.of(m.of(Left(x)));
-            }));
+            return new(Instance)(Trampoline.of(m.of(Left(x))));
         })));
         return Instance;
     }));

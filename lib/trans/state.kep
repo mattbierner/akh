@@ -6,7 +6,7 @@
 package StateT
 with
     import '../structure' {Monad Monoid Transformer},
-    import '../trampoline' Trampoline#{run},
+    import '../trampoline' Trampoline#{thunk run},
     import '../base' {concat chain}
 in {
 /**
@@ -43,11 +43,9 @@ StateT = \m -> {
         
         \c f ->
             new Instance \s ->
-               Trampoline
-                   .thunk(c.run, s)
-                   .chain\t ->
-                        Trampoline.of <| t.chain\{x s} ->
-                            run <| runStateT(f x, s));
+               thunk(c.run, s).chain \ t ->
+                    Trampoline.of <| t.chain\{x s} ->
+                        run <| runStateT(f x, s));
     
     Monoid(Instance,
         new Instance\_ ->
@@ -55,11 +53,9 @@ StateT = \m -> {
         
         \a b ->
             new Instance\s ->
-                Trampoline
-                    .thunk(a.run, s)
-                    .chain\t ->
-                        runStateT(b, s).chain\k ->
-                            Trampoline.of <| t.concat(k));
+                thunk(a.run, s).chain\t ->
+                    runStateT(b, s).chain\k ->
+                        Trampoline.of <| t.concat(k));
     
     Transformer(Instance,
         \t ->
