@@ -8,64 +8,9 @@
 package StateT
 with
     import '../structure' {Monad Monoid},
+    import '../trampoline' Trampoline#{run},
     import '../base' {concat chain}
 in {
-
-/**
- * Defered trampoline computation.
- */
-var K = function \k =self-> {
-    self.k = k;
-};
-
-/**
- * Chained trampoline computation.
- */
-var Chain = function \c f =self-> {
-    self.c = c;
-    self.f = f;
-};
-
-/**
- * Defunctionalized trampoline chain application.
- */
-var Ap = function \c k =self-> {
-    self.c = c;
-    self.k = k;
-};
-
-/**
- * Apply a potentially defunctionalized continuation.
- */
-var appk = \k x ->
-    ?k instanceof Ap
-        :new Chain(k.c(x), k.k)
-    :k(x);
-
-/**
- * Run a trampolined computation to completion
- */
-var run = \cont -> {
-    var k = cont;
-    while (true) {
-        if (k instanceof K)
-            k = k.k();
-        else if (k instanceof Chain)
-        with {c} = k in {
-            if (c instanceof K)
-                k = new Chain(c.k(), k.f);
-            else if (c instanceof Chain)
-                k = new Chain(c.c, new Ap(c.f, k.f));
-            else
-                k = appk(k.f, k.c);
-        }
-        else
-            return k;
-    }
-};
-
-/* Transformer
- ******************************************************************************/
 /**
  * Value, state pair.
  */
@@ -80,6 +25,9 @@ var Pair = \x s -> ({
 var runStateT = \m s ->
     m.run(s);
 
+/* Transformer
+ ******************************************************************************/
+
 /**
  * State monad transformer.
  * 
@@ -93,13 +41,13 @@ StateT = \m -> {
     Monad(Instance,
         \x ->
             new Instance\s ->
-                m.of <| Pair(x, s),
+                Trampoline.of <|  m.of <| Pair(x, s),
         
         \c f ->
             new Instance \s ->
-               new Chain(new K \-> runStateT(c, s), \t ->
-                    t.chain\{x s} ->
-                        run <| runStateT(f x, s)));
+               Trampoline.thunk(\-> runStateT(c, s)).chain\t ->
+                    Trampoline.of <| t.chain\{x s} ->
+                        run <| runStateT(f x, s));
     
     Monoid(Instance,
         new Instance\_ ->
@@ -107,18 +55,18 @@ StateT = \m -> {
         
         \a b ->
             new Instance\s ->
-                new Chain(runStateT(a, s), \t ->
-                    new Chain(runStateT(b, s), \k ->
-                        t.concat(k))));
+                Trampoline.thunk(\-> runStateT(a, s)).chain\t ->
+                    runStateT(b, s).chain\k ->
+                        Trampoline.of <| t.concat(k));
     
     // State operations
     Instance.get = Instance.prototype.get =
         new Instance\s ->
-            m.of <| Pair(s, s);
+            Trampoline.of <| m.of <| Pair(s, s);
     
     Instance.put = Instance.prototype.put = \s ->
         new Instance \_ ->
-            m.of <| Pair(s, s);
+            Trampoline.of <| m.of <| Pair(s, s);
     
     Instance.modify = Instance.prototype.modify = \f ->
         Instance.get
@@ -127,7 +75,7 @@ StateT = \m -> {
     // Lift
     Instance.lift = Instance.prototype.lift = \t ->
         new Instance\s ->
-            t.chain\x -> m.of <| Pair(x, s);
+            Trampoline.of <| t.chain\x -> m.of <| Pair(x, s);
     
     return Instance;
 };

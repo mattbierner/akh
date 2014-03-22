@@ -1,0 +1,90 @@
+/**
+ * @fileOverview Very basic tail calls
+ */
+package Trampoline
+with
+    import './structure' {Monad}
+in {
+
+/**
+ * Trampoline monad.
+ */
+Trampoline = function \ -> { };
+
+/* Classes
+ ******************************************************************************/
+/**
+ * Completed trampoline computation.
+ */
+var Done = function \x =self-> {
+    self.x = x;
+};
+Done.prototype = new Trampoline();
+
+/**
+ * Deferred trampoline computation.
+ */
+var Thunk = function \k =self-> {
+    self.k = k;
+};
+Thunk.prototype = new Trampoline();
+
+/**
+ * Chained trampoline computation.
+ */
+var Chain = function \c f =self-> {
+    self.c = c;
+    self.f = f;
+};
+Chain.prototype = new Trampoline();
+
+/* Definitions
+ ******************************************************************************/
+Monad(Trampoline,
+    \x -> new Done x,
+    
+    \c f -> new Chain(c, f));
+
+Trampoline.thunk = \k -> (new Thunk k);
+
+/* Running
+ ******************************************************************************/
+/**
+ * Defunctionalized trampoline chain application.
+ */
+var Ap = function \c k =self-> {
+    self.c = c;
+    self.k = k;
+};
+
+/**
+ * Apply a potentially defunctionalized continuation.
+ */
+var appk = \k x ->
+    ?k instanceof Ap
+        :new Chain(k.c(x), k.k)
+    :k x;
+
+/**
+ * Run a trampolined computation to completion
+ */
+Trampoline.run = \cont -> {
+    var k = cont;
+    while (true) {
+        if (k instanceof Done)
+            return k.x;
+        else if (k instanceof Thunk)
+            k = k.k();
+        else if (k instanceof Chain)
+        with {c} = k in {
+            if (c instanceof Done)
+                k = appk(k.f, c.x);
+            else if (c instanceof Thunk)
+                k = new Chain(c.k(), k.f);
+            else if (c instanceof Chain)
+                k = new Chain(c.c, new Ap(c.f, k.f));
+        }
+    }
+};
+
+}

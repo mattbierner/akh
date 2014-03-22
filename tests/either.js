@@ -52,6 +52,21 @@ exports.chain_order= function(test) {
     test.done();
 };
 
+exports.chain_many = function(test) {
+    var c = Either.of(0);
+    
+    for (var i = 0; i < 100000; ++i)
+        c = c.chain(function(x) {
+            return Either.of(x + 1);
+        });
+
+    test.deepEqual(
+        Either.either(c, l, r),
+        [true, 100000]);
+    
+    test.done();
+};
+
 exports.chain_left = function(test) {
     var c = Either.of(1)
         .chain(function(x) {
