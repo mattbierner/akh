@@ -34,11 +34,11 @@ var __o = require("../structure"),
     }), (function(c, f) {
         return new(Instance)(runEitherT(c)
             .chain((function(t) {
-                return t.chain((function(__o) {
+                return Trampoline.of(t.chain((function(__o) {
                     var right = __o["right"],
                         x = __o["x"];
-                    return (right ? runEitherT(f(x)) : Trampoline.of(m.of(Left(x))));
-                }));
+                    return (right ? Trampoline.run(runEitherT(f(x))) : m.of(Left(x)));
+                })));
             })));
     }));
     Monoid(Instance, new(Instance)(Trampoline.of(m.of(Left(m.zero)))), (function(a, b) {
