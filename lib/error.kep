@@ -44,7 +44,7 @@ Error.tryError = \m e ->
  * Perform a error computation and if it fails, return a default value.
  * 
  * @param m Error computation.
- * @param e Error handler that maps error value to result.
+ * @param def Value returned on error
  */
 Error.attemptError = \m def ->
     Error.tryError(m, constant def);

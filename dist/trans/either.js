@@ -2,11 +2,10 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/either.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../base", "../structure"], (function(require, exports, __o, __o0) {
+define(["require", "exports", "../structure"], (function(require, exports, __o) {
     "use strict";
-    var liftM = __o["liftM"],
-        Monad = __o0["Monad"],
-        Monoid = __o0["Monoid"],
+    var Monad = __o["Monad"],
+        Monoid = __o["Monoid"],
         EitherT, Right = (function(x) {
             return ({
                 "right": true,

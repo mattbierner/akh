@@ -1,6 +1,6 @@
 {
     "name": "akh",
-    "version": "0.5.0",
+    "version": "0.5.2",
     "description": "Monad and Monad Transformer Collection",
     "author": "Matt Bierner",
     "license": "MIT",

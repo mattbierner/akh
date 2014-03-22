@@ -3,7 +3,6 @@
  */
 package EitherT
 with
-    import '../base' {liftM},
     import '../structure' {Monad Monoid}
 in {
 

@@ -25,14 +25,33 @@ exports.simple_bind = function(test) {
     test.done();
 };
 
+exports.chain_order = function(test) {
+    var c = State.of(3)
+        .chain(function(x) {
+            return State.of(x + 5);
+        })
+        .chain(function(x) {
+            return State.of(x / 2);
+        });
+    
+    test.deepEqual(
+        State.runState(c, 's'),
+        {'x': 4, 's': 's'});
+    test.done();
+};
+
 exports.get = function(test) {
-    var c = State.of(3).chain(function(x) {
-        return State.get;
-    });
+    var c = State.of(3)
+        .chain(function(x) {
+            return State.get;
+        })
+        .chain(function(x) {
+            return State.of(x + 'abc');
+        });
     
     test.deepEqual(
         State.evalState(c, 's'),
-        's');
+        'sabc');
     test.done();
 };
 
@@ -60,11 +79,13 @@ exports.modify = function(test) {
     test.done();
 };
 
-/*
+
+
+
 exports.many_chain = function(test) {
     var c = State.of(0);
     
-    for (var i = 0; i < 10000; ++i) {
+    for (var i = 0; i < 100000; ++i) {
         c = c.chain(function(x) {
             return State.of(x + 1);
         });
@@ -72,6 +93,6 @@ exports.many_chain = function(test) {
     
     test.deepEqual(
         State.runState(c, 's'),
-        {'x': 10000, 's': 's'});
+        {'x': 100000, 's': 's'});
     test.done();
-};*/
+};

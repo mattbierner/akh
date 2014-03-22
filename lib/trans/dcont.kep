@@ -93,7 +93,7 @@ var appk = \k x -> {
         var top := first c;
         if (top instanceof Seg)
             return unDContT(top.frame(x), rest c);
-
+        
         c = ?top instanceof P 
             :rest c
             :top;
@@ -124,14 +124,14 @@ DContT = \m -> {
     // Lift
     Instance.lift = \t ->
         new Instance\k ->
-            Unique.of <| t.chain(appk @ k);
+            t.chain(appk @ k \> trampoline);
     
     // Primitive Continuation Operations
     /**
      * Create a new unique prompt.
      */
     Instance.newPrompt = Instance.prototype.newPrompt = new Instance\k ->
-        Unique.unique.chain(appk @ k \> trampoline );
+        Unique.unique.chain(appk @ k \> trampoline);
     
     /**
      * Pushes prompt onto the stack and evaluate `c`.

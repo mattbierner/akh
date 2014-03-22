@@ -46,7 +46,7 @@ ContT = \m -> {
     // Lift
     Instance.lift = Instance.prototype.lift = \t ->
         new Instance\k ->
-            t.chain(k);
+            t.chain(k \> trampoline);
     
     return Instance;
 };

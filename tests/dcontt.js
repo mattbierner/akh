@@ -1,9 +1,9 @@
-var ContT = require('../index').trans.cont;
+var DContT = require('../index').trans.dcont;
 var State = require('../index').state;
 
 var run = function(c, s, k) {
     return State.evalState(
-        ContT.runContT(
+        DContT.runDContT(
             c,
             function(x) { return State.of(k(x))}),
         s);
@@ -13,7 +13,7 @@ var id = function(x) { return x; }
 
 var sqr = function(x) { return x * x; }
 
-var M = ContT(State);
+var M = DContT(State);
 
 
 exports.simple_of = function(test) {

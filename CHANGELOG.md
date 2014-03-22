@@ -1,6 +1,12 @@
 # ChangeLog
 
-## 0.5.0 - March 20, 2014
+## 0.5.2 - March 22, 2014
+* Fixed call stack on `StateT`.
+
+## 0.5.1 - March 21, 2014
+* Fixed `ContT.lift` and `DContT.lift`.
+
+## 0.5.0 - March 21, 2014
 * Temp fix for call stack on `ContT` and `DContT`.
 ** Wrap other structures for long running computations in `ContT`.
 * Added State.modify.

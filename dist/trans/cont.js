@@ -39,7 +39,11 @@ define(["require", "exports", "../structure", "../_tail"], (function(require, ex
         }))));
         (Instance.lift = (Instance.prototype.lift = (function(t) {
             return new(Instance)((function(k) {
-                return t.chain(k);
+                return t.chain((function(f, g) {
+                    return (function(x) {
+                        return f(g(x));
+                    });
+                })(trampoline, k));
             }));
         })));
         return Instance;

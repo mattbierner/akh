@@ -3,11 +3,9 @@
  * DO NOT EDIT
 */
 "use strict";
-var __o = require("../base"),
-    liftM = __o["liftM"],
-    __o0 = require("../structure"),
-    Monad = __o0["Monad"],
-    Monoid = __o0["Monoid"],
+var __o = require("../structure"),
+    Monad = __o["Monad"],
+    Monoid = __o["Monoid"],
     EitherT, Right = (function(x) {
         return ({
             "right": true,

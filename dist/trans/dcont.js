@@ -76,7 +76,11 @@ define(["require", "exports", "nu-stream/stream", "../unique", "../structure", "
         }));
         (Instance.lift = (function(t) {
             return new(Instance)((function(k) {
-                return Unique.of(t.chain(appk.bind(null, k)));
+                return t.chain((function(f, g) {
+                    return (function(x) {
+                        return f(g(x));
+                    });
+                })(trampoline, appk.bind(null, k)));
             }));
         }));
         (Instance.newPrompt = (Instance.prototype.newPrompt = new(Instance)((function(k) {

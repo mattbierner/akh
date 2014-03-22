@@ -32,7 +32,7 @@ ListT = \m -> {
     var Instance = function \run =self-> {
         self.run = run;
     };
-    
+
     var sequence := foldr @ (liftM2 @ (flip concat), m.of []);
     
     var mapM := map \>> sequence;
@@ -70,9 +70,8 @@ ListT = \m -> {
  * Perform a list computation.
  * 
  * @param m ListT computation.
- * @param s Initial state.
  */
-ListT.runListT = \m s ->
-    m.run(s);
+ListT.runListT = \m ->
+    m.run();
 
 }

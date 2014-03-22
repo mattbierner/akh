@@ -33,6 +33,7 @@ exports.getting_uniques = function(test) {
         });
     
     var r = Unique.runUnique(c);
+    
     test.ok(r[0] !== r[1]);
     
     test.done();
