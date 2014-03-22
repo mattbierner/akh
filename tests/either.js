@@ -59,11 +59,13 @@ exports.chain_many = function(test) {
         c = c.chain(function(x) {
             return Either.of(x + 1);
         });
-
+    try{
     test.deepEqual(
         Either.either(c, l, r),
         [true, 100000]);
-    
+    }catch(e) {
+        console.log(e);
+    }
     test.done();
 };
 

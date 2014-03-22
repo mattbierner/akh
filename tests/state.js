@@ -81,18 +81,30 @@ exports.modify = function(test) {
 
 
 
-
 exports.many_chain = function(test) {
     var c = State.of(0);
     
     for (var i = 0; i < 100000; ++i) {
-        c = c.chain(function(x) {
-            return State.of(x + 1);
+        c = c.map(function(x) {
+            return x + 1;
         });
     }
     
     test.deepEqual(
         State.runState(c, 's'),
         {'x': 100000, 's': 's'});
+    test.done();
+};
+
+exports.many_chain_inner = function(test) {
+    var f = function(x) {
+        if (x > 10000) return State.of(x);
+        return State.of(x + 1).chain(f);
+    }
+    
+    test.deepEqual(
+        State.runState(f(0), 0),
+        {'x': 100000, 's': 100000});
+    
     test.done();
 };

@@ -41,23 +41,12 @@ var Chain = function \c f =self-> {
 };
 Chain.prototype = new Trampoline();
 
-/* Definitions
- ******************************************************************************/
-Monad(Trampoline,
-    \x -> new Done x,
-    
-    \c f -> new Chain(c, f));
-
-Trampoline.thunk = \k x -> new Thunk (k, x);
-
-/* Running
- ******************************************************************************/
 /**
  * Defunctionalized trampoline chain application.
  */
-var Ap = function \c k =self-> {
+var Ap = function \c f =self-> {
     self.c = c;
-    self.k = k;
+    self.f = f;
 };
 
 /**
@@ -65,9 +54,24 @@ var Ap = function \c k =self-> {
  */
 var appk = \f x ->
     ?f instanceof Ap
-        :new Chain(f.c(x), f.k)
+        :new Chain(f.c(x), f.f)
     :f x;
 
+
+/* Definitions
+ ******************************************************************************/
+Monad(Trampoline,
+    \x -> new Done x,
+    
+    \c f ->
+        ?c instanceof Chain && false
+            :new Chain(c.c, \x -> c.f(x).chain f)
+            :new Chain(c, f));
+
+Trampoline.thunk = \k x -> new Thunk (k, x);
+static console; 
+/* Running
+ ******************************************************************************/
 /**
  * Run a trampolined computation to completion
  */
@@ -83,9 +87,9 @@ Trampoline.run = \cont -> {
             if (c instanceof Done)
                 k = appk(k.f, c.x);
             else if (c instanceof Thunk)
-                k = new Chain(c.k(c.x), k.f);
+                k = c.k(c.x).chain(k.f);
             else if (c instanceof Chain)
-                k = new Chain(c.c, new Ap(c.f, k.f));
+                k = c.c.chain((\c k -> \x -> new Chain(c.f(x), k.f))(c, k));
         }
     }
 };

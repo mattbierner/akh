@@ -24,22 +24,25 @@ define(["require", "exports", "./structure"], (function(require, exports, __o) {
         (self.f = f);
     });
     (Chain.prototype = new(Trampoline)());
+    var Ap = (function(c, f) {
+        var self = this;
+        (self.c = c);
+        (self.f = f);
+    }),
+        appk = (function(f, x) {
+            return ((f instanceof Ap) ? new(Chain)(f.c(x), f.f) : f(x));
+        });
     Monad(Trampoline, (function(x) {
         return new(Done)(x);
     }), (function(c, f) {
-        return new(Chain)(c, f);
+        return (((c instanceof Chain) && false) ? new(Chain)(c.c, (function(x) {
+            return c.f(x)
+                .chain(f);
+        })) : new(Chain)(c, f));
     }));
     (Trampoline.thunk = (function(k, x) {
         return new(Thunk)(k, x);
     }));
-    var Ap = (function(c, k) {
-        var self = this;
-        (self.c = c);
-        (self.k = k);
-    }),
-        appk = (function(f, x) {
-            return ((f instanceof Ap) ? new(Chain)(f.c(x), f.k) : f(x));
-        });
     (Trampoline.run = (function(cont) {
         var k = cont;
         while (true) {
@@ -49,8 +52,13 @@ define(["require", "exports", "./structure"], (function(require, exports, __o) {
                 var __o = k,
                     c = __o["c"];
                 if ((c instanceof Done))(k = appk(k.f, c.x));
-                else if ((c instanceof Thunk))(k = new(Chain)(c.k(c.x), k.f));
-                else if ((c instanceof Chain))(k = new(Chain)(c.c, new(Ap)(c.f, k.f)));
+                else if ((c instanceof Thunk))(k = c.k(c.x)
+                    .chain(k.f));
+                else if ((c instanceof Chain))(k = c.c.chain((function(c, k) {
+                    return (function(x) {
+                        return new(Chain)(c.f(x), k.f);
+                    });
+                })(c, k)));
             }
         }
     }));

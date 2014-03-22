@@ -36,7 +36,7 @@ EitherT = \m -> {
                 runEitherT(c).chain \ t ->
                     Trampoline.of <| t.chain \ {right x} ->
                         ?right
-                            :Trampoline.run <| runEitherT <| f x
+                            :Trampoline.run <| runEitherT (f x)
                             :m.of <| Left x));
     
     Monoid(Instance,
@@ -54,7 +54,7 @@ EitherT = \m -> {
     Transformer(Instance,
         \t ->
             new Instance (
-                Trampoline.of <| t.map(Right)));
+                Trampoline.of <| t.chain(\x -> m.of <| Right x)));
     
     // Either
     Instance.right = Instance.prototype.right = Instance.of;

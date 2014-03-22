@@ -52,7 +52,9 @@ var __o = require("../structure"),
             })));
     }));
     Transformer(Instance, (function(t) {
-        return new(Instance)(Trampoline.of(t.map(Right)));
+        return new(Instance)(Trampoline.of(t.chain((function(x) {
+            return m.of(Right(x));
+        }))));
     }));
     (Instance.right = (Instance.prototype.right = Instance.of));
     (Instance.left = (Instance.prototype.left = (function(x) {
