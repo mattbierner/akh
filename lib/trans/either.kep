@@ -33,7 +33,7 @@ EitherT = \m -> {
         
         \c f ->
             new Instance (
-                runEitherT(c).chain \ t->
+                runEitherT(c).chain \ t ->
                     t.chain \ {right x} ->
                         ?right
                             :runEitherT <| f x
@@ -51,7 +51,6 @@ EitherT = \m -> {
                             :m.of <| Right x
                             :runEitherT b));
     
-    // Lift
     Transformer(Instance,
         \t ->
             new Instance (
