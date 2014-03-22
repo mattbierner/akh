@@ -6,6 +6,8 @@
 var __o = require("../structure"),
     Monad = __o["Monad"],
     Monoid = __o["Monoid"],
+    Transformer = __o["Transformer"],
+    Trampoline = require("../trampoline"),
     EitherT, Right = (function(x) {
         return ({
             "right": true,
@@ -28,15 +30,18 @@ var __o = require("../structure"),
     });
     Monad(Instance, (function(x) {
         return new(Instance)((function() {
-            return m.of(Right(x));
+            return Trampoline.of(m.of(Right(x)));
         }));
     }), (function(c, f) {
         return new(Instance)((function() {
-            return runEitherT(c)
-                .chain((function(__o) {
-                    var right = __o["right"],
-                        x = __o["x"];
-                    return (right ? runEitherT(f(x)) : m.of(Left(x)));
+            return Trampoline.thunk(c.run)
+                .chain((function(t) {
+                    return t.chain((function(__o) {
+                        var right = __o["right"],
+                            x = __o["x"];
+                        return (right ? runEitherT(f(x)) : Trampoline.of(m.of(
+                            Left(x))));
+                    }));
                 }));
         }));
     }));
@@ -44,29 +49,31 @@ var __o = require("../structure"),
         return m.of(Left(m.zero));
     })), (function(a, b) {
         return new(Instance)((function() {
-            return runEitherT(a)
-                .chain((function(__o) {
-                    var right = __o["right"],
-                        x = __o["x"];
-                    return (right ? m.of(Right(x)) : runEitherT(b));
+            return Trampoline.thunk(a.run)
+                .chain((function(t) {
+                    return t.chain((function(__o) {
+                        var right = __o["right"],
+                            x = __o["x"];
+                        return (right ? m.of(Right(x)) : runEitherT(b));
+                    }));
                 }));
+        }));
+    }));
+    Transformer(Instance, (function(t) {
+        return new(Instance)((function() {
+            return Trampoline.of(t.map(Right));
         }));
     }));
     (Instance.right = (Instance.prototype.right = Instance.of));
     (Instance.left = (Instance.prototype.left = (function(x) {
         return new(Instance)((function() {
-            return m.of(Left(x));
+            return Trampoline.of(m.of(Left(x)));
         }));
     })));
-    (Instance.lift = (function(t) {
-        return new(Instance)((function() {
-            return t.map(Right);
-        }));
-    }));
     return Instance;
 }));
 (EitherT.eitherT = (function(m, l, r) {
-    return runEitherT(m)
+    return Trampoline.run(runEitherT(m))
         .chain((function(__o) {
             var right = __o["right"],
                 x = __o["x"];

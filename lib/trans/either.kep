@@ -3,7 +3,8 @@
  */
 package EitherT
 with
-    import '../structure' {Monad Monoid}
+    import '../structure' {Monad Monoid Transformer},
+    import '../trampoline' Trampoline
 in {
 
 var Right = \x -> ({'right': true, 'x': x});
@@ -28,15 +29,16 @@ EitherT = \m -> {
     Monad(Instance,
         \x ->
             new Instance\->
-                m.of <| Right x,
+                Trampoline.of <| m.of <| Right x,
         
         \c f ->
             new Instance\->
-                runEitherT(c)
-                    .chain\{right x} ->
+                Trampoline
+                    .thunk(c.run)
+                    .chain\t-> t.chain\{right x} ->
                         ?right
                             :runEitherT <| f x
-                            :m.of <| Left x);
+                            :Trampoline.of <| m.of <| Left x);
     
     Monoid(Instance,
         new Instance\ ->
@@ -44,23 +46,26 @@ EitherT = \m -> {
         
         \a b ->
             new Instance\->
-                runEitherT(a)
-                    .chain\{right x} ->
-                        ?right
-                            :m.of <| Right x
-                            :runEitherT b);
+                Trampoline
+                    .thunk(a.run)
+                    .chain\t ->
+                        t.chain\{right x} ->
+                            ?right
+                                :m.of <| Right x
+                                :runEitherT b);
+    
+    // Lift
+    Transformer(Instance,
+        \t ->
+            new Instance\->
+                Trampoline.of <| t.map(Right));
     
     // Either
     Instance.right = Instance.prototype.right = Instance.of;
     
     Instance.left = Instance.prototype.left = \x ->
         new Instance\->
-            m.of <| Left x;
-    
-    // Lift
-    Instance.lift = \t ->
-        new Instance\->
-            t.map(Right);
+            Trampoline.of <| m.of <| Left x;
     
     return Instance;
 };
@@ -75,7 +80,7 @@ EitherT = \m -> {
  * @param r Right completion function that maps right value to inner monad.
  */
 EitherT.eitherT = \m l r ->
-    runEitherT(m)
+    (Trampoline.run <| runEitherT(m))
         .chain\{right x} ->
             ?right : r x : l x;
 

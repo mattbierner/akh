@@ -39,12 +39,12 @@ StateT = \m -> {
     Monad(Instance,
         \x ->
             new Instance\s ->
-                Trampoline.of <|  m.of <| Pair(x, s),
+                Trampoline.of <| m.of <| Pair(x, s),
         
         \c f ->
             new Instance \s ->
                Trampoline
-                   .thunk(\-> runStateT(c, s))
+                   .thunk(c.run, s)
                    .chain\t ->
                         Trampoline.of <| t.chain\{x s} ->
                             run <| runStateT(f x, s));
@@ -56,7 +56,7 @@ StateT = \m -> {
         \a b ->
             new Instance\s ->
                 Trampoline
-                    .thunk(\-> runStateT(a, s))
+                    .thunk(a.run, s)
                     .chain\t ->
                         runStateT(b, s).chain\k ->
                             Trampoline.of <| t.concat(k));

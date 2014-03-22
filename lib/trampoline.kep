@@ -26,8 +26,9 @@ Done.prototype = new Trampoline();
 /**
  * Deferred trampoline computation.
  */
-var Thunk = function \k =self-> {
+var Thunk = function \k x =self-> {
     self.k = k;
+    self.x = x;
 };
 Thunk.prototype = new Trampoline();
 
@@ -47,7 +48,7 @@ Monad(Trampoline,
     
     \c f -> new Chain(c, f));
 
-Trampoline.thunk = \k -> new Thunk k;
+Trampoline.thunk = \k x -> new Thunk (k, x);
 
 /* Running
  ******************************************************************************/
@@ -76,13 +77,13 @@ Trampoline.run = \cont -> {
         if (k instanceof Done)
             return k.x;
         else if (k instanceof Thunk)
-            k = k.k();
+            k = k.k(k.x);
         else if (k instanceof Chain)
         with {c} = k in {
             if (c instanceof Done)
                 k = appk(k.f, c.x);
             else if (c instanceof Thunk)
-                k = new Chain(c.k(), k.f);
+                k = new Chain(c.k(c.x), k.f);
             else if (c instanceof Chain)
                 k = new Chain(c.c, new Ap(c.f, k.f));
         }

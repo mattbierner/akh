@@ -2,10 +2,11 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/either.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../structure"], (function(require, exports, __o) {
+define(["require", "exports", "../structure", "../trampoline"], (function(require, exports, __o, Trampoline) {
     "use strict";
     var Monad = __o["Monad"],
         Monoid = __o["Monoid"],
+        Transformer = __o["Transformer"],
         EitherT, Right = (function(x) {
             return ({
                 "right": true,
@@ -28,15 +29,18 @@ define(["require", "exports", "../structure"], (function(require, exports, __o) 
         });
         Monad(Instance, (function(x) {
             return new(Instance)((function() {
-                return m.of(Right(x));
+                return Trampoline.of(m.of(Right(x)));
             }));
         }), (function(c, f) {
             return new(Instance)((function() {
-                return runEitherT(c)
-                    .chain((function(__o) {
-                        var right = __o["right"],
-                            x = __o["x"];
-                        return (right ? runEitherT(f(x)) : m.of(Left(x)));
+                return Trampoline.thunk(c.run)
+                    .chain((function(t) {
+                        return t.chain((function(__o) {
+                            var right = __o["right"],
+                                x = __o["x"];
+                            return (right ? runEitherT(f(x)) :
+                                Trampoline.of(m.of(Left(x))));
+                        }));
                     }));
             }));
         }));
@@ -44,29 +48,32 @@ define(["require", "exports", "../structure"], (function(require, exports, __o) 
             return m.of(Left(m.zero));
         })), (function(a, b) {
             return new(Instance)((function() {
-                return runEitherT(a)
-                    .chain((function(__o) {
-                        var right = __o["right"],
-                            x = __o["x"];
-                        return (right ? m.of(Right(x)) : runEitherT(b));
+                return Trampoline.thunk(a.run)
+                    .chain((function(t) {
+                        return t.chain((function(__o) {
+                            var right = __o["right"],
+                                x = __o["x"];
+                            return (right ? m.of(Right(x)) : runEitherT(
+                                b));
+                        }));
                     }));
+            }));
+        }));
+        Transformer(Instance, (function(t) {
+            return new(Instance)((function() {
+                return Trampoline.of(t.map(Right));
             }));
         }));
         (Instance.right = (Instance.prototype.right = Instance.of));
         (Instance.left = (Instance.prototype.left = (function(x) {
             return new(Instance)((function() {
-                return m.of(Left(x));
+                return Trampoline.of(m.of(Left(x)));
             }));
         })));
-        (Instance.lift = (function(t) {
-            return new(Instance)((function() {
-                return t.map(Right);
-            }));
-        }));
         return Instance;
     }));
     (EitherT.eitherT = (function(m, l, r) {
-        return runEitherT(m)
+        return Trampoline.run(runEitherT(m))
             .chain((function(__o) {
                 var right = __o["right"],
                     x = __o["x"];

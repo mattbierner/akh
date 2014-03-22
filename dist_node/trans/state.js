@@ -32,9 +32,7 @@ var __o = require("../structure"),
         }));
     }), (function(c, f) {
         return new(Instance)((function(s) {
-            return Trampoline.thunk((function() {
-                return runStateT(c, s);
-            }))
+            return Trampoline.thunk(c.run, s)
                 .chain((function(t) {
                     return Trampoline.of(t.chain((function(__o) {
                         var x = __o["x"],
@@ -48,9 +46,7 @@ var __o = require("../structure"),
         return m.zero;
     })), (function(a, b) {
         return new(Instance)((function(s) {
-            return Trampoline.thunk((function() {
-                return runStateT(a, s);
-            }))
+            return Trampoline.thunk(a.run, s)
                 .chain((function(t) {
                     return runStateT(b, s)
                         .chain((function(k) {
