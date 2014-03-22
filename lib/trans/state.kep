@@ -43,9 +43,11 @@ StateT = \m -> {
         
         \c f ->
             new Instance \s ->
-               Trampoline.thunk(\-> runStateT(c, s)).chain\t ->
-                    Trampoline.of <| t.chain\{x s} ->
-                        run <| runStateT(f x, s));
+               Trampoline
+                   .thunk(\-> runStateT(c, s))
+                   .chain\t ->
+                        Trampoline.of <| t.chain\{x s} ->
+                            run <| runStateT(f x, s));
     
     Monoid(Instance,
         new Instance\_ ->
@@ -53,9 +55,11 @@ StateT = \m -> {
         
         \a b ->
             new Instance\s ->
-                Trampoline.thunk(\-> runStateT(a, s)).chain\t ->
-                    runStateT(b, s).chain\k ->
-                        Trampoline.of <| t.concat(k));
+                Trampoline
+                    .thunk(\-> runStateT(a, s))
+                    .chain\t ->
+                        runStateT(b, s).chain\k ->
+                            Trampoline.of <| t.concat(k));
     
     Transformer(Instance,
         \t ->

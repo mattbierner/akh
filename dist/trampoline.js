@@ -36,8 +36,8 @@ define(["require", "exports", "./structure"], (function(require, exports, __o) {
         (self.c = c);
         (self.k = k);
     }),
-        appk = (function(k, x) {
-            return ((k instanceof Ap) ? new(Chain)(k.c(x), k.k) : k(x));
+        appk = (function(f, x) {
+            return ((f instanceof Ap) ? new(Chain)(f.c(x), f.k) : f(x));
         });
     (Trampoline.run = (function(cont) {
         var k = cont;

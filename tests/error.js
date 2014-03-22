@@ -62,6 +62,29 @@ exports.chain_fail = function(test) {
     test.done();
 };
 
+exports.chain_fail_handle = function(test) {
+    var c = Error.of(1)
+        .chain(function(x) {
+            return Error.fail(x + 1)
+        })
+        .chain(function(x) {
+            return Error.of(x * 2);
+        })
+        .handle(function(e) {
+            return Error.of(1000);
+        })
+        .chain(function(x) {
+            return Error.of(x + 10);
+        });
+
+    test.deepEqual(
+        Error.tryError(c, function(x) { return x; }),
+        1010);
+    
+    test.done();
+};
+
+
 
 exports.map_right = function(test) {
     var c = Error.of(3)

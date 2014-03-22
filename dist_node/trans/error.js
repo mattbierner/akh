@@ -6,79 +6,22 @@
 var __o = require("../structure"),
     Monad = __o["Monad"],
     Monoid = __o["Monoid"],
-    ErrorT, Right = (function(x) {
-        return ({
-            "right": true,
-            "x": x
-        });
-    }),
-    Left = (function(x) {
-        return ({
-            "right": false,
-            "x": x
-        });
-    }),
-    runErrorT = (function(m) {
-        return m.run();
-    });
+    EitherT = require("./either"),
+    eitherT = EitherT["eitherT"],
+    ErrorT;
 (ErrorT = (function(m) {
-    var Instance = (function(run) {
-        var self = this;
-        (self.run = run);
-    });
-    Monad(Instance, (function(x) {
-        return new(Instance)((function() {
-            return m.of(Right(x));
-        }));
-    }), (function(c, f) {
-        return new(Instance)((function() {
-            return runErrorT(c)
-                .chain((function(__o) {
-                    var right = __o["right"],
-                        x = __o["x"];
-                    return (right ? runErrorT(f(x)) : m.of(Left(x)));
-                }));
-        }));
-    }));
-    Monoid(Instance, new(Instance)((function() {
-        return m.of(Left(m.zero));
-    })), (function(a, b) {
-        return new(Instance)((function() {
-            return runErrorT(a)
-                .chain((function(__o) {
-                    var right = __o["right"],
-                        x = __o["x"];
-                    return (right ? m.of(Right(x)) : runErrorT(b));
-                }));
-        }));
-    }));
-    (Instance.fail = (Instance.prototype.fail = (function(x) {
-        return new(Instance)((function() {
-            return m.of(Left(x));
-        }));
-    })));
+    var Instance = EitherT(m);
+    (Instance.fail = (Instance.prototype.fail = Instance.left));
     (Instance.handle = (function(m, e) {
-        return new(Instance)((function() {
-            return Instance.runErrorT(m, e, m.of);
-        }));
+        return ErrorT.runErrorT(m, m.of, e);
     }));
     (Instance.prototype.handle = (function(e) {
         var m = this;
         return Instance.handle(m, e);
     }));
-    (Instance.lift = (function(t) {
-        return new(Instance)((function() {
-            return t.map(Right);
-        }));
-    }));
     return Instance;
 }));
 (ErrorT.runErrorT = (function(m, ok, err) {
-    return runErrorT(m)
-        .chain((function(__o) {
-            var right = __o["right"],
-                x = __o["x"];
-            return (right ? ok(x) : err(x));
-        }));
+    return eitherT(m, err, ok);
 }));
 (module.exports = ErrorT);

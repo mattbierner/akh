@@ -62,10 +62,10 @@ var Ap = function \c k =self-> {
 /**
  * Apply a potentially defunctionalized continuation.
  */
-var appk = \k x ->
-    ?k instanceof Ap
-        :new Chain(k.c(x), k.k)
-    :k x;
+var appk = \f x ->
+    ?f instanceof Ap
+        :new Chain(f.c(x), f.k)
+    :f x;
 
 /**
  * Run a trampolined computation to completion

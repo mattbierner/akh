@@ -1,19 +1,11 @@
 /**
  * @fileOverview Error monad transformer.
- * 
- * @TODO: Most of this code is duplicated from Either.
  */
 package ErrorT
 with
-    import '../structure' {Monad Monoid}
+    import '../structure' {Monad Monoid},
+    import './either' EitherT#{eitherT}
 in {
-
-var Right = \x -> ({'right': true, 'x': x});
-
-var Left = \x -> ({'right': false, 'x': x});
-
-var runErrorT = \m ->
-    m.run();
 
 /* Transformer
  ******************************************************************************/
@@ -23,50 +15,15 @@ var runErrorT = \m ->
  * @param m Base monad.
  */
 ErrorT = \m -> {
-    var Instance = function \run =self-> {
-        self.run = run;
-    };
-    
-    Monad(Instance,
-        \x ->
-            new Instance\->
-                m.of <| Right x,
-        
-        \c f ->
-            new Instance\->
-                runErrorT(c)
-                    .chain\{right x} ->
-                        ?right
-                            :runErrorT <| f x
-                            :m.of <| Left x);
-    
-    Monoid(Instance,
-        new Instance\ ->
-            m.of <| Left m.zero,
-        
-        \a b ->
-            new Instance\->
-                runErrorT(a)
-                    .chain\{right x} ->
-                        ?right
-                            :m.of <| Right x
-                            :runErrorT b);
+    var Instance = EitherT(m);
     
     // Error
-    Instance.fail = Instance.prototype.fail = \x ->
-        new Instance\->
-            m.of <| Left x;
+    Instance.fail = Instance.prototype.fail = Instance.left;
     
     Instance.handle = \m e ->
-        new Instance\->
-            Instance.runErrorT(m, e, m.of);
+        ErrorT.runErrorT(m, m.of, e);
     
     Instance.prototype.handle= \e =m-> Instance.handle(m, e);;
-    
-    // Lift
-    Instance.lift = \t ->
-        new Instance\->
-            t.map(Right);
     
     return Instance;
 };
@@ -81,8 +38,6 @@ ErrorT = \m -> {
  * @param err Failure completion function that maps right value to inner monad.
  */
 ErrorT.runErrorT = \m ok err ->
-    runErrorT(m)
-        .chain\{right x} ->
-            ?right : ok x : err x;
+    eitherT(m, err, ok);
 
 }
