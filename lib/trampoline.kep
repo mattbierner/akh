@@ -1,5 +1,7 @@
 /**
- * @fileOverview Very basic tail calls
+ * @fileOverview Trampoline monad for tail calls.
+ * 
+ * Trampoline logic is based on: http://blog.higher-order.com/assets/trampolines.pdf
  */
 package Trampoline
 with
@@ -45,7 +47,7 @@ Monad(Trampoline,
     
     \c f -> new Chain(c, f));
 
-Trampoline.thunk = \k -> (new Thunk k);
+Trampoline.thunk = \k -> new Thunk k;
 
 /* Running
  ******************************************************************************/

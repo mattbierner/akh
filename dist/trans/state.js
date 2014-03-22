@@ -7,6 +7,7 @@ define(["require", "exports", "../structure", "../trampoline", "../base"], (func
     "use strict";
     var Monad = __o["Monad"],
         Monoid = __o["Monoid"],
+        Transformer = __o["Transformer"],
         run = Trampoline["run"],
         concat = __o0["concat"],
         chain = __o0["chain"],
@@ -57,6 +58,13 @@ define(["require", "exports", "../structure", "../trampoline", "../base"], (func
                     }));
             }));
         }));
+        Transformer(Instance, (function(t) {
+            return new(Instance)((function(s) {
+                return Trampoline.of(t.chain((function(x) {
+                    return m.of(Pair(x, s));
+                })));
+            }));
+        }));
         (Instance.get = (Instance.prototype.get = new(Instance)((function(s) {
             return Trampoline.of(m.of(Pair(s, s)));
         }))));
@@ -71,13 +79,6 @@ define(["require", "exports", "../structure", "../trampoline", "../base"], (func
                     return f(g(x));
                 });
             })(Instance.put, f));
-        })));
-        (Instance.lift = (Instance.prototype.lift = (function(t) {
-            return new(Instance)((function(s) {
-                return Trampoline.of(t.chain((function(x) {
-                    return m.of(Pair(x, s));
-                })));
-            }));
         })));
         return Instance;
     }));

@@ -5,6 +5,7 @@
 define(["require", "exports", "../structure", "../_tail"], (function(require, exports, __o, __o0) {
     "use strict";
     var Monad = __o["Monad"],
+        Transformer = __o["Transformer"],
         Tail = __o0["Tail"],
         trampoline = __o0["trampoline"],
         ContT, runContT = (function(m, k) {
@@ -26,6 +27,15 @@ define(["require", "exports", "../structure", "../_tail"], (function(require, ex
                 }));
             }));
         }));
+        Transformer(Instance, (function(t) {
+            return new(Instance)((function(k) {
+                return t.chain((function(f, g) {
+                    return (function(x) {
+                        return f(g(x));
+                    });
+                })(trampoline, k));
+            }));
+        }));
         (Instance.callcc = (Instance.prototype.callcc = ((reify = (function(k) {
             return (function(x) {
                 return new(Instance)((function(_) {
@@ -37,15 +47,6 @@ define(["require", "exports", "../structure", "../_tail"], (function(require, ex
                 return runContT(f(reify(k)), k);
             }));
         }))));
-        (Instance.lift = (Instance.prototype.lift = (function(t) {
-            return new(Instance)((function(k) {
-                return t.chain((function(f, g) {
-                    return (function(x) {
-                        return f(g(x));
-                    });
-                })(trampoline, k));
-            }));
-        })));
         return Instance;
     }));
     (ContT.runContT = (function(f, g) {

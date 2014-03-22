@@ -4,7 +4,9 @@ package (
     Functor
     Monad
     Monoid
-    Semigroup) {
+    Semigroup
+    Transformer)
+{
 
 
 Applicative = \instance of ap -> {
@@ -69,5 +71,11 @@ Semigroup = \instance plus -> {
 
     return instance;
 };
+
+Transformer = \instance lift -> {
+    instance.lift = instance.prototype.lift = lift;
+    return instance;
+};
+
 
 }

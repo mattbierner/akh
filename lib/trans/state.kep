@@ -2,12 +2,10 @@
  * @fileOverview State monad transformer.
  * 
  * Value and state are stored in Pairs of `{x, s}`.
- * 
- * Trampoline logic is based on: http://blog.higher-order.com/assets/trampolines.pdf
  */
 package StateT
 with
-    import '../structure' {Monad Monoid},
+    import '../structure' {Monad Monoid Transformer},
     import '../trampoline' Trampoline#{run},
     import '../base' {concat chain}
 in {
@@ -59,6 +57,11 @@ StateT = \m -> {
                     runStateT(b, s).chain\k ->
                         Trampoline.of <| t.concat(k));
     
+    Transformer(Instance,
+        \t ->
+            new Instance\s ->
+                Trampoline.of <| t.chain\x -> m.of <| Pair(x, s));
+    
     // State operations
     Instance.get = Instance.prototype.get =
         new Instance\s ->
@@ -71,11 +74,6 @@ StateT = \m -> {
     Instance.modify = Instance.prototype.modify = \f ->
         Instance.get
             .chain(f \> Instance.put);
-    
-    // Lift
-    Instance.lift = Instance.prototype.lift = \t ->
-        new Instance\s ->
-            Trampoline.of <| t.chain\x -> m.of <| Pair(x, s);
     
     return Instance;
 };

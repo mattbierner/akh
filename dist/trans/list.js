@@ -9,6 +9,7 @@ define(["require", "exports", "../base", "../structure"], (function(require, exp
         Functor = __o0["Functor"],
         Monoid = __o0["Monoid"],
         Monad = __o0["Monad"],
+        Transformer = __o0["Transformer"],
         ListT, foldr = (function(f, z, a) {
             return Array.prototype.reduceRight.call(a, f, z);
         }),
@@ -55,7 +56,7 @@ define(["require", "exports", "../base", "../structure"], (function(require, exp
                     })(ListT.runListT, f))));
             }));
         }));
-        (Instance.lift = (function(t) {
+        Transformer(Instance, (function(t) {
             return new(Instance)((function() {
                 return liftM((function(x) {
                     return [x];

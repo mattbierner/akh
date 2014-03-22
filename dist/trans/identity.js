@@ -6,6 +6,7 @@ define(["require", "exports", "../structure"], (function(require, exports, __o) 
     "use strict";
     var Monad = __o["Monad"],
         Monoid = __o["Monoid"],
+        Transformer = __o["Transformer"],
         Identity;
     (Identity = (function(m) {
         var Instance = (function(x) {
@@ -20,9 +21,9 @@ define(["require", "exports", "../structure"], (function(require, exports, __o) 
         Monoid(Instance, new(Instance)(m.zero), (function(a, b) {
             return new(Instance)(a.concat(b));
         }));
-        (Instance.lift = (Instance.prototype.lift = (function(t) {
+        Transformer(Instance, (function(t) {
             return new(Instance)(t);
-        })));
+        }));
         return Instance;
     }));
     (Identity.runIdentityT = (function(c) {

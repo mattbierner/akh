@@ -6,7 +6,7 @@
 package ListT
 with
     import '../base' {liftM liftM2},
-    import '../structure' {Functor Monoid Monad}
+    import '../structure' {Functor Monoid Monad Transformer}
 in {
 
 var foldr := \f z a -> Array.prototype.reduceRight.call(a, f, z);
@@ -56,10 +56,10 @@ ListT = \m -> {
                     .chain(mapM @ (f \> ListT.runListT))
                     |> flattenM);
     
-    // Lift
-    Instance.lift = \t ->
-        new Instance\->
-            liftM(\x -> [x], t);
+    Transformer(Instance,
+        \t ->
+            new Instance\->
+                liftM(\x -> [x], t));
     
     return Instance;
 };

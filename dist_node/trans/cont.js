@@ -5,6 +5,7 @@
 "use strict";
 var __o = require("../structure"),
     Monad = __o["Monad"],
+    Transformer = __o["Transformer"],
     __o0 = require("../_tail"),
     Tail = __o0["Tail"],
     trampoline = __o0["trampoline"],
@@ -27,6 +28,15 @@ var __o = require("../structure"),
             }));
         }));
     }));
+    Transformer(Instance, (function(t) {
+        return new(Instance)((function(k) {
+            return t.chain((function(f, g) {
+                return (function(x) {
+                    return f(g(x));
+                });
+            })(trampoline, k));
+        }));
+    }));
     (Instance.callcc = (Instance.prototype.callcc = ((reify = (function(k) {
         return (function(x) {
             return new(Instance)((function(_) {
@@ -38,15 +48,6 @@ var __o = require("../structure"),
             return runContT(f(reify(k)), k);
         }));
     }))));
-    (Instance.lift = (Instance.prototype.lift = (function(t) {
-        return new(Instance)((function(k) {
-            return t.chain((function(f, g) {
-                return (function(x) {
-                    return f(g(x));
-                });
-            })(trampoline, k));
-        }));
-    })));
     return Instance;
 }));
 (ContT.runContT = (function(f, g) {

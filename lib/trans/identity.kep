@@ -3,7 +3,7 @@
  */
 package Identity
 with
-    import '../structure' {Monad Monoid}
+    import '../structure' {Monad Monoid Transformer}
 in {
 
 /* Transform
@@ -26,9 +26,9 @@ Identity = \m -> {
         \a b ->
             new Instance (a.concat b));
     
-    // Lift
-    Instance.lift = Instance.prototype.lift = \t ->
-        new Instance t;
+    Transformer(Instance,
+        \t ->
+            new Instance t);
     
     return Instance;
 };

@@ -3,7 +3,7 @@
  */
 package ContT
 with
-    import '../structure' {Monad},
+    import '../structure' {Monad Transformer},
     import '../_tail' {Tail trampoline}
 in {
 
@@ -31,6 +31,11 @@ ContT = \m -> {
                 runContT(c, \x ->
                     runContT(f x, k)));
     
+    Transformer(Instance,
+        \t ->
+            new Instance\k ->
+                t.chain(k \> trampoline));
+    
     // Callcc
     Instance.callcc = Instance.prototype.callcc = let
         reify = \k ->
@@ -42,11 +47,6 @@ ContT = \m -> {
                 runContT(
                     f <| reify k,
                     k);
-    
-    // Lift
-    Instance.lift = Instance.prototype.lift = \t ->
-        new Instance\k ->
-            t.chain(k \> trampoline);
     
     return Instance;
 };

@@ -10,6 +10,7 @@ var __o = require("../base"),
     Functor = __o0["Functor"],
     Monoid = __o0["Monoid"],
     Monad = __o0["Monad"],
+    Transformer = __o0["Transformer"],
     ListT, foldr = (function(f, z, a) {
         return Array.prototype.reduceRight.call(a, f, z);
     }),
@@ -56,7 +57,7 @@ var __o = require("../base"),
                 })(ListT.runListT, f))));
         }));
     }));
-    (Instance.lift = (function(t) {
+    Transformer(Instance, (function(t) {
         return new(Instance)((function() {
             return liftM((function(x) {
                 return [x];

@@ -3,7 +3,7 @@
  * DO NOT EDIT
 */
 "use strict";
-var Applicative, Chain, Functor, Monad, Monoid, Semigroup;
+var Applicative, Chain, Functor, Monad, Monoid, Semigroup, Transformer;
 (Applicative = (function(instance, of, ap) {
     (instance.of = (instance.prototype.of = of));
     (instance.ap = ap);
@@ -63,9 +63,14 @@ var Applicative, Chain, Functor, Monad, Monoid, Semigroup;
     }));
     return instance;
 }));
+(Transformer = (function(instance, lift) {
+    (instance.lift = (instance.prototype.lift = lift));
+    return instance;
+}));
 (exports["Applicative"] = Applicative);
 (exports["Chain"] = Chain);
 (exports["Functor"] = Functor);
 (exports["Monad"] = Monad);
 (exports["Monoid"] = Monoid);
 (exports["Semigroup"] = Semigroup);
+(exports["Transformer"] = Transformer);

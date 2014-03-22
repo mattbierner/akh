@@ -6,6 +6,7 @@
 var __o = require("../structure"),
     Monad = __o["Monad"],
     Monoid = __o["Monoid"],
+    Transformer = __o["Transformer"],
     Trampoline = require("../trampoline"),
     run = Trampoline["run"],
     __o0 = require("../base"),
@@ -58,6 +59,13 @@ var __o = require("../structure"),
                 }));
         }));
     }));
+    Transformer(Instance, (function(t) {
+        return new(Instance)((function(s) {
+            return Trampoline.of(t.chain((function(x) {
+                return m.of(Pair(x, s));
+            })));
+        }));
+    }));
     (Instance.get = (Instance.prototype.get = new(Instance)((function(s) {
         return Trampoline.of(m.of(Pair(s, s)));
     }))));
@@ -72,13 +80,6 @@ var __o = require("../structure"),
                 return f(g(x));
             });
         })(Instance.put, f));
-    })));
-    (Instance.lift = (Instance.prototype.lift = (function(t) {
-        return new(Instance)((function(s) {
-            return Trampoline.of(t.chain((function(x) {
-                return m.of(Pair(x, s));
-            })));
-        }));
     })));
     return Instance;
 }));
