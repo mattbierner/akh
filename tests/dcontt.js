@@ -5,7 +5,7 @@ var run = function(c, s, k) {
     return State.evalState(
         DContT.runDContT(
             c,
-            function(x) { return State.of(k(x))}),
+            k),
         s);
 };
 
@@ -22,7 +22,6 @@ exports.simple_of = function(test) {
     test.deepEqual(
         run(c, 's', sqr),
         9);
-    
     
     test.done();
 };

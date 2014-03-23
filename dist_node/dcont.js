@@ -12,11 +12,5 @@ var Identity = require("./identity"),
     return (function() {
         return f(g.apply(null, arguments));
     });
-})(Identity.runIdentity, (function(m, k) {
-    return runDContT(m, (function(f, g) {
-        return (function(x) {
-            return f(g(x));
-        });
-    })(Identity.of, k));
-})));
+})(Identity.runIdentity, runDContT));
 (module.exports = DCont);

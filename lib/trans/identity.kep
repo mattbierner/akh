@@ -8,6 +8,17 @@ in {
 
 /* Transform
  ******************************************************************************/
+/**
+ * Identity monad transformer.
+ * 
+ * Transforms a monad to itself.
+ * 
+ * One application is to define a set of custom operations on a structure
+ * without effecting the underlying structure. For example, specializing a
+ * `State` on state type.
+ * 
+ * @param m Base monad.
+ */
 Identity = \m -> {
     var Instance = function \x =self-> {
         self.value = x;

@@ -15,6 +15,17 @@ define(["require", "exports", "../structure", "../trampoline"], (function(requir
                 "s": s
             });
         }),
+        StateMonad = (function(instance, get, put) {
+            (instance.get = (instance.prototype.get = get));
+            (instance.put = (instance.prototype.put = put));
+            (instance.modify = (instance.prototype.modify = (function(f) {
+                return get.chain((function(f, g) {
+                    return (function(x) {
+                        return f(g(x));
+                    });
+                })(put, f));
+            })));
+        }),
         runStateT = (function(m, s) {
             return m.run(s);
         });
@@ -40,7 +51,7 @@ define(["require", "exports", "../structure", "../trampoline"], (function(requir
             }));
         }));
         Monoid(Instance, new(Instance)((function(_) {
-            return m.zero;
+            return Trampoline.of(m.zero);
         })), (function(a, b) {
             return new(Instance)((function(s) {
                 return thunk(a.run, s)
@@ -59,21 +70,13 @@ define(["require", "exports", "../structure", "../trampoline"], (function(requir
                 })));
             }));
         }));
-        (Instance.get = (Instance.prototype.get = new(Instance)((function(s) {
+        StateMonad(Instance, new(Instance)((function(s) {
             return Trampoline.of(m.of(Pair(s, s)));
-        }))));
-        (Instance.put = (Instance.prototype.put = (function(s) {
+        })), (function(s) {
             return new(Instance)((function(_) {
                 return Trampoline.of(m.of(Pair(s, s)));
             }));
-        })));
-        (Instance.modify = (Instance.prototype.modify = (function(f) {
-            return Instance.get.chain((function(f, g) {
-                return (function(x) {
-                    return f(g(x));
-                });
-            })(Instance.put, f));
-        })));
+        }));
         return Instance;
     }));
     (StateT.runStateT = (function(f, g) {

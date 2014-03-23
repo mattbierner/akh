@@ -7,12 +7,10 @@ var stream = require("nu-stream")["stream"],
     first = stream["first"],
     rest = stream["rest"],
     isEmpty = stream["isEmpty"],
-    Unique = require("../unique"),
+    UniqueT = require("./unique"),
     __o = require("../structure"),
     Monad = __o["Monad"],
-    __o0 = require("../_tail"),
-    Tail = __o0["Tail"],
-    trampoline = __o0["trampoline"],
+    Transformer = __o["Transformer"],
     DContT, Seg = (function(f) {
         var self = this;
         (self.frame = f);
@@ -41,32 +39,29 @@ var stream = require("nu-stream")["stream"],
         return [push(x, a), b];
     }),
     unDContT = (function(m, k) {
-        return new(Tail)(m.run, k);
+        return m.run(k);
     }),
     runDContT = (function(f, g) {
         return (function() {
             return f(g.apply(null, arguments));
         });
-    })((function(f, g) {
-        return (function(x) {
-            return f(g(x));
-        });
-    })(Unique.runUnique, trampoline), unDContT),
-    appk = (function(k, x) {
-        var c = k;
-        do {
-            if (((typeof c) === "function")) return Unique.of(c(x));
-            var top = first(c);
-            if ((top instanceof Seg)) return unDContT(top.frame(x), rest(c));
-            (c = ((top instanceof P) ? rest(c) : top));
-        }
-        while (true);
-    });
+    })(UniqueT.runUniqueT, unDContT);
 (DContT = (function(m) {
-    var Instance = (function(run) {
-        var self = this;
-        (self.run = run);
-    });
+    var M = UniqueT(m),
+        Instance = (function(run) {
+            var self = this;
+            (self.run = run);
+        }),
+        appk = (function(k, x) {
+            var c = k;
+            do {
+                if (((typeof c) === "function")) return M.of(c(x));
+                var top = first(c);
+                if ((top instanceof Seg)) return unDContT(top.frame(x), rest(c));
+                (c = ((top instanceof P) ? rest(c) : top));
+            }
+            while (true);
+        });
     Monad(Instance, (function(x) {
         return new(Instance)((function(k) {
             return appk(k, x);
@@ -76,21 +71,14 @@ var stream = require("nu-stream")["stream"],
             return unDContT(c, pushSeg(f, k));
         }));
     }));
-    (Instance.lift = (function(t) {
+    Transformer(Instance, (function(t) {
         return new(Instance)((function(k) {
-            return t.chain((function(f, g) {
-                return (function(x) {
-                    return f(g(x));
-                });
-            })(trampoline, appk.bind(null, k)));
+            return M.lift(t)
+                .chain(appk.bind(null, k));
         }));
     }));
     (Instance.newPrompt = (Instance.prototype.newPrompt = new(Instance)((function(k) {
-        return Unique.unique.chain((function(f, g) {
-            return (function(x) {
-                return f(g(x));
-            });
-        })(trampoline, appk.bind(null, k)));
+        return M.unique.chain(appk.bind(null, k));
     }))));
     (Instance.pushPrompt = (Instance.prototype.pushPrompt = (function(prompt, c) {
         return new(Instance)((function(k) {

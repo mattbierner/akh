@@ -9,7 +9,11 @@ var __o = require("../structure"),
     __o0 = require("../_tail"),
     Tail = __o0["Tail"],
     trampoline = __o0["trampoline"],
-    ContT, runContT = (function(m, k) {
+    ContT, ContMonat = (function(instance, callcc) {
+        (instance.callcc = (instance.prototype.callcc = callcc));
+        return instance;
+    }),
+    runContT = (function(m, k) {
         return new(Tail)(m.run, k);
     });
 (ContT = (function(m) {
@@ -37,7 +41,7 @@ var __o = require("../structure"),
             })(trampoline, k));
         }));
     }));
-    (Instance.callcc = (Instance.prototype.callcc = ((reify = (function(k) {
+    ContMonat(Instance, ((reify = (function(k) {
         return (function(x) {
             return new(Instance)((function(_) {
                 return k(x);
@@ -47,7 +51,7 @@ var __o = require("../structure"),
         return new(Instance)((function(k) {
             return runContT(f(reify(k)), k);
         }));
-    }))));
+    })));
     return Instance;
 }));
 (ContT.runContT = (function(f, g) {

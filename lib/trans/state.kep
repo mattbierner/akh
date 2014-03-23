@@ -3,13 +3,14 @@
  * 
  * Value and state are stored in Pairs of `{x, s}`.
  * 
- * @TODO: P
+ * @TODO: There is probably a better way to implement tail calls.
  */
 package StateT
 with
     import '../structure' {Monad Monoid Transformer},
     import '../trampoline' Trampoline#{thunk run}
 in {
+
 /**
  * Value, state pair.
  */
@@ -18,14 +19,39 @@ var Pair = \x s -> ({
     's': s
 });
 
+/* Interface
+ ******************************************************************************/
+var StateMonad = \instance get put -> {
+    /**
+     * M.get
+     * 
+     * Return the current state.
+     */
+    instance.get = instance.prototype.get = get;
+    
+    /**
+     * M.put(s)
+     * 
+     * Set the current state to `s`.
+     */
+    instance.put = instance.prototype.put = put;
+    
+    /**
+     * M.modify(f)
+     * 
+     * Map the current state to a new state with function `f`.
+     */
+    instance.modify = instance.prototype.modify = \f ->
+        get.chain(f \> put);
+};
+
+/* Transformer
+ ******************************************************************************/
 /**
  * Run a state continuation to get the inner trampoline.
  */
 var runStateT = \m s ->
     m.run(s);
-
-/* Transformer
- ******************************************************************************/
 
 /**
  * State monad transformer.
@@ -50,7 +76,7 @@ StateT = \m -> {
     
     Monoid(Instance,
         new Instance\_ ->
-            m.zero,
+            Trampoline.of <| m.zero,
         
         \a b ->
             new Instance\s ->
@@ -63,18 +89,13 @@ StateT = \m -> {
             new Instance\s ->
                 Trampoline.of <| t.chain\x -> m.of <| Pair(x, s));
     
-    // State operations
-    Instance.get = Instance.prototype.get =
+    StateMonad(Instance,
         new Instance\s ->
-            Trampoline.of <| m.of <| Pair(s, s);
-    
-    Instance.put = Instance.prototype.put = \s ->
-        new Instance \_ ->
-            Trampoline.of <| m.of <| Pair(s, s);
-    
-    Instance.modify = Instance.prototype.modify = \f ->
-        Instance.get
-            .chain(f \> Instance.put);
+            Trampoline.of <| m.of <| Pair(s, s),
+        
+        \s ->
+            new Instance \_ ->
+                Trampoline.of <| m.of <| Pair(s, s));
     
     return Instance;
 };

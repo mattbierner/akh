@@ -8,9 +8,8 @@ package DContT
 with
     import 'nu-stream::stream' stream#{first rest isEmpty},
     
-    import '../unique' Unique,
-    import '../structure' {Monad},
-    import '../_tail' {Tail trampoline}
+    import './unique' UniqueT,
+    import '../structure' {Monad Transformer}
 in {
 
 /* Records
@@ -74,31 +73,10 @@ var splitSeq = \t k -> {
 /* Operations
  ******************************************************************************/
 var unDContT = \m k ->
-    new Tail(m.run, k);
+    m.run(k);
 
-var runDContT = unDContT \>> trampoline \> Unique.runUnique;
+var runDContT = unDContT \>> UniqueT.runUniqueT;
 
-/**
- * Apply continuation `k`
- * 
- * @param k Continuation.
- * @param x Value
- */
-var appk = \k x -> {
-    var c = k;
-    do {
-        if (typeof c === 'function')
-            return Unique.of <| c x;
-
-        var top := first c;
-        if (top instanceof Seg)
-            return unDContT(top.frame(x), rest c);
-        
-        c = ?top instanceof P 
-            :rest c
-            :top;
-    } while (true);
-};
 
 /* Transformer
  ******************************************************************************/
@@ -108,8 +86,32 @@ var appk = \k x -> {
  * @param m Base monad.
  */
 DContT = \m -> {
+    var M = UniqueT(m);
+    
     var Instance = function \run =self-> {
         self.run = run;
+    };
+    
+    /**
+     * Apply continuation `k`
+     * 
+     * @param k Continuation.
+     * @param x Value
+     */
+    var appk = \k x -> {
+        var c = k;
+        do {
+            if (typeof c === 'function')
+                return M.of <| c x;
+    
+            var top := first c;
+            if (top instanceof Seg)
+                return unDContT(top.frame(x), rest c);
+            
+            c = ?top instanceof P
+                :rest c
+                :top;
+        } while (true);
     };
     
     Monad(Instance,
@@ -120,18 +122,18 @@ DContT = \m -> {
         \c f ->
             new Instance\k ->
                 unDContT(c, pushSeg(f, k)));
-   
-    // Lift
-    Instance.lift = \t ->
-        new Instance\k ->
-            t.chain(appk @ k \> trampoline);
+
+    Transformer(Instance, 
+        \t ->
+            new Instance\k ->
+                M.lift(t).chain(appk @ k));
     
     // Primitive Continuation Operations
     /**
      * Create a new unique prompt.
      */
     Instance.newPrompt = Instance.prototype.newPrompt = new Instance\k ->
-        Unique.unique.chain(appk @ k \> trampoline);
+        M.unique.chain(appk @ k);
     
     /**
      * Pushes prompt onto the stack and evaluate `c`.

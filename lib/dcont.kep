@@ -1,5 +1,5 @@
 /**
- * @fileOverview Continuation computation.
+ * @fileOverview Delimited continuation computation.
  */
 package DCont
 with
@@ -14,14 +14,11 @@ DCont = DContT(Identity);
 /* Running
  ******************************************************************************/
 /**
- * Perform a continuation computation .
+ * Perform a delimited continuation computation.
  * 
  * @param m Computation.
  * @param k Outer continuation.
  */
-DCont.runDCont =
-    (\m k ->
-        runDContT(m, k \> Identity.of))
-    \>> Identity.runIdentity;
+DCont.runDCont = runDContT \>> Identity.runIdentity;
 
 }

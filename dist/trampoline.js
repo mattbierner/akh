@@ -22,6 +22,7 @@ define(["require", "exports", "./structure"], (function(require, exports, __o) {
         var self = this;
         (self.c = c);
         (self.f = f);
+        if ((!(((c instanceof Chain) || (c instanceof Thunk)) || (c instanceof Done)))) debugger;
     });
     (Chain.prototype = new(Trampoline)());
     var Ap = (function(c, f) {

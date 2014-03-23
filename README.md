@@ -12,6 +12,7 @@ Collection of simple monad and monad transformers that implement [Fantasy Land's
 ## Library
 
 ### Monad Transformers
+* IdentityT - `akh::trans::identity` - Transforms a monad to itself. (Monad, Functor, Applicative Functor)
 * StateT - `akh::trans::state` - State transformer. (Monad, Monoid, Functor, Applicative Functor)
 * ListT - `akh::trans::list` - List transformer. (Monad, Monoid, Functor, Applicative Functor)
 * ContT - `akh::trans::cont` - Continuation transformer. (Monad, Functor, Applicative Functor)
