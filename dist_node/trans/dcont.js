@@ -38,6 +38,26 @@ var stream = require("nu-stream")["stream"],
             b = __o[1];
         return [push(x, a), b];
     }),
+    DContMonad = (function(instance, newPrompt, pushPrompt, withSubCont, pushSubCont) {
+        (instance.newPrompt = (instance.prototype.newPrompt = newPrompt));
+        (instance.pushPrompt = (instance.prototype.pushPrompt = pushPrompt));
+        (instance.withSubCont = (instance.prototype.withSubCont = withSubCont));
+        (instance.pushSubCont = (instance.prototype.pushSubCont = pushSubCont));
+        (instance.reset = (instance.prototype.reset = (function(f) {
+            return newPrompt.chain((function(p) {
+                return pushPrompt(p, f(p));
+            }));
+        })));
+        (instance.shift = (instance.prototype.shift = (function(p, f) {
+            var t = this;
+            return withSubCont(p, (function(k) {
+                return pushPrompt(p, f((function(c) {
+                    return pushPrompt(p, pushSubCont(k, c));
+                })));
+            }));
+        })));
+        return instance;
+    }),
     unDContT = (function(m, k) {
         return m.run(k);
     }),
@@ -77,40 +97,24 @@ var stream = require("nu-stream")["stream"],
                 .chain(appk.bind(null, k));
         }));
     }));
-    (Instance.newPrompt = (Instance.prototype.newPrompt = new(Instance)((function(k) {
+    DContMonad(Instance, new(Instance)((function(k) {
         return M.unique.chain(appk.bind(null, k));
-    }))));
-    (Instance.pushPrompt = (Instance.prototype.pushPrompt = (function(prompt, c) {
+    })), (function(prompt, c) {
         return new(Instance)((function(k) {
             return unDContT(c, pushP(prompt, k));
         }));
-    })));
-    (Instance.withSubCont = (Instance.prototype.withSubCont = (function(prompt, f) {
+    }), (function(prompt, f) {
         return new(Instance)((function(k) {
             var __o = splitSeq(prompt, k),
                 x = __o[0],
                 xs = __o[1];
             return unDContT(f(x), xs);
         }));
-    })));
-    (Instance.pushSubCont = (Instance.prototype.pushSubCont = (function(subk, c) {
+    }), (function(subk, c) {
         return new(Instance)((function(k) {
             return unDContT(c, pushSeq(subk, k));
         }));
-    })));
-    (Instance.reset = (Instance.prototype.reset = (function(f) {
-        return Instance.newPrompt.chain((function(p) {
-            return Instance.pushPrompt(p, f(p));
-        }));
-    })));
-    (Instance.shift = (Instance.prototype.shift = (function(p, f) {
-        var t = this;
-        return t.withSubCont(p, (function(k) {
-            return t.pushPrompt(p, f((function(c) {
-                return t.pushPrompt(p, t.pushSubCont(k, c));
-            })));
-        }));
-    })));
+    }));
     return Instance;
 }));
 (DContT.runDContT = (function(m, k) {

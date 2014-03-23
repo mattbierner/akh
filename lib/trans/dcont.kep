@@ -70,16 +70,84 @@ var splitSeq = \t k -> {
         [push(x, a), b];
 };
 
-/* Operations
+/* Interface
  ******************************************************************************/
-var unDContT = \m k ->
-    m.run(k);
-
-var runDContT = unDContT \>> UniqueT.runUniqueT;
+var DContMonad = \instance newPrompt pushPrompt withSubCont pushSubCont -> {
+    /**
+     * M.newPrompt
+     * 
+     * Create a new unique prompt.
+     */
+    instance.newPrompt = instance.prototype.newPrompt = newPrompt;
+    
+    /**
+     * M.pushPrompt(prompt, c)
+     * 
+     * Pushes prompt onto the stack and evaluate `c`.
+     * 
+     * @param prompt Prompt.
+     * @param c Computation.
+     */
+    instance.pushPrompt = instance.prototype.pushPrompt = pushPrompt;
+    
+    /**
+     * M.withSubCont(prompt, f)
+     * 
+     * Capture the continuation delimited by `prompt` and call `f` with it.
+     * 
+     * @param prompt Prompt.
+     * @param f Function mapping delimited continuation to computation.
+     */
+    instance.withSubCont = instance.prototype.withSubCont = withSubCont;
+    
+    /**
+     * M.pushSubCont(subk, c)
+     * 
+     * Push an entire sub continuation onto the stack and evaluate `c`.
+     * 
+     * @param subk Sub continuation.
+     * @param c Computation
+     */
+    instance.pushSubCont = instance.prototype.pushSubCont = pushSubCont;
+    
+// Derived
+    /**
+     * M.reset(f)
+     * 
+     * Delimit a continuation
+     * 
+     * @param f Function taking a new prompt and returning the computation to be 
+     *    enclosed.
+     */
+    instance.reset = instance.prototype.reset = \f->
+        newPrompt
+            .chain\p -> 
+                pushPrompt(p, f p);
+    
+    /**
+     * M.shift
+     * 
+     * Capture the continuation delimited by `p`
+     * 
+     * @param p Prompt.
+     * @param f Function taking current delimited continuation.
+     */
+    instance.shift = instance.prototype.shift = \p f =t->
+        withSubCont(p, \k ->
+            pushPrompt(p, f(\c ->
+                pushPrompt(p, pushSubCont(k, c)))));
+    
+    return instance;
+};
 
 
 /* Transformer
  ******************************************************************************/
+var unDContT = \m k ->
+    m.run(k);
+    
+var runDContT = unDContT \>> UniqueT.runUniqueT;
+
 /**
  * Delimited continuation monad transformer.
  * 
@@ -103,7 +171,7 @@ DContT = \m -> {
         do {
             if (typeof c === 'function')
                 return M.of <| c x;
-    
+            
             var top := first c;
             if (top instanceof Seg)
                 return unDContT(top.frame(x), rest c);
@@ -128,67 +196,28 @@ DContT = \m -> {
             new Instance\k ->
                 M.lift(t).chain(appk @ k));
     
-    // Primitive Continuation Operations
-    /**
-     * Create a new unique prompt.
-     */
-    Instance.newPrompt = Instance.prototype.newPrompt = new Instance\k ->
-        M.unique.chain(appk @ k);
-    
-    /**
-     * Pushes prompt onto the stack and evaluate `c`.
-     * 
-     * @param prompt Prompt.
-     * @param c Computation.
-     */
-    Instance.pushPrompt = Instance.prototype.pushPrompt = \prompt c ->
+    DContMonad(Instance,
+        // newPrompt
         new Instance\k ->
-            unDContT(c, pushP(prompt, k));
-    
-    /**
-     * Capture the continuation delimited by `prompt` and call `f` with it.
-     * 
-     * @param prompt Prompt.
-     * @param f Function mapping delimited continuation to computation.
-     */
-    Instance.withSubCont = Instance.prototype.withSubCont = \prompt f ->
-        new Instance\k -> let
-            [x, xs] = splitSeq(prompt, k)
-        in
-            unDContT(f x, xs);
-    
-    /**
-     * Push an entire sub continuation onto the stack and evaluate `c`.
-     * 
-     * @param subk Sub continuation.
-     * @param c Computation
-     */
-    Instance.pushSubCont = Instance.prototype.pushSubCont = \subk c ->
-        new Instance\k ->
-            unDContT(c, pushSeq(subk, k));
-    
-    // Shift and Reset
-    /**
-     * Delimit a continuation
-     * 
-     * @param f Function taking a new prompt and returning the computation to be 
-     *    enclosed.
-     */
-    Instance.reset = Instance.prototype.reset = \f->
-        Instance.newPrompt
-            .chain\p -> 
-                Instance.pushPrompt(p, f p);
-    
-    /**
-     * Capture the continuation delimited by `p`
-     * 
-     * @param p Prompt.
-     * @param f Function taking current delimited continuation.
-     */
-    Instance.shift = Instance.prototype.shift = \p f =t->
-        t.withSubCont(p, \k ->
-            t.pushPrompt(p, f(\c ->
-                t.pushPrompt(p, t.pushSubCont(k, c)))));
+            M.unique.chain(appk @ k),
+        
+        // pushPrompt;
+        \prompt c ->
+            new Instance\k ->
+                unDContT(c, pushP(prompt, k)),
+        
+        // withSubCont;
+        \prompt f ->
+            new Instance\k -> let
+                [x, xs] = splitSeq(prompt, k)
+            in
+                unDContT(f x, xs),
+        
+        // pushSubCont
+        \subk c ->
+            new Instance\k ->
+                unDContT(c, pushSeq(subk, k)));
+        
     
     return Instance;
 };
