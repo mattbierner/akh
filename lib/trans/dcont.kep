@@ -3,16 +3,19 @@
  * 
  * Based on:
  * http://www.cs.indiana.edu/~sabry/papers/monadicDC.pdf
+ * 
+ * @TODO: Tail call implementation could be improved.
  */
 package DContT
 with
-    import 'nu-stream::stream' stream#{first rest isEmpty},
+    import 'nu-stream::stream' {append cons first rest isEmpty NIL},
     
     import './unique' UniqueT,
-    import '../structure' {Monad Transformer}
+    import '../structure' {Monad Transformer},
+    import '../_tail' {Tail trampoline}
 in {
 
-/* Records
+/* Segments
  ******************************************************************************/
 /**
  * Control segment.
@@ -30,14 +33,20 @@ var P = function \t =self-> {
 
 /* Control Stack
  ******************************************************************************/
-var empty = stream.NIL;
+/**
+ * Empty control stack.
+ */
+var empty = NIL;
 
-var push = stream.cons;
+/**
+ * Push a single frame onto a control stack.
+ */
+var push = cons;
 
 /**
  * Push an entire slice of control stack onto a control stack.
  */
-var pushSeq = stream.append;
+var pushSeq = append;
 
 /**
  * Push a delimiter `t` on onto control stack `k`.
@@ -125,7 +134,7 @@ var DContMonad = \instance newPrompt pushPrompt withSubCont pushSubCont -> {
                 pushPrompt(p, f p);
     
     /**
-     * M.shift
+     * M.shift(p)
      * 
      * Capture the continuation delimited by `p`
      * 
@@ -144,9 +153,9 @@ var DContMonad = \instance newPrompt pushPrompt withSubCont pushSubCont -> {
 /* Transformer
  ******************************************************************************/
 var unDContT = \m k ->
-    m.run(k);
+    new Tail(m.run, k);
     
-var runDContT = unDContT \>> UniqueT.runUniqueT;
+var runDContT = unDContT \>> trampoline \> UniqueT.runUniqueT;
 
 /**
  * Delimited continuation monad transformer.
@@ -186,7 +195,7 @@ DContT = \m -> {
         \x ->
             new Instance\k ->
                 appk(k, x),
-
+        
         \c f ->
             new Instance\k ->
                 unDContT(c, pushSeg(f, k)));
@@ -194,12 +203,12 @@ DContT = \m -> {
     Transformer(Instance, 
         \t ->
             new Instance\k ->
-                M.lift(t).chain(appk @ k));
+                M.lift(t.map trampoline).chain(appk @ k \> trampoline));
     
     DContMonad(Instance,
         // newPrompt
         new Instance\k ->
-            M.unique.chain(appk @ k),
+            M.unique.chain(appk @ k \> trampoline),
         
         // pushPrompt;
         \prompt c ->
@@ -217,7 +226,6 @@ DContT = \m -> {
         \subk c ->
             new Instance\k ->
                 unDContT(c, pushSeq(subk, k)));
-        
     
     return Instance;
 };

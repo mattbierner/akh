@@ -1,5 +1,10 @@
 # ChangeLog
 
+## 0.6.0 - March 23, 2014
+* Added `IdentityT` to transform a monad to itself.
+* Added `Trampoline` monad.
+* More work on call stack.
+
 ## 0.5.3 - March 22, 2014
 * Fixed call stack on `EitherT` and `ErrorT`.
 * Performance improvements.

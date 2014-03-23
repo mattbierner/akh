@@ -28,6 +28,7 @@ Collection of simple monad and monad transformers that implement [Fantasy Land's
 * DCont - `akh::dcont` - Delimited continuation computation. (Monad, Functor, Applicative Functor)
 * EitherT - `akh::either` - Either computation. (Monad, Functor, Applicative Functor)
 * ErrorT - `akh::error` - Error computation. (Monad, Functor, Applicative Functor)
+* Trampoline - `akh::trampoline` Trampolined computation (Monad, Functor, Applicative Functor)
 
 
 ## Contribute

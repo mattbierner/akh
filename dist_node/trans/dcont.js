@@ -3,14 +3,20 @@
  * DO NOT EDIT
 */
 "use strict";
-var stream = require("nu-stream")["stream"],
-    first = stream["first"],
-    rest = stream["rest"],
-    isEmpty = stream["isEmpty"],
+var __o = require("nu-stream")["stream"],
+    append = __o["append"],
+    cons = __o["cons"],
+    first = __o["first"],
+    rest = __o["rest"],
+    isEmpty = __o["isEmpty"],
+    NIL = __o["NIL"],
     UniqueT = require("./unique"),
-    __o = require("../structure"),
-    Monad = __o["Monad"],
-    Transformer = __o["Transformer"],
+    __o0 = require("../structure"),
+    Monad = __o0["Monad"],
+    Transformer = __o0["Transformer"],
+    __o1 = require("../_tail"),
+    Tail = __o1["Tail"],
+    trampoline = __o1["trampoline"],
     DContT, Seg = (function(f) {
         var self = this;
         (self.frame = f);
@@ -19,9 +25,9 @@ var stream = require("nu-stream")["stream"],
         var self = this;
         (self.prompt = t);
     }),
-    empty = stream.NIL,
-    push = stream.cons,
-    pushSeq = stream.append,
+    empty = NIL,
+    push = cons,
+    pushSeq = append,
     pushP = (function(t, k) {
         return push(new(P)(t), k);
     }),
@@ -59,13 +65,17 @@ var stream = require("nu-stream")["stream"],
         return instance;
     }),
     unDContT = (function(m, k) {
-        return m.run(k);
+        return new(Tail)(m.run, k);
     }),
     runDContT = (function(f, g) {
         return (function() {
             return f(g.apply(null, arguments));
         });
-    })(UniqueT.runUniqueT, unDContT);
+    })((function(f, g) {
+        return (function(x) {
+            return f(g(x));
+        });
+    })(UniqueT.runUniqueT, trampoline), unDContT);
 (DContT = (function(m) {
     var M = UniqueT(m),
         Instance = (function(run) {
@@ -93,12 +103,20 @@ var stream = require("nu-stream")["stream"],
     }));
     Transformer(Instance, (function(t) {
         return new(Instance)((function(k) {
-            return M.lift(t)
-                .chain(appk.bind(null, k));
+            return M.lift(t.map(trampoline))
+                .chain((function(f, g) {
+                    return (function(x) {
+                        return f(g(x));
+                    });
+                })(trampoline, appk.bind(null, k)));
         }));
     }));
     DContMonad(Instance, new(Instance)((function(k) {
-        return M.unique.chain(appk.bind(null, k));
+        return M.unique.chain((function(f, g) {
+            return (function(x) {
+                return f(g(x));
+            });
+        })(trampoline, appk.bind(null, k)));
     })), (function(prompt, c) {
         return new(Instance)((function(k) {
             return unDContT(c, pushP(prompt, k));

@@ -61,6 +61,19 @@ exports.many_chain = function(test) {
     test.done();
 };
 
+exports.many_inner_chain = function(test) {
+    var f = function(x) {
+        if (x > 10000) return DCont.of(x);
+        return DCont.of(x + 1).chain(f);
+    }
+    
+    test.deepEqual(
+        DCont.runDCont(f(0), sqr),
+        10001 * 10001);
+    test.done();
+};
+
+
 exports.single_shift_reset = function(test) {
     var c = DCont
         .reset(function(p) {
