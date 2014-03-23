@@ -10,9 +10,6 @@ var __o = require("../structure"),
     Trampoline = require("../trampoline"),
     thunk = Trampoline["thunk"],
     run = Trampoline["run"],
-    __o0 = require("../base"),
-    concat = __o0["concat"],
-    chain = __o0["chain"],
     StateT, Pair = (function(x, s) {
         return ({
             "x": x,

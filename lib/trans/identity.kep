@@ -15,10 +15,13 @@ Identity = \m -> {
     
     Monad(Instance,
         \x ->
-            new Instance (m.of x),
+            new Instance (
+                m.of x),
         
         \c f ->
-            new Instance (c.chain f));
+            new Instance (
+                Identity.runIdentityT(c)
+                    .chain(f \> Identity.runIdentityT)));
     
     Monoid(Instance,
         new Instance m.zero,

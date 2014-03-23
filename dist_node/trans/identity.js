@@ -16,7 +16,12 @@ var __o = require("../structure"),
     Monad(Instance, (function(x) {
         return new(Instance)(m.of(x));
     }), (function(c, f) {
-        return new(Instance)(c.chain(f));
+        return new(Instance)(Identity.runIdentityT(c)
+            .chain((function(f, g) {
+                return (function(x) {
+                    return f(g(x));
+                });
+            })(Identity.runIdentityT, f)));
     }));
     Monoid(Instance, new(Instance)(m.zero), (function(a, b) {
         return new(Instance)(a.concat(b));

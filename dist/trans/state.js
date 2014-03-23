@@ -2,16 +2,13 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/state.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../structure", "../trampoline", "../base"], (function(require, exports, __o, Trampoline,
-    __o0) {
+define(["require", "exports", "../structure", "../trampoline"], (function(require, exports, __o, Trampoline) {
     "use strict";
     var Monad = __o["Monad"],
         Monoid = __o["Monoid"],
         Transformer = __o["Transformer"],
         thunk = Trampoline["thunk"],
         run = Trampoline["run"],
-        concat = __o0["concat"],
-        chain = __o0["chain"],
         StateT, Pair = (function(x, s) {
             return ({
                 "x": x,

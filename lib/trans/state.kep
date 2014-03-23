@@ -2,12 +2,13 @@
  * @fileOverview State monad transformer.
  * 
  * Value and state are stored in Pairs of `{x, s}`.
+ * 
+ * @TODO: P
  */
 package StateT
 with
     import '../structure' {Monad Monoid Transformer},
-    import '../trampoline' Trampoline#{thunk run},
-    import '../base' {concat chain}
+    import '../trampoline' Trampoline#{thunk run}
 in {
 /**
  * Value, state pair.
