@@ -3,14 +3,13 @@
  */
 package State
 with
-    import './identity' Identity,
+    import './trampoline' Trampoline,
     import './trans/state' StateT
-
 in {
 
 /* Structure
  ******************************************************************************/
-State = StateT(Identity);
+State = StateT(Trampoline);
 
 /* Running
  ******************************************************************************/
@@ -20,7 +19,7 @@ State = StateT(Identity);
  * @param m State computation.
  * @param s Initial state.
  */
-State.runState = StateT.runStateT \>> Identity.runIdentity;
+State.runState = StateT.runStateT \>> Trampoline.run;
 
 /**
  * Perform a state computation and return resulting value.
@@ -28,7 +27,7 @@ State.runState = StateT.runStateT \>> Identity.runIdentity;
  * @param m State computation.
  * @param s Initial state.
  */
-State.evalState = StateT.evalStateT \>> Identity.runIdentity;
+State.evalState = StateT.evalStateT \>> Trampoline.run;
 
 /**
  * Perform a state computation and return resulting state.
@@ -36,6 +35,6 @@ State.evalState = StateT.evalStateT \>> Identity.runIdentity;
  * @param m State computation.
  * @param s Initial state.
  */
-State.execState = StateT.execStateT \>> Identity.runIdentity;
+State.execState = StateT.execStateT \>> Trampoline.run;
 
 }

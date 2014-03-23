@@ -63,13 +63,13 @@ var appk = \f x ->
 Monad(Trampoline,
     \x -> new Done x,
     
-    \c f ->
+    \c f -> 
         ?c instanceof Chain && false
-            :new Chain(c.c, \x -> c.f(x).chain f)
+            :new Chain (c.c, \x -> c.f(x).chain(f))
             :new Chain(c, f));
 
 Trampoline.thunk = \k x -> new Thunk (k, x);
-static console; 
+
 /* Running
  ******************************************************************************/
 /**
@@ -83,13 +83,13 @@ Trampoline.run = \cont -> {
         else if (k instanceof Thunk)
             k = k.k(k.x);
         else if (k instanceof Chain)
-        with {c} = k in {
+        with {c f} = k in {
             if (c instanceof Done)
-                k = appk(k.f, c.x);
+                k = appk(f, c.x);
             else if (c instanceof Thunk)
-                k = c.k(c.x).chain(k.f);
+                k = c.k(c.x).chain(f);
             else if (c instanceof Chain)
-                k = c.c.chain((\c k -> \x -> new Chain(c.f(x), k.f))(c, k));
+                k = c.c.chain(new Ap(c.f, k.f));
         }
     }
 };

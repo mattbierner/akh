@@ -50,15 +50,12 @@ define(["require", "exports", "./structure"], (function(require, exports, __o) {
             else if ((k instanceof Thunk))(k = k.k(k.x));
             else if ((k instanceof Chain)) {
                 var __o = k,
-                    c = __o["c"];
-                if ((c instanceof Done))(k = appk(k.f, c.x));
+                    c = __o["c"],
+                    f = __o["f"];
+                if ((c instanceof Done))(k = appk(f, c.x));
                 else if ((c instanceof Thunk))(k = c.k(c.x)
-                    .chain(k.f));
-                else if ((c instanceof Chain))(k = c.c.chain((function(c, k) {
-                    return (function(x) {
-                        return new(Chain)(c.f(x), k.f);
-                    });
-                })(c, k)));
+                    .chain(f));
+                else if ((c instanceof Chain))(k = c.c.chain(new(Ap)(c.f, k.f)));
             }
         }
     }));

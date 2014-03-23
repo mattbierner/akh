@@ -104,7 +104,7 @@ exports.many_chain_inner = function(test) {
     
     test.deepEqual(
         State.runState(f(0), 0),
-        {'x': 100000, 's': 100000});
+        {'x': 10001, 's': 0});
     
     test.done();
 };

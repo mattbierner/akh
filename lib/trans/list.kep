@@ -38,28 +38,28 @@ ListT = \m -> {
     var mapM := map \>> sequence;
     
     Monoid(Instance,
-        new Instance\->
-            m.of [],
+        new Instance (
+            m.of []),
         
         \a b ->
-            new Instance\->
-                liftM2(concat, ListT.runListT(a), ListT.runListT(b)));
+            new Instance (
+                liftM2(concat, ListT.runListT(a), ListT.runListT(b))));
     
     Monad(Instance,
         \x ->
-            new Instance\->
-                m.of [x],
+            new Instance (
+                m.of [x]),
         
         \c f ->
-            new Instance\->
+            new Instance (
                 ListT.runListT(c)
                     .chain(mapM @ (f \> ListT.runListT))
-                    |> flattenM);
+                    |> flattenM));
     
     Transformer(Instance,
         \t ->
-            new Instance\->
-                liftM(\x -> [x], t));
+            new Instance (
+                liftM(\x -> [x], t)));
     
     return Instance;
 };
@@ -72,6 +72,6 @@ ListT = \m -> {
  * @param m ListT computation.
  */
 ListT.runListT = \m ->
-    m.run();
+    m.run;
 
 }

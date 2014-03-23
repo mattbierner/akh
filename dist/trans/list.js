@@ -35,38 +35,28 @@ define(["require", "exports", "../base", "../structure"], (function(require, exp
                     return f(g.apply(null, arguments));
                 });
             })(sequence, map);
-        Monoid(Instance, new(Instance)((function() {
-            return m.of([]);
-        })), (function(a, b) {
-            return new(Instance)((function() {
-                return liftM2(concat, ListT.runListT(a), ListT.runListT(b));
-            }));
+        Monoid(Instance, new(Instance)(m.of([])), (function(a, b) {
+            return new(Instance)(liftM2(concat, ListT.runListT(a), ListT.runListT(b)));
         }));
         Monad(Instance, (function(x) {
-            return new(Instance)((function() {
-                return m.of([x]);
-            }));
+            return new(Instance)(m.of([x]));
         }), (function(c, f) {
-            return new(Instance)((function() {
-                return flattenM(ListT.runListT(c)
-                    .chain(mapM.bind(null, (function(f, g) {
-                        return (function(x) {
-                            return f(g(x));
-                        });
-                    })(ListT.runListT, f))));
-            }));
+            return new(Instance)(flattenM(ListT.runListT(c)
+                .chain(mapM.bind(null, (function(f, g) {
+                    return (function(x) {
+                        return f(g(x));
+                    });
+                })(ListT.runListT, f)))));
         }));
         Transformer(Instance, (function(t) {
-            return new(Instance)((function() {
-                return liftM((function(x) {
-                    return [x];
-                }), t);
-            }));
+            return new(Instance)(liftM((function(x) {
+                return [x];
+            }), t));
         }));
         return Instance;
     }));
     (ListT.runListT = (function(m) {
-        return m.run();
+        return m.run;
     }));
     return ListT;
 }));

@@ -54,6 +54,18 @@ exports.many_chain = function(test) {
     test.done();
 };
 
+exports.many_inner_chain = function(test) {
+    var f = function(x) {
+        if (x > 10000) return Cont.of(x);
+        return Cont.of(x + 1).chain(f);
+    }
+    
+    test.deepEqual(
+        Cont.runCont(f(0), sqr),
+        10001 * 10001);
+    test.done();
+};
+
 exports.simple_callcc = function(test) {
     var c = Cont.of(3)
         .callcc(function(k) {

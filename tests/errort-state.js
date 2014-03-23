@@ -38,7 +38,7 @@ exports.simple_chain = function(test) {
     
     test.done();
 };
-
+/*
 
 exports.many_chain = function(test) {
     var c = M.of(0);
@@ -69,3 +69,4 @@ exports.lift = function(test) {
     
     test.done();
 };
+*/
