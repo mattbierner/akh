@@ -4,12 +4,12 @@
 package Unique
 with
     import './trans/unique' UniqueT,
-    import './identity' Identity
+    import './trampoline' Trampoline
 in {
 
 /* Structure
  ******************************************************************************/
-Unique = UniqueT(Identity);
+Unique = UniqueT(Trampoline);
 
 /* Running
  ******************************************************************************/
@@ -19,6 +19,6 @@ Unique = UniqueT(Identity);
  * @param m Unique computation.
  * @param seed Initial unique value.
  */
-Unique.runUnique = UniqueT.runUniqueT \>> Identity.runIdentity;
+Unique.runUnique = UniqueT.runUniqueT \>> Trampoline.run;
 
 }

@@ -2,14 +2,14 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/unique.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "./trans/unique", "./identity"], (function(require, exports, UniqueT, Identity) {
+define(["require", "exports", "./trans/unique", "./trampoline"], (function(require, exports, UniqueT, Trampoline) {
     "use strict";
     var Unique;
-    (Unique = UniqueT(Identity));
+    (Unique = UniqueT(Trampoline));
     (Unique.runUnique = (function(f, g) {
         return (function() {
             return f(g.apply(null, arguments));
         });
-    })(Identity.runIdentity, UniqueT.runUniqueT));
+    })(Trampoline.run, UniqueT.runUniqueT));
     return Unique;
 }));
