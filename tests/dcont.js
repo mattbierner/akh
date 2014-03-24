@@ -1,4 +1,5 @@
 var DCont = require('../index').dcont;
+var base = require('../index').base;
 
 var sqr = function(x) { return x * x; };
 
@@ -23,6 +24,7 @@ exports.simple_bind = function(test) {
         64);
     test.done();
 };
+
 
 exports.chain = function(test) {
     var c = DCont.of(3)
@@ -119,6 +121,27 @@ exports.multi_shift_abort = function(test) {
         10 * 10);
     test.done();
 };
+
+exports.multi_shift_in_reset = function(test) {
+    var add = function(x, y) { return x + y };
+    var enumeration = base.liftM2.bind(null, function(x, y) { return [x, y]; });
+    
+    var c = DCont.reset(function(p) {
+        return base.liftM2(add,
+            DCont.shift(p, function(k) {
+                return enumeration(k(DCont.of(1)), k(DCont.of(2)));
+            }),
+            DCont.shift(p, function(k) {
+                return enumeration(k(DCont.of(10)), k(DCont.of(20)));
+            }));
+    });
+        
+    test.deepEqual(
+        DCont.runDCont(c, function(x) { return x; }),
+        [[11, 21], [12, 22]]);
+    test.done();
+};
+
 
 
 exports.fmap = function(test) {

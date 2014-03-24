@@ -38,7 +38,6 @@ Thunk.prototype = new Trampoline();
 var Chain = function \c f =self-> {
     self.c = c;
     self.f = f;
-    if (!(c instanceof Chain || c instanceof Thunk || c instanceof Done)) debugger;
 };
 Chain.prototype = new Trampoline();
 
@@ -62,7 +61,7 @@ var appk = \f x ->
 /* Definitions
  ******************************************************************************/
 Monad(Trampoline,
-    \x -> new Done x,
+    (new, Done),
     
     \c f -> 
         ?c instanceof Chain && false
@@ -91,8 +90,7 @@ Trampoline.run = \cont -> {
                 k = c.k(c.x).chain(f);
             else if (c instanceof Chain)
                 k = c.c.chain(new Ap(c.f, k.f));
-            //else console.log('y', c);
-        } //else console.log('x');
+        }
     }
 };
 

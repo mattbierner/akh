@@ -5,7 +5,10 @@
     "author": "Matt Bierner",
     "license": "MIT",
     "keywords": [
-        "monad"
+        "monad",
+        "monad Transformer",
+        "functional",
+        ""
     ],
     "repository": {
         "type": "git",
