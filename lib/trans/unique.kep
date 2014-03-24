@@ -1,5 +1,5 @@
 /**
- * @fileOverview Identity computation.
+ * @fileOverview Unique transformer.
  */
 package UniqueT
 with
@@ -8,6 +8,9 @@ in {
 
 /* Structure
  ******************************************************************************/
+/**
+ * Computation with support for getting an unique value.
+ */
 UniqueT = \m -> {
     var Instance = StateT(m);
     
@@ -23,8 +26,13 @@ UniqueT = \m -> {
  ******************************************************************************/
 /**
  * Run an unique computation.
+ * 
+ * @param m Unique computation.
+ * @param seed Initial value.
  */
-UniqueT.runUniqueT = \m ->
-     StateT.evalStateT(m, 1);
+UniqueT.runUniqueT = \m seed ->
+     StateT.evalStateT(
+         m,
+         ?isNaN seed : 1 : seed);
 
 }

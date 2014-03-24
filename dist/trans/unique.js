@@ -15,8 +15,8 @@ define(["require", "exports", "./state"], (function(require, exports, StateT) {
         }))));
         return Instance;
     }));
-    (UniqueT.runUniqueT = (function(m) {
-        return StateT.evalStateT(m, 1);
+    (UniqueT.runUniqueT = (function(m, seed) {
+        return StateT.evalStateT(m, (isNaN(seed) ? 1 : seed));
     }));
     return UniqueT;
 }));

@@ -25,9 +25,7 @@ Identity = \m -> {
     };
     
     Monad(Instance,
-        \x ->
-            new Instance (
-                m.of x),
+        (new, Instance) <\ m.of,
         
         \c f ->
             new Instance (
@@ -38,11 +36,12 @@ Identity = \m -> {
         new Instance m.zero,
         
         \a b ->
-            new Instance (a.concat b));
+            new Instance (
+                Identity.runIdentityT(a)
+                    .concat (Identity.runIdentityT b)));
     
     Transformer(Instance,
-        \t ->
-            new Instance t);
+        (new, Instance));
     
     return Instance;
 };

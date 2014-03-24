@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 0.7.0 - March 23, 2014
+* Allow `UniqueT` to be passed a seed value.
+* Fixed `IdentityT` `concat`.
+
 ## 0.6.0 - March 23, 2014
 * Added `IdentityT` to transform a monad to itself.
 * Added `Trampoline` monad.

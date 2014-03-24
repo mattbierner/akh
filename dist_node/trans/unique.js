@@ -15,7 +15,7 @@ var StateT = require("./state"),
     }))));
     return Instance;
 }));
-(UniqueT.runUniqueT = (function(m) {
-    return StateT.evalStateT(m, 1);
+(UniqueT.runUniqueT = (function(m, seed) {
+    return StateT.evalStateT(m, (isNaN(seed) ? 1 : seed));
 }));
 (module.exports = UniqueT);

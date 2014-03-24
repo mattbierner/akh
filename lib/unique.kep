@@ -1,5 +1,5 @@
 /**
- * @fileOverview Identity computation.
+ * @fileOverview Unique computation.
  */
 package Unique
 with
@@ -15,7 +15,10 @@ Unique = UniqueT(Identity);
  ******************************************************************************/
 /**
  * Run an unique computation.
+ * 
+ * @param m Unique computation.
+ * @param seed Initial unique value.
  */
-Unique.runUnique = UniqueT.runUniqueT \> Identity.runIdentity;
+Unique.runUnique = UniqueT.runUniqueT \>> Identity.runIdentity;
 
 }

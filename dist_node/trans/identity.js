@@ -9,13 +9,17 @@ var __o = require("../structure"),
     Transformer = __o["Transformer"],
     Identity;
 (Identity = (function(m) {
-    var Instance = (function(x) {
-        var self = this;
-        (self.value = x);
-    });
-    Monad(Instance, (function(x) {
-        return new(Instance)(m.of(x));
-    }), (function(c, f) {
+    var x, x0, Instance = (function(x) {
+            var self = this;
+            (self.value = x);
+        });
+    Monad(Instance, (function(f, g) {
+        return (function(x) {
+            return f(g(x));
+        });
+    })(((x = Instance), (function(y) {
+        return new(x)(y);
+    })), m.of), (function(c, f) {
         return new(Instance)(Identity.runIdentityT(c)
             .chain((function(f, g) {
                 return (function(x) {
@@ -24,11 +28,12 @@ var __o = require("../structure"),
             })(Identity.runIdentityT, f)));
     }));
     Monoid(Instance, new(Instance)(m.zero), (function(a, b) {
-        return new(Instance)(a.concat(b));
+        return new(Instance)(Identity.runIdentityT(a)
+            .concat(Identity.runIdentityT(b)));
     }));
-    Transformer(Instance, (function(t) {
-        return new(Instance)(t);
-    }));
+    Transformer(Instance, ((x0 = Instance), (function(y) {
+        return new(x0)(y);
+    })));
     return Instance;
 }));
 (Identity.runIdentityT = (function(c) {

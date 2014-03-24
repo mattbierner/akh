@@ -8,8 +8,8 @@ var UniqueT = require("./trans/unique"),
     Unique;
 (Unique = UniqueT(Identity));
 (Unique.runUnique = (function(f, g) {
-    return (function(x) {
-        return f(g(x));
+    return (function() {
+        return f(g.apply(null, arguments));
     });
 })(Identity.runIdentity, UniqueT.runUniqueT));
 (module.exports = Unique);
