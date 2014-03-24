@@ -1,14 +1,20 @@
 {
     "name": "akh",
-    "version": "0.6.0",
+    "version": "0.7.0",
     "description": "Monad and Monad Transformer Collection",
     "author": "Matt Bierner",
     "license": "MIT",
     "keywords": [
+        "monad transformer",
+        "algebraic",
+        "fantasy land",
         "monad",
-        "monad Transformer",
+        "functor",
+        "applicative functor",
+        
         "functional",
-        ""
+        "continuation",
+        "delimited continuation"
     ],
     "repository": {
         "type": "git",

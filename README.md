@@ -2,14 +2,13 @@
 Javascript Monad and Monad Transformer Collection
 
 
-### Overview
+## Overview
 <a href="https://github.com/fantasyland/fantasy-land">
     <img src="https://raw.github.com/fantasyland/fantasy-land/master/logo.png" align="right" width="82px" height="82px" alt="Fantasy Land logo" />
 </a>
 
 Collection of simple monad and monad transformers that implement [Fantasy Land's][fl] interfaces.
 
-## Library
 
 ### Monad Transformers
 * IdentityT - `akh::trans::identity` - Transforms a monad to itself. (Monad, Functor, Applicative Functor)
@@ -19,6 +18,7 @@ Collection of simple monad and monad transformers that implement [Fantasy Land's
 * DContT - `akh::trans::dcont` - Delimited continuation transformer. (Monad, Functor, Applicative Functor)
 * EitherT - `akh::trans::either` - Either transformer. (Monad, Monoid, Functor, Applicative Functor)
 * ErrorT - `akh::trans::error` - Error transformer. (Monad, Monoid, Functor, Applicative Functor)
+* UniqueT - `akh::unique` Add unique int to monad (Monad, Monoid, Functor, Applicative Functor)
 
 ### Monads
 * Identity - `akh::identity` - Identity computation. (Monad, Functor, Applicative Functor)
@@ -29,6 +29,47 @@ Collection of simple monad and monad transformers that implement [Fantasy Land's
 * EitherT - `akh::either` - Either computation. (Monad, Functor, Applicative Functor)
 * ErrorT - `akh::error` - Error computation. (Monad, Functor, Applicative Functor)
 * Trampoline - `akh::trampoline` Trampolined computation (Monad, Functor, Applicative Functor)
+* Unique - `akh::unique` Get Unique int (Monad, Monoid, Functor, Applicative Functor)
+
+
+## Install
+
+### Node
+Node files live in `dist_node`
+
+```
+$ npm install akh
+```
+
+```
+var List = require('akh').list;
+
+var c =
+    List.of(1)
+        .chain(function(x) {
+            return List.of([x, x + 1])
+        })
+        .chain(function(x) {
+            return List.of([x, x * 2]);
+        });
+
+List.runList(c); // [1, 2, 2, 4];
+```
+
+### With AMD
+Node files live in `dist`
+
+```
+requirejs.config({
+    paths: {
+        'bennu': './dist'
+    }
+});
+
+require(['akh/list'], function(List) {
+    ...
+});
+```
 
 
 ## Contribute
