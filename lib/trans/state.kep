@@ -84,7 +84,7 @@ StateT = \m -> {
                     runStateT(b, s).chain \ k ->
                         Trampoline.of <| t.concat(k));
     
-    Transformer(Instance,
+    Transformer(Instance, m,
         \t ->
             new Instance\s ->
                 Trampoline.of <| t.chain\x -> m.of <| Pair(x, s));

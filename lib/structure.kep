@@ -72,10 +72,29 @@ Semigroup = \instance plus -> {
     return instance;
 };
 
-Transformer = \instance lift -> {
-    instance.lift = instance.prototype.lift = lift;
-    return instance;
-};
+
+
+Transformer = let 
+    liftInner := \lift outer inner -> {
+        if (inner.liftInner)
+            outer.liftInner = liftInner(
+                lift,
+                (lift <\ inner.liftInner),
+                inner.liftInner);
+        return outer;
+    }
+in
+    \instance m lift -> {
+        instance.inner = instance.prototype.inner = m;
+        
+        instance.lift = instance.prototype.lift = lift;
+        
+        // Derived
+        if (m.lift)
+            instance.liftInner = instance.prototype.liftInner = liftInner(lift, (lift <\ m.lift), m);
+        
+        return instance;
+    };
 
 
 }

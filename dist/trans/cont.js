@@ -31,7 +31,7 @@ define(["require", "exports", "../structure", "../_tail"], (function(require, ex
                 }));
             }));
         }));
-        Transformer(Instance, (function(t) {
+        Transformer(Instance, m, (function(t) {
             return new(Instance)((function(k) {
                 return t.chain((function(f, g) {
                     return (function(x) {

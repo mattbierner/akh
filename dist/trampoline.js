@@ -35,10 +35,7 @@ define(["require", "exports", "./structure"], (function(require, exports, __o) {
     Monad(Trampoline, ((x = Done), (function(y) {
         return new(x)(y);
     })), (function(c, f) {
-        return (((c instanceof Chain) && false) ? new(Chain)(c.c, (function(x) {
-            return c.f(x)
-                .chain(f);
-        })) : new(Chain)(c, f));
+        return new(Chain)(c, f);
     }));
     (Trampoline.thunk = (function(k, x) {
         return new(Thunk)(k, x);

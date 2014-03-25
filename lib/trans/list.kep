@@ -56,7 +56,7 @@ ListT = \m -> {
                     .chain(mapM @ (f \> ListT.runListT))
                     |> flattenM));
     
-    Transformer(Instance,
+    Transformer(Instance, m,
         \t ->
             new Instance (
                 liftM(\x -> [x], t)));

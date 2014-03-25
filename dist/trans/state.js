@@ -63,7 +63,7 @@ define(["require", "exports", "../structure", "../trampoline"], (function(requir
                     }));
             }));
         }));
-        Transformer(Instance, (function(t) {
+        Transformer(Instance, m, (function(t) {
             return new(Instance)((function(s) {
                 return Trampoline.of(t.chain((function(x) {
                     return m.of(Pair(x, s));

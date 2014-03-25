@@ -63,10 +63,7 @@ var appk = \f x ->
 Monad(Trampoline,
     (new, Done),
     
-    \c f -> 
-        ?c instanceof Chain && false
-            :new Chain (c.c, \x -> c.f(x).chain(f))
-            :new Chain(c, f));
+    \c f -> new Chain(c, f));
 
 Trampoline.thunk = \k x -> new Thunk (k, x);
 

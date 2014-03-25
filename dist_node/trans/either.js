@@ -45,7 +45,7 @@ var __o = require("../structure"),
                 return (right ? m.of(Right(x)) : runEitherT(b));
             })));
     }));
-    Transformer(Instance, (function(t) {
+    Transformer(Instance, m, (function(t) {
         return new(Instance)(t.chain((function(x) {
             return m.of(Right(x));
         })));

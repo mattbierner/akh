@@ -46,7 +46,7 @@ ContT = \m -> {
                 runContT(c, \x ->
                     runContT(f x, k)));
     
-    Transformer(Instance,
+    Transformer(Instance, m,
         \t ->
             new Instance\k ->
                 t.chain(k \> trampoline));

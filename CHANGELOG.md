@@ -1,7 +1,7 @@
 # ChangeLog
 
 ## 0.7.1 - March 24, 2014
-* Fixed `Unique` possibly blowing up stack for large computations..
+* Fixed `Unique` possibly blowing up stack for large computations.
 
 ## 0.7.0 - March 24, 2014
 * Allow `UniqueT` to be passed a seed value.

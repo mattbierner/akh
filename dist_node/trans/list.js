@@ -49,7 +49,7 @@ var __o = require("../base"),
                 });
             })(ListT.runListT, f)))));
     }));
-    Transformer(Instance, (function(t) {
+    Transformer(Instance, m, (function(t) {
         return new(Instance)(liftM((function(x) {
             return [x];
         }), t));

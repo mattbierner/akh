@@ -40,7 +40,7 @@ Identity = \m -> {
                 Identity.runIdentityT(a)
                     .concat (Identity.runIdentityT b)));
     
-    Transformer(Instance,
+    Transformer(Instance, m,
         (new, Instance));
     
     return Instance;

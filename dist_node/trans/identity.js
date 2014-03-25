@@ -31,7 +31,7 @@ var __o = require("../structure"),
         return new(Instance)(Identity.runIdentityT(a)
             .concat(Identity.runIdentityT(b)));
     }));
-    Transformer(Instance, ((x0 = Instance), (function(y) {
+    Transformer(Instance, m, ((x0 = Instance), (function(y) {
         return new(x0)(y);
     })));
     return Instance;

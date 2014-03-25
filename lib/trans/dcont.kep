@@ -200,7 +200,7 @@ DContT = \m -> {
             new Instance\k ->
                 unDContT(c, pushSeg(f, k)));
 
-    Transformer(Instance, 
+    Transformer(Instance, m,
         \t ->
             new Instance\k ->
                 M.lift(t.map trampoline).chain(appk @ k \> trampoline));

@@ -101,7 +101,7 @@ var __o = require("nu-stream")["stream"],
             return unDContT(c, pushSeg(f, k));
         }));
     }));
-    Transformer(Instance, (function(t) {
+    Transformer(Instance, m, (function(t) {
         return new(Instance)((function(k) {
             return M.lift(t.map(trampoline))
                 .chain((function(f, g) {

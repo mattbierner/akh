@@ -63,8 +63,22 @@ var Applicative, Chain, Functor, Monad, Monoid, Semigroup, Transformer;
     }));
     return instance;
 }));
-(Transformer = (function(instance, lift) {
+var liftInner = (function(lift, outer, inner) {
+    if (inner.liftInner)(outer.liftInner = liftInner(lift, (function(f, g) {
+        return (function(x) {
+            return f(g(x));
+        });
+    })(lift, inner.liftInner), inner.liftInner));
+    return outer;
+});
+(Transformer = (function(instance, m, lift) {
+    (instance.inner = (instance.prototype.inner = m));
     (instance.lift = (instance.prototype.lift = lift));
+    if (m.lift)(instance.liftInner = (instance.prototype.liftInner = liftInner(lift, (function(f, g) {
+        return (function(x) {
+            return f(g(x));
+        });
+    })(lift, m.lift), m)));
     return instance;
 }));
 (exports["Applicative"] = Applicative);
