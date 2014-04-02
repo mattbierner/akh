@@ -8,9 +8,9 @@ var Identity = require("./identity"),
     runDContT = DContT["runDContT"],
     DCont;
 (DCont = DContT(Identity));
-(DCont.runDCont = (function(f, g) {
-    return (function() {
-        return f(g.apply(null, arguments));
-    });
-})(Identity.runIdentity, runDContT));
+var x = runDContT,
+    y = Identity.runIdentity;
+(DCont.runDCont = (function() {
+    return y(x.apply(null, arguments));
+}));
 (module.exports = DCont);

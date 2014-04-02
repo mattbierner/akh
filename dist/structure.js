@@ -2,85 +2,83 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/structure.kep'
  * DO NOT EDIT
 */
-define(["require", "exports"], (function(require, exports) {
+define(["require", "exports", "./base"], (function(require, exports, base) {
     "use strict";
     var Applicative, Chain, Functor, Monad, Monoid, Semigroup, Transformer;
-    (Applicative = (function(instance, of, ap) {
-        (instance.of = (instance.prototype.of = of));
-        (instance.ap = ap);
-        (instance.prototype.ap = (function(b) {
-            var self = this;
-            return ap(self, b);
-        }));
-        Functor(instance, (instance.map || (function(f, m) {
+    (Applicative = (function(Instance, of, ap) {
+        (Instance.prototype.of = of);
+        (Instance.of = Instance.prototype.of);
+        (Instance.ap = base.ap);
+        (Instance.prototype.ap = ap);
+        Functor(Instance, (Instance.map || (function(f, m) {
             return of(f)
                 .ap(m);
         })));
-        return instance;
+        return Instance;
     }));
-    (Chain = (function(instance, chain) {
-        (instance.chain = chain);
-        (instance.prototype.chain = (function(f) {
-            var self = this;
-            return chain(self, f);
-        }));
-        return instance;
+    (Chain = (function(Instance, chain) {
+        (Instance.chain = base.chain);
+        (Instance.prototype.chain = chain);
+        return Instance;
     }));
-    (Functor = (function(instance, map) {
-        (instance.map = map);
-        (instance.prototype.map = (function(f) {
+    (Functor = (function(Instance, map) {
+        (Instance.map = map);
+        (Instance.prototype.map = (function(f) {
             var self = this;
             return map(f, self);
         }));
-        return instance;
+        return Instance;
     }));
-    (Monoid = (function(instance, zero, plus) {
-        (instance.zero = (instance.prototype.zero = zero));
-        Semigroup(instance, plus);
-        return instance;
+    (Monoid = (function(Instance, zero, plus) {
+        (Instance.prototype.zero = zero);
+        (Instance.zero = Instance.prototype.zero);
+        Semigroup(Instance, plus);
+        return Instance;
     }));
-    (Monad = (function(instance, of, chain) {
-        (instance.of = (instance.prototype.of = of));
-        Chain(instance, chain);
-        Functor(instance, (function(f, m) {
-            return chain(m, (function(f, g) {
-                return (function(x) {
-                    return f(g(x));
-                });
-            })(m.of, f));
-        }));
-        Applicative(instance, of, (function(f, m) {
-            return chain(f, (function(f) {
-                return m.map(f);
+    (Monad = (function(Instance, of, chain) {
+        (Instance.prototype.of = of);
+        (Instance.of = Instance.prototype.of);
+        Chain(Instance, chain);
+        Functor(Instance, (Instance.prototype.map || (function(f, m) {
+            var x, y;
+            return m.chain(((x = f), (y = m.of), (function(x0) {
+                return y(x(x0));
+            })));
+        })));
+        Applicative(Instance, of, (Instance.prototype.ap || (function(f, m) {
+            return f.chain((function(f0) {
+                return m.map(f0);
             }));
-        }));
-        return instance;
+        })));
+        return Instance;
     }));
-    (Semigroup = (function(instance, plus) {
-        (instance.concat = plus);
-        (instance.prototype.concat = (function(c) {
-            var self = this;
-            return plus(self, c);
-        }));
-        return instance;
+    (Semigroup = (function(Instance, plus) {
+        (Instance.concat = base.concat);
+        (Instance.prototype.concat = plus);
+        return Instance;
     }));
     var liftInner = (function(lift, outer, inner) {
-        if (inner.liftInner)(outer.liftInner = liftInner(lift, (function(f, g) {
-            return (function(x) {
-                return f(g(x));
-            });
-        })(lift, inner.liftInner), inner.liftInner));
+        if (inner.liftInner) {
+            var x, y;
+            (outer.liftInner = liftInner(lift, ((x = lift), (y = inner.liftInner), (function(x0) {
+                return x(y(x0));
+            })), inner.liftInner));
+        }
         return outer;
     });
-    (Transformer = (function(instance, m, lift) {
-        (instance.inner = (instance.prototype.inner = m));
-        (instance.lift = (instance.prototype.lift = lift));
-        if (m.lift)(instance.liftInner = (instance.prototype.liftInner = liftInner(lift, (function(f, g) {
-            return (function(x) {
-                return f(g(x));
-            });
-        })(lift, m.lift), m)));
-        return instance;
+    (Transformer = (function(Instance, m, lift) {
+        (Instance.prototype.inner = m);
+        (Instance.inner = Instance.prototype.inner);
+        (Instance.prototype.lift = lift);
+        (Instance.lift = Instance.prototype.lift);
+        if (m.lift) {
+            var x, y;
+            (Instance.prototype.liftInner = liftInner(lift, ((x = lift), (y = m.lift), (function(x0) {
+                return x(y(x0));
+            })), m));
+            (Instance.liftInner = Instance.prototype.liftInner);
+        }
+        return Instance;
     }));
     (exports["Applicative"] = Applicative);
     (exports["Chain"] = Chain);

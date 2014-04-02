@@ -16,7 +16,7 @@ Monad(Identity,
     \x ->
         new Identity(x),
     
-    \c f ->
+    \f =c->
         f <| Identity.runIdentity c);
 
 /* Running

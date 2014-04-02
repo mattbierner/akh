@@ -63,7 +63,7 @@ var appk = \f x ->
 Monad(Trampoline,
     (new, Done),
     
-    \c f -> new Chain(c, f));
+    \f =c-> new Chain(c, f));
 
 Trampoline.thunk = \k x -> new Thunk (k, x);
 

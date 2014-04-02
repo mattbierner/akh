@@ -55,3 +55,22 @@ exports.concat = function(test) {
          {x:4, s:'s'}]);
     test.done();
 };
+
+
+exports.concat = function(test) {
+    var c = M.of(3)
+        .concat(M.of(5))
+        .concat(M.put('x').chain(function(x) { return M.of(10); }))
+        .concat(M.of(4))
+        .map(function(x) { return x * 10; });
+    
+    test.deepEqual(
+        runState(c, 's'),
+        [
+         {x:30, s:'s'},
+         {x:50, s:'s'},
+         {x:100, s:'x'},
+         {x:40, s:'s'}]);
+    test.done();
+};
+

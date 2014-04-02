@@ -196,7 +196,7 @@ DContT = \m -> {
             new Instance\k ->
                 appk(k, x),
         
-        \c f ->
+        \f =c->
             new Instance\k ->
                 unDContT(c, pushSeg(f, k)));
 

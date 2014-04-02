@@ -1,5 +1,22 @@
 # ChangeLog
 
+## 1.0.0 - April 1, 2014
+* Removed one extra function call per each chain/concat/map/ap.
+* `structures` now expect the method version of binary functions.
+
+## 0.8.0 - March 24, 2014
+* Transformers expose their inner type with `inner` since there is no type
+  system to recover this information.
+* Transforming and Transformer will generated have an additional method `liftInner`
+  on the output to lift from the inner Transformer's inner to the outer transformer.
+  `liftInner` can be chained to lift multiple levels.
+  ```
+  var M = StateT (StateT (StateT (StateT Identity))));
+  
+  // Lift get from inner most state.
+   M.liftInner.liftInner(M.inner.inner.inner.get);
+   ````
+
 ## 0.7.1 - March 24, 2014
 * Fixed `Unique` possibly blowing up stack for large computations.
 

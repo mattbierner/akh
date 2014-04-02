@@ -18,16 +18,12 @@ define(["require", "exports"], (function(require, exports) {
         return a.concat(b);
     }));
     (liftM = (function(f, m) {
-        return m.chain((function(f, g) {
-            return (function(x) {
-                return f(g(x));
-            });
-        })(m.of, f));
+        return m.map(f);
     }));
     (liftM2 = (function(f, m1, m2) {
         return m1.chain((function(x) {
-            return m2.chain((function(y) {
-                return m1.of(f(x, y));
+            return m2.map((function(y) {
+                return f(x, y);
             }));
         }));
     }));

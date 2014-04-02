@@ -10,7 +10,8 @@ var __o = require("../structure"),
     Tail = __o0["Tail"],
     trampoline = __o0["trampoline"],
     ContT, ContMonat = (function(instance, callcc) {
-        (instance.callcc = (instance.prototype.callcc = callcc));
+        (instance.prototype.callcc = callcc);
+        (instance.callcc = instance.prototype.callcc);
         return instance;
     }),
     runContT = (function(m, k) {
@@ -25,7 +26,8 @@ var __o = require("../structure"),
         return new(Instance)((function(k) {
             return k(x);
         }));
-    }), (function(c, f) {
+    }), (function(f) {
+        var c = this;
         return new(Instance)((function(k) {
             return runContT(c, (function(x) {
                 return runContT(f(x), k);
@@ -34,11 +36,10 @@ var __o = require("../structure"),
     }));
     Transformer(Instance, m, (function(t) {
         return new(Instance)((function(k) {
-            return t.chain((function(f, g) {
-                return (function(x) {
-                    return f(g(x));
-                });
-            })(trampoline, k));
+            var x, y;
+            return t.chain(((x = k), (y = trampoline), (function(x0) {
+                return y(x(x0));
+            })));
         }));
     }));
     ContMonat(Instance, ((reify = (function(k) {
@@ -49,14 +50,21 @@ var __o = require("../structure"),
         });
     })), (function(f) {
         return new(Instance)((function(k) {
-            return runContT(f(reify(k)), k);
+            var k0;
+            return runContT(f(((k0 = k), (function(x) {
+                return new(Instance)((function(_) {
+                    return k0(x);
+                }));
+            }))), k);
         }));
     })));
     return Instance;
 }));
-(ContT.runContT = (function(f, g) {
-    return (function() {
-        return f(g.apply(null, arguments));
-    });
-})(trampoline, runContT));
+var x = (function(m, k) {
+    return new(Tail)(m.run, k);
+}),
+    y = trampoline;
+(ContT.runContT = (function() {
+    return y(x.apply(null, arguments));
+}));
 (module.exports = ContT);

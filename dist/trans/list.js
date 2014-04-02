@@ -25,32 +25,34 @@ define(["require", "exports", "../base", "../structure"], (function(require, exp
         }),
         flattenM = liftM.bind(null, flatten);
     (ListT = (function(m) {
-        var Instance = (function(run) {
-            var self = this;
-            (self.run = run);
-        }),
-            sequence = foldr.bind(null, liftM2.bind(null, flip(concat)), m.of([])),
-            mapM = (function(f, g) {
-                return (function() {
-                    return f(g.apply(null, arguments));
-                });
-            })(sequence, map);
-        Monoid(Instance, new(Instance)(m.of([])), (function(a, b) {
+        var f, z, f0, x, y, Instance = (function(run) {
+                var self = this;
+                (self.run = run);
+            }),
+            sequence = ((f = liftM2.bind(null, ((f0 = concat), (function(x, y) {
+                return f0(y, x);
+            })))), (z = m.of([])), (function(a) {
+                return Array.prototype.reduceRight.call(a, f, z);
+            })),
+            mapM = ((x = map), (y = sequence), (function() {
+                return y(map.apply(null, arguments));
+            }));
+        Monoid(Instance, new(Instance)(m.of([])), (function(b) {
+            var a = this;
             return new(Instance)(liftM2(concat, ListT.runListT(a), ListT.runListT(b)));
         }));
-        Monad(Instance, (function(x) {
-            return new(Instance)(m.of([x]));
-        }), (function(c, f) {
+        Monad(Instance, (function(x0) {
+            return new(Instance)(m.of([x0]));
+        }), (function(f1) {
+            var x0, y0, c = this;
             return new(Instance)(flattenM(ListT.runListT(c)
-                .chain(mapM.bind(null, (function(f, g) {
-                    return (function(x) {
-                        return f(g(x));
-                    });
-                })(ListT.runListT, f)))));
+                .chain(mapM.bind(null, ((x0 = f1), (y0 = ListT.runListT), (function(x1) {
+                    return y0(x0(x1));
+                }))))));
         }));
         Transformer(Instance, m, (function(t) {
-            return new(Instance)(liftM((function(x) {
-                return [x];
+            return new(Instance)(liftM((function(x0) {
+                return [x0];
             }), t));
         }));
         return Instance;

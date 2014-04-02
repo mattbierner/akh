@@ -16,43 +16,47 @@ define(["require", "exports", "../structure", "../trampoline"], (function(requir
             });
         }),
         StateMonad = (function(instance, get, put) {
-            (instance.get = (instance.prototype.get = get));
-            (instance.put = (instance.prototype.put = put));
-            (instance.modify = (instance.prototype.modify = (function(f) {
-                return get.chain((function(f, g) {
-                    return (function(x) {
-                        return f(g(x));
-                    });
-                })(put, f));
-            })));
+            (instance.prototype.get = get);
+            (instance.get = instance.prototype.get);
+            (instance.prototype.put = put);
+            (instance.put = instance.prototype.put);
+            (instance.prototype.modify = (function(f) {
+                var x, y;
+                return get.chain(((x = f), (y = put), (function(x0) {
+                    return y(x(x0));
+                })));
+            }));
+            (instance.modify = instance.prototype.modify);
         }),
         runStateT = (function(m, s) {
             return m.run(s);
         });
     (StateT = (function(m) {
-        var Instance = (function(run) {
+        var Instance = (function(run0) {
             var self = this;
-            (self.run = run);
+            (self.run = run0);
         });
         Monad(Instance, (function(x) {
             return new(Instance)((function(s) {
                 return Trampoline.of(m.of(Pair(x, s)));
             }));
-        }), (function(c, f) {
+        }), (function(f) {
+            var c = this;
             return new(Instance)((function(s) {
                 return thunk(c.run, s)
                     .chain((function(t) {
-                        return Trampoline.of(t.chain((function(__o) {
-                            var x = __o["x"],
-                                s = __o["s"];
-                            return run(runStateT(f(x), s));
+                        return Trampoline.of(t.chain((function(__o0) {
+                            var x = __o0["x"],
+                                s0 = __o0["s"];
+                            return run(runStateT(f(x), s0));
                         })));
                     }));
             }));
         }));
         Monoid(Instance, new(Instance)((function(_) {
             return Trampoline.of(m.zero);
-        })), (function(a, b) {
+        })), (function(b) {
+            var a = this;
             return new(Instance)((function(s) {
                 return thunk(a.run, s)
                     .chain((function(t) {
@@ -79,30 +83,40 @@ define(["require", "exports", "../structure", "../trampoline"], (function(requir
         }));
         return Instance;
     }));
-    (StateT.runStateT = (function(f, g) {
-        return (function() {
-            return f(g.apply(null, arguments));
+    var x = (function(m, s) {
+        return m.run(s);
+    }),
+        y = run;
+    (StateT.runStateT = (function() {
+        return y(x.apply(null, arguments));
+    }));
+    var x0 = StateT.runStateT,
+        y0 = (function(n) {
+            return n.chain((function(__o0) {
+                var x1 = __o0["x"];
+                return n.of(x1);
+            }));
         });
-    })(run, runStateT));
-    (StateT.evalStateT = (function(f, g) {
-        return (function() {
-            return f(g.apply(null, arguments));
-        });
-    })((function(n) {
-        return n.chain((function(__o) {
-            var x = __o["x"];
-            return n.of(x);
+    (StateT.evalStateT = (function() {
+        var n = x0.apply(null, arguments);
+        return n.chain((function(__o0) {
+            var x1 = __o0["x"];
+            return n.of(x1);
         }));
-    }), StateT.runStateT));
-    (StateT.execStateT = (function(f, g) {
-        return (function() {
-            return f(g.apply(null, arguments));
+    }));
+    var x1 = StateT.runStateT,
+        y1 = (function(n) {
+            return n.chain((function(__o0) {
+                var s = __o0["s"];
+                return n.of(s);
+            }));
         });
-    })((function(n) {
-        return n.chain((function(__o) {
-            var s = __o["s"];
+    (StateT.execStateT = (function() {
+        var n = x1.apply(null, arguments);
+        return n.chain((function(__o0) {
+            var s = __o0["s"];
             return n.of(s);
         }));
-    }), StateT.runStateT));
+    }));
     return StateT;
 }));

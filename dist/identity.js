@@ -13,7 +13,8 @@ define(["require", "exports", "./structure"], (function(require, exports, __o) {
     }));
     Monad(Identity, (function(x) {
         return new(Identity)(x);
-    }), (function(c, f) {
+    }), (function(f) {
+        var c = this;
         return f(Identity.runIdentity(c));
     }));
     (Identity.runIdentity = (function(c) {

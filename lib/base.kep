@@ -26,13 +26,20 @@ concat = \a b -> a.concat(b);
 
 /* Lifting
  ******************************************************************************/
-liftM = \f m ->
-    m.chain(f \> m.of);
+/**
+ * Create a monad from binary function `f` that gets its arguments from a
+ * monadic value.
+ */
+liftM = map;
 
+/**
+ * Create a monad from binary function `f` that gets its arguments from two
+ * monadic values.
+ */
 liftM2 = \f m1 m2 ->
     m1.chain \ x ->
-    m2.chain \ y ->
-    m1.of(f(x, y));
+    m2.map   \ y ->
+        f(x, y);
 
 /* Sequencing
  ******************************************************************************/
@@ -52,6 +59,5 @@ sequencea = \arr -> Array.prototype.reduce.call(arr, next);
  * Perform a sequence of computations from arguments left to right.
  */
 sequence = \args(...) -> sequencea(args);
-
 
 }

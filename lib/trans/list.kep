@@ -41,7 +41,7 @@ ListT = \m -> {
         new Instance (
             m.of []),
         
-        \a b ->
+        \b =a->
             new Instance (
                 liftM2(concat, ListT.runListT(a), ListT.runListT(b))));
     
@@ -50,7 +50,7 @@ ListT = \m -> {
             new Instance (
                 m.of [x]),
         
-        \c f ->
+        \f =c->
             new Instance (
                 ListT.runListT(c)
                     .chain(mapM @ (f \> ListT.runListT))

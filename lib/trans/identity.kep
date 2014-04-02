@@ -27,7 +27,7 @@ Identity = \m -> {
     Monad(Instance,
         (new, Instance) <\ m.of,
         
-        \c f ->
+        \f =c->
             new Instance (
                 Identity.runIdentityT(c)
                     .chain(f \> Identity.runIdentityT)));
@@ -35,7 +35,7 @@ Identity = \m -> {
     Monoid(Instance,
         new Instance m.zero,
         
-        \a b ->
+        \b =a->
             new Instance (
                 Identity.runIdentityT(a)
                     .concat (Identity.runIdentityT b)));

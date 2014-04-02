@@ -4,7 +4,10 @@
 */
 define(["require", "exports", "./structure"], (function(require, exports, __o) {
     "use strict";
-    var Monad = __o["Monad"],
+    var __new = (function(x, y) {
+        return new(x)(y);
+    }),
+        Monad = __o["Monad"],
         Trampoline, x;
     (Trampoline = (function() {}));
     var Done = (function(x) {
@@ -34,25 +37,31 @@ define(["require", "exports", "./structure"], (function(require, exports, __o) {
         });
     Monad(Trampoline, ((x = Done), (function(y) {
         return new(x)(y);
-    })), (function(c, f) {
+    })), (function(f) {
+        var c = this;
         return new(Chain)(c, f);
     }));
-    (Trampoline.thunk = (function(k, x) {
-        return new(Thunk)(k, x);
+    (Trampoline.thunk = (function(k, x0) {
+        return new(Thunk)(k, x0);
     }));
     (Trampoline.run = (function(cont) {
         var k = cont;
         while (true) {
             if ((k instanceof Done)) return k.x;
-            else if ((k instanceof Thunk))(k = k.k(k.x));
-            else if ((k instanceof Chain)) {
-                var __o = k,
-                    c = __o["c"],
-                    f = __o["f"];
-                if ((c instanceof Done))(k = appk(f, c.x));
-                else if ((c instanceof Thunk))(k = c.k(c.x)
-                    .chain(f));
-                else if ((c instanceof Chain))(k = c.c.chain(new(Ap)(c.f, k.f)));
+            else if ((k instanceof Thunk)) {
+                (k = k.k(k.x));
+            } else if ((k instanceof Chain)) {
+                var __o0 = k,
+                    c = __o0["c"],
+                    f = __o0["f"];
+                if ((c instanceof Done)) {
+                    (k = appk(f, c.x));
+                } else if ((c instanceof Thunk)) {
+                    (k = c.k(c.x)
+                        .chain(f));
+                } else if ((c instanceof Chain)) {
+                    (k = c.c.chain(new(Ap)(c.f, k.f)));
+                }
             }
         }
     }));

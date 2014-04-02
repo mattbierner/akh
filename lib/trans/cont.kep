@@ -41,7 +41,7 @@ ContT = \m -> {
         \x ->
             new Instance\k -> k x,
         
-        \c f ->
+        \f =c->
             new Instance\k ->
                 runContT(c, \x ->
                     runContT(f x, k)));

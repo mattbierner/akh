@@ -1,6 +1,6 @@
 {
     "name": "akh",
-    "version": "0.8.0",
+    "version": "1.0.0",
     "description": "Monad and Monad Transformer Collection",
     "author": "Matt Bierner",
     "license": "MIT",
@@ -36,22 +36,20 @@
     ],
     
     "dependencies": {
-        "nu-stream": ">=3.1.0",
+        "nu-stream": ">=3.2.0",
         
         "require-directory": "1.2.x"
     },
     
    "devDependencies": {
-        "nodeunit": "0.8.x",
-        
-        "khepri": ">=0.20.0"
+        "nodeunit": "0.8.x"
     },
     
     "scripts": {
         "test": "node test.js",
         
         "build": "npm run build-amd && npm run build-node",
-        "build-amd": "./node_modules/.bin/khepri lib -o dist",
-        "build-node": "./node_modules/.bin/khepri lib -o dist_node --package_manager=node"
+        "build-amd": "khepri lib -o dist",
+        "build-node": "khepri lib -o dist_node --package_manager=node"
     }
 }

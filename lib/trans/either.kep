@@ -30,7 +30,7 @@ EitherT = \m -> {
             new Instance (
                 m.of <| Right x),
         
-        \c f ->
+        \f =c->
             new Instance ( 
                 runEitherT(c).chain \ {right x} ->
                     ?right
@@ -41,7 +41,7 @@ EitherT = \m -> {
         new Instance (
             m.of <| Left m.zero),
         
-        \a b ->
+        \b =a->
             new Instance (
                 runEitherT(a).chain \ {right x} ->
                     ?right

@@ -1,3 +1,6 @@
+/**
+ * @fileOverview Fantasy land structure definitions
+ */
 package (
     Applicative
     Chain
@@ -6,74 +9,95 @@ package (
     Monoid
     Semigroup
     Transformer)
-{
+with
+    import './base' base
+in {
 
-
-Applicative = \instance of ap -> {
-    instance.of = instance.prototype.of = of;
+/**
+ * Define applicative functor of `Instance`.
+ */
+Applicative = \Instance of ap -> {
+    Instance.of = Instance.prototype.of = of;
     
-    instance.ap = ap;
-    instance.prototype.ap = \b =self-> ap(self, b);
+    Instance.ap = base.ap;
+    Instance.prototype.ap = ap;
     
     // Derived
-    Functor(instance,
-        instance.map || \f m ->
+    Functor(Instance,
+        Instance.map || \f m ->
             of(f).ap(m));
     
-    return instance;
+    return Instance;
 };
 
-Chain = \instance chain -> {
-    instance.chain = chain;
-    instance.prototype.chain = \f =self-> chain(self, f);
+/**
+ * Define chainable of `Instance`.
+ */
+Chain = \Instance chain -> {
+    Instance.chain = base.chain;
+    Instance.prototype.chain = chain;
     
-    return instance;
+    return Instance;
 };
 
-Functor = \instance map -> {
-    instance.map = map;
-    instance.prototype.map = \f =self-> map(f, self);
+
+/**
+ * Define functor of `Instance`.
+ */
+Functor = \Instance map -> {
+    Instance.map = map;
+    Instance.prototype.map = \f =self-> map(f, self);
     
-    return instance;
+    return Instance;
 };
 
-Monoid = \instance zero plus -> {
-    instance.zero = instance.prototype.zero = zero;
+/**
+ * Define monoid of `Instance`.
+ */
+Monoid = \Instance zero plus -> {
+    Instance.zero = Instance.prototype.zero = zero;
     
-    Semigroup(instance,
+    Semigroup(Instance,
         plus);
     
-    return instance;
+    return Instance;
 };
 
-Monad = \instance of chain -> {
-    instance.of = instance.prototype.of = of;
+/**
+ * Define monad of `Instance`.
+ */
+Monad = \Instance of chain -> {
+    Instance.of = Instance.prototype.of = of;
     
-    Chain(instance,
+    Chain(Instance,
         chain);
     
     // Derived
-    Functor(instance,
-        \f m ->
-            chain(m, f \> m.of));
+    Functor(Instance,
+        Instance.prototype.map || \f m ->
+            m.chain(f \> m.of));
     
-    Applicative(instance,
+    Applicative(Instance,
         of,
-        \f m ->
-            chain(f, \f -> m.map(f)));
+        Instance.prototype.ap || \f m ->
+            f.chain(\f -> m.map(f)));
 
-    return instance;
+    return Instance;
 };
 
-Semigroup = \instance plus -> {
-    instance.concat = plus;
-    instance.prototype.concat = \c =self-> plus(self, c);
-
-    return instance;
+/**
+ * Define semigroup of `Instance`.
+ */
+Semigroup = \Instance plus -> {
+    Instance.concat = base.concat;
+    Instance.prototype.concat = plus;
+    
+    return Instance;
 };
 
-
-
+/**
+ * Define monad transformer of `Instance`.
+ */
 Transformer = let 
     liftInner := \lift outer inner -> {
         if (inner.liftInner)
@@ -84,17 +108,16 @@ Transformer = let
         return outer;
     }
 in
-    \instance m lift -> {
-        instance.inner = instance.prototype.inner = m;
+    \Instance m lift -> {
+        Instance.inner = Instance.prototype.inner = m;
         
-        instance.lift = instance.prototype.lift = lift;
+        Instance.lift = Instance.prototype.lift = lift;
         
         // Derived
         if (m.lift)
-            instance.liftInner = instance.prototype.liftInner = liftInner(lift, (lift <\ m.lift), m);
+            Instance.liftInner = Instance.prototype.liftInner = liftInner(lift, (lift <\ m.lift), m);
         
-        return instance;
+        return Instance;
     };
-
 
 }
