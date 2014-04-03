@@ -126,3 +126,18 @@ exports.map = function(test) {
     
     test.done();
 };
+
+
+exports.ap = function(test) {
+    var c = List.of(function(x) { return x * 2; })
+        .ap(List.zero
+            .concat(List.of(1))
+            .concat(List.of(2))
+            .concat(List.of(3)));
+
+    test.deepEqual(
+        List.runList(c),
+        [2, 4, 6]);
+    
+    test.done();
+};

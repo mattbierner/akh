@@ -24,7 +24,7 @@ Applicative = \Instance of ap -> {
     
     // Derived
     Functor(Instance,
-        Instance.map || \f m ->
+        Instance.prototype.map || \f =m->
             of(f).ap(m));
     
     return Instance;
@@ -45,8 +45,8 @@ Chain = \Instance chain -> {
  * Define functor of `Instance`.
  */
 Functor = \Instance map -> {
-    Instance.map = map;
-    Instance.prototype.map = \f =self-> map(f, self);
+    Instance.map = base.map;
+    Instance.prototype.map = map;
     
     return Instance;
 };
@@ -74,12 +74,12 @@ Monad = \Instance of chain -> {
     
     // Derived
     Functor(Instance,
-        Instance.prototype.map || \f m ->
+        Instance.prototype.map || \f =m->
             m.chain(f \> m.of));
     
     Applicative(Instance,
         of,
-        Instance.prototype.ap || \f m ->
+        Instance.prototype.ap || \m =f->
             f.chain(\f -> m.map(f)));
 
     return Instance;

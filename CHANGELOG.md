@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 1.0.1 - April 3, 2014
+* Fixed derived types of `map` and `ap` on monad using functions instead of
+  methods.
+
 ## 1.0.0 - April 1, 2014
 * Removed one extra function call per each chain/concat/map/ap.
 * `structures` now expect the method version of binary functions.

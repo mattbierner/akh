@@ -10,7 +10,8 @@ define(["require", "exports", "./base"], (function(require, exports, base) {
         (Instance.of = Instance.prototype.of);
         (Instance.ap = base.ap);
         (Instance.prototype.ap = ap);
-        Functor(Instance, (Instance.map || (function(f, m) {
+        Functor(Instance, (Instance.prototype.map || (function(f) {
+            var m = this;
             return of(f)
                 .ap(m);
         })));
@@ -22,11 +23,8 @@ define(["require", "exports", "./base"], (function(require, exports, base) {
         return Instance;
     }));
     (Functor = (function(Instance, map) {
-        (Instance.map = map);
-        (Instance.prototype.map = (function(f) {
-            var self = this;
-            return map(f, self);
-        }));
+        (Instance.map = base.map);
+        (Instance.prototype.map = map);
         return Instance;
     }));
     (Monoid = (function(Instance, zero, plus) {
@@ -39,13 +37,14 @@ define(["require", "exports", "./base"], (function(require, exports, base) {
         (Instance.prototype.of = of);
         (Instance.of = Instance.prototype.of);
         Chain(Instance, chain);
-        Functor(Instance, (Instance.prototype.map || (function(f, m) {
-            var x, y;
+        Functor(Instance, (Instance.prototype.map || (function(f) {
+            var x, y, m = this;
             return m.chain(((x = f), (y = m.of), (function(x0) {
                 return y(x(x0));
             })));
         })));
-        Applicative(Instance, of, (Instance.prototype.ap || (function(f, m) {
+        Applicative(Instance, of, (Instance.prototype.ap || (function(m) {
+            var f = this;
             return f.chain((function(f0) {
                 return m.map(f0);
             }));
