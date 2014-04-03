@@ -7,46 +7,72 @@ package (
     liftM
     liftM2
     
+    liftA
+    liftA2
+    
     next
     sequencea
-    sequence
-    mapM
-    foldM)
+    sequence)
 {
+
+var constant := \x -> \ -> x;
 
 /* Generic versions of ops
  ******************************************************************************/
-chain = \c f -> c.chain(f);
+/**
+ * Chain `f` onto monad `c`, getting monad type from `m`.
+ */
+chain = \m f -> m.chain(f);
 
+/**
+ * Map `f` over functor `m`, getting functor type from `m`.
+ */
 map = \f m -> m.map(f);
 
+/**
+ * Apply applicative `f` over `a`, getting applicative type from `f`.
+ */
 ap = \f a -> f.ap(a);
 
+/**
+ * Concat Semigroups `a` and `b`, getting type from `a`.
+ */
 concat = \a b -> a.concat(b);
 
-/* Lifting
+/* Monad Lifting
  ******************************************************************************/
 /**
- * Create a monad from binary function `f` that gets its arguments from a
- * monadic value.
+ * Lift unary function `f` to a monad, getting arguments from a monadic value.
  */
 liftM = map;
 
 /**
- * Create a monad from binary function `f` that gets its arguments from two
- * monadic values.
+ * Lift binary function `f` to a monad, getting arguments from monadic values.
  */
 liftM2 = \f m1 m2 ->
     m1.chain \ x ->
     m2.map   \ y ->
         f(x, y);
 
-/* Sequencing
+/* Applicative Lifting
+ ******************************************************************************/
+/**
+ * Lift unary function `f` to an applicative, getting argument from applicative value.
+ */
+liftA = \f a -> a.of(f).ap(a);
+
+/**
+ * Lift unary function `f` to an applicative, getting arguments from applicative values.
+ */
+liftA2 = \f a1 a2 ->
+    a1.of(\x -> \y -> f(x, y)).ap(a1).ap(a2);
+
+/* Monad Sequencing
  ******************************************************************************/
 /**
  * Perform `p` then `q`. Return result from `q`.
  */
-next = \p q -> p.chain(\_ -> q);
+next = \p q -> p.chain(constant q);
 
 /**
  * Perform a sequence of computations left to right.

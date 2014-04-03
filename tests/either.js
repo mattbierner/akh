@@ -115,3 +115,66 @@ exports.map_left = function(test) {
     
     test.done();
 };
+
+
+exports.ac = function(test) {
+    var c = Either.of(function(x, y){return x / y;})
+        .ac(Either.of(10))
+        .ap(Either.of(5))
+    
+    test.deepEqual(
+        Either.either(c, l, r),
+        [true, 2]);
+    
+    test.done();
+};
+
+exports.acn = function(test) {
+    var c = Either.of([].concat.bind([]))
+        .ac(Either.of(1))
+        .ac(Either.of(2))
+        .ac(Either.of(3))
+        .ac(Either.of(4))
+        .ac(Either.of(5))
+        .ap(Either.of(6))
+    
+    test.deepEqual(
+        Either.either(c, l, r),
+        [true, [1,2, 3, 4, 5, 6]]);
+    
+    test.done();
+};
+
+exports.ac_no_apply = function(test) {
+    var c = Either.of([].concat.bind([]))
+        .ac(Either.of(1))
+        .ac(Either.of(2))
+        .ac(Either.of(3))
+        .ac(Either.of(4))
+        .ac(Either.of(5))
+        .ac(Either.of(6))
+    
+    var result = Either.either(c, l, r);
+    test.deepEqual(
+        result[1](7),
+        [1,2, 3, 4, 5, 6, 7]);
+    
+    test.done();
+};
+
+
+exports.ac_too_many = function(test) {
+    var c = Either.of(function(x, y) {return x + y; })
+        .ac(Either.of(1))
+        .ac(Either.of(2))
+        .ac(Either.of(3))
+        .ac(Either.of(4))
+        .ac(Either.of(5))
+        .ap(Either.of(6))
+
+    test.deepEqual(
+        Either.either(c, l, r),
+        [true, 3]);
+    
+    test.done();
+};

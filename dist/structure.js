@@ -4,7 +4,11 @@
 */
 define(["require", "exports", "./base"], (function(require, exports, base) {
     "use strict";
-    var Applicative, Chain, Functor, Monad, Monoid, Semigroup, Transformer;
+    var __curry = (function(x, y) {
+        return x.bind(null, y);
+    }),
+        liftA2 = base["liftA2"],
+        Applicative, Chain, Functor, Monad, Monoid, Semigroup, Transformer;
     (Applicative = (function(Instance, of, ap) {
         (Instance.prototype.of = of);
         (Instance.of = Instance.prototype.of);
@@ -15,6 +19,11 @@ define(["require", "exports", "./base"], (function(require, exports, base) {
             return of(f)
                 .ap(m);
         })));
+        (Instance.ac = liftA2.bind(null, __curry));
+        (Instance.prototype.ac = (function(m) {
+            var f = this;
+            return liftA2(__curry, f, m);
+        }));
         return Instance;
     }));
     (Chain = (function(Instance, chain) {

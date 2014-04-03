@@ -4,9 +4,13 @@
 */
 define(["require", "exports"], (function(require, exports) {
     "use strict";
-    var chain, map, ap, concat, liftM, liftM2, next, sequencea, sequence, mapM, foldM;
-    (chain = (function(c, f) {
-        return c.chain(f);
+    var chain, map, ap, concat, liftM, liftM2, liftA, liftA2, next, sequencea, sequence, constant = (function(x) {
+            return (function() {
+                return x;
+            });
+        });
+    (chain = (function(m, f) {
+        return m.chain(f);
     }));
     (map = (function(f, m) {
         return m.map(f);
@@ -27,10 +31,24 @@ define(["require", "exports"], (function(require, exports) {
             }));
         }));
     }));
+    (liftA = (function(f, a) {
+        return a.of(f)
+            .ap(a);
+    }));
+    (liftA2 = (function(f, a1, a2) {
+        return a1.of((function(x) {
+            return (function(y) {
+                return f(x, y);
+            });
+        }))
+            .ap(a1)
+            .ap(a2);
+    }));
     (next = (function(p, q) {
-        return p.chain((function(_) {
-            return q;
-        }));
+        var x;
+        return p.chain(((x = q), (function() {
+            return x;
+        })));
     }));
     (sequencea = (function(arr) {
         return Array.prototype.reduce.call(arr, next);
@@ -45,9 +63,9 @@ define(["require", "exports"], (function(require, exports) {
     (exports["concat"] = concat);
     (exports["liftM"] = liftM);
     (exports["liftM2"] = liftM2);
+    (exports["liftA"] = liftA);
+    (exports["liftA2"] = liftA2);
     (exports["next"] = next);
     (exports["sequencea"] = sequencea);
     (exports["sequence"] = sequence);
-    (exports["mapM"] = mapM);
-    (exports["foldM"] = foldM);
 }));

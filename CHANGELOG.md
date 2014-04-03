@@ -1,5 +1,9 @@
 # ChangeLog
 
+ ## 1.1.0 - April 3, 2014
+* Added `base::liftA` and `base::liftA2` to lift to an applicative.
+* Added derived applicative operation `ac` that curries `f` with the argument `a`.
+
 ## 1.0.1 - April 3, 2014
 * Fixed derived types of `map` and `ap` on monad using functions instead of
   methods.

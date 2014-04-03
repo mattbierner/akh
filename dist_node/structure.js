@@ -4,6 +4,10 @@
 */
 "use strict";
 var base = require("./base"),
+    liftA2 = base["liftA2"],
+    __curry = (function(x, y) {
+        return x.bind(null, y);
+    }),
     Applicative, Chain, Functor, Monad, Monoid, Semigroup, Transformer;
 (Applicative = (function(Instance, of, ap) {
     (Instance.prototype.of = of);
@@ -15,6 +19,11 @@ var base = require("./base"),
         return of(f)
             .ap(m);
     })));
+    (Instance.ac = liftA2.bind(null, __curry));
+    (Instance.prototype.ac = (function(m) {
+        var f = this;
+        return liftA2(__curry, f, m);
+    }));
     return Instance;
 }));
 (Chain = (function(Instance, chain) {

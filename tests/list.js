@@ -128,7 +128,7 @@ exports.map = function(test) {
 };
 
 
-exports.ap = function(test) {
+exports.ap_one = function(test) {
     var c = List.of(function(x) { return x * 2; })
         .ap(List.zero
             .concat(List.of(1))
@@ -138,6 +138,40 @@ exports.ap = function(test) {
     test.deepEqual(
         List.runList(c),
         [2, 4, 6]);
+    
+    test.done();
+};
+
+exports.ap_many = function(test) {
+    var c = List.of(function(x) { return x * 2; })
+        .concat(List.of(function(x) { return x + 10; }))
+        .concat(List.of(function(x) { return x * x; }))
+
+            .ap(List.zero
+                .concat(List.of(1))
+                .concat(List.of(2))
+                .concat(List.of(3)));
+
+    test.deepEqual(
+        List.runList(c),
+        [2, 4, 6, 11, 12, 13, 1, 4, 9]);
+    
+    test.done();
+};
+
+
+exports.ac = function(test) {
+    var c = List.of(function(x, y) { return x * y; })
+        .ac(List.zero
+            .concat(List.of(1))
+            .concat(List.of(2)))
+        .ap(List.zero
+            .concat(List.of(3))
+            .concat(List.of(4)));
+
+    test.deepEqual(
+        List.runList(c),
+        [3, 4, 6, 8]);
     
     test.done();
 };

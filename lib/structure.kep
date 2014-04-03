@@ -10,7 +10,7 @@ package (
     Semigroup
     Transformer)
 with
-    import './base' base
+    import './base' base#{liftA2}
 in {
 
 /**
@@ -26,6 +26,9 @@ Applicative = \Instance of ap -> {
     Functor(Instance,
         Instance.prototype.map || \f =m->
             of(f).ap(m));
+    
+    Instance.ac = liftA2 @ (@);
+    Instance.prototype.ac = \m =f -> liftA2((@), f, m);
     
     return Instance;
 };
