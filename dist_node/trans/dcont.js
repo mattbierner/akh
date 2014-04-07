@@ -3,7 +3,7 @@
  * DO NOT EDIT
 */
 "use strict";
-var DContT, x, x0, y, __o = require("nu-stream")["stream"],
+var __o = require("nu-stream")["stream"],
     append = __o["append"],
     cons = __o["cons"],
     first = __o["first"],
@@ -17,7 +17,7 @@ var DContT, x, x0, y, __o = require("nu-stream")["stream"],
     __o1 = require("../_tail"),
     Tail = __o1["Tail"],
     trampoline = __o1["trampoline"],
-    Seg = (function(f) {
+    DContT, x, x0, y, Seg = (function(f) {
         var self = this;
         (self.frame = f);
     }),

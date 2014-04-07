@@ -3,9 +3,10 @@
  * DO NOT EDIT
 */
 "use strict";
-var Identity, __o = require("./structure"),
+var __o = require("./structure"),
     Functor = __o["Functor"],
-    Monad = __o["Monad"];
+    Monad = __o["Monad"],
+    Identity;
 (Identity = (function(x) {
     var self = this;
     (self.value = x);

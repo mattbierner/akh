@@ -3,10 +3,11 @@
  * DO NOT EDIT
 */
 "use strict";
-var Identity, __o = require("../structure"),
+var __o = require("../structure"),
     Monad = __o["Monad"],
     Monoid = __o["Monoid"],
-    Transformer = __o["Transformer"];
+    Transformer = __o["Transformer"],
+    Identity;
 (Identity = (function(m) {
     var x, y, x0, Instance = (function(x) {
             var self = this;

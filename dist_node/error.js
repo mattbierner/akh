@@ -3,10 +3,10 @@
  * DO NOT EDIT
 */
 "use strict";
-var Error, Identity = require("./identity"),
+var Identity = require("./identity"),
     ErrorT = require("./trans/error"),
     runErrorT = ErrorT["runErrorT"],
-    id = (function(x) {
+    Error, id = (function(x) {
         return x;
     });
 (Error = ErrorT(Identity));

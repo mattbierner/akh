@@ -2,10 +2,9 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/unique.kep'
  * DO NOT EDIT
 */
-define(["require", "exports"], (function(require, exports) {
+define(["require", "exports", "./trans/unique", "./trampoline"], (function(require, exports, UniqueT, Trampoline) {
     "use strict";
-    var Unique, UniqueT = require("./trans/unique"),
-        Trampoline = require("./trampoline");
+    var Unique;
     (Unique = UniqueT(Trampoline));
     var x = UniqueT.runUniqueT,
         y = Trampoline.run;

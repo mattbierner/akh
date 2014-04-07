@@ -3,14 +3,14 @@
  * DO NOT EDIT
 */
 "use strict";
-var StateT, __o = require("../structure"),
+var __o = require("../structure"),
     Monad = __o["Monad"],
     Monoid = __o["Monoid"],
     Transformer = __o["Transformer"],
     Trampoline = require("../trampoline"),
     thunk = Trampoline["thunk"],
     run = Trampoline["run"],
-    Pair = (function(x, s) {
+    StateT, Pair = (function(x, s) {
         return ({
             "x": x,
             "s": s

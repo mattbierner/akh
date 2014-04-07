@@ -2,11 +2,11 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/identity.kep'
  * DO NOT EDIT
 */
-define(["require", "exports"], (function(require, exports) {
+define(["require", "exports", "./structure"], (function(require, exports, __o) {
     "use strict";
-    var Identity, __o = require("./structure"),
-        Functor = __o["Functor"],
-        Monad = __o["Monad"];
+    var Functor = __o["Functor"],
+        Monad = __o["Monad"],
+        Identity;
     (Identity = (function(x) {
         var self = this;
         (self.value = x);

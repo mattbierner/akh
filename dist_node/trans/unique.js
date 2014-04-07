@@ -3,7 +3,8 @@
  * DO NOT EDIT
 */
 "use strict";
-var UniqueT, StateT = require("./state");
+var StateT = require("./state"),
+    UniqueT;
 (UniqueT = (function(m) {
     var Instance = StateT(m);
     (Instance.prototype.unique = Instance.get.chain((function(x) {

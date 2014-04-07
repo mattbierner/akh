@@ -3,9 +3,10 @@
  * DO NOT EDIT
 */
 "use strict";
-var Cont, Identity = require("./identity"),
+var Identity = require("./identity"),
     ContT = require("./trans/cont"),
-    runContT = ContT["runContT"];
+    runContT = ContT["runContT"],
+    Cont;
 (Cont = ContT(Identity));
 var x = (function(m, k) {
     var y;

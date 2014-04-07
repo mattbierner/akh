@@ -2,12 +2,12 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/identity.kep'
  * DO NOT EDIT
 */
-define(["require", "exports"], (function(require, exports) {
+define(["require", "exports", "../structure"], (function(require, exports, __o) {
     "use strict";
-    var Identity, __o = require("../structure"),
-        Monad = __o["Monad"],
+    var Monad = __o["Monad"],
         Monoid = __o["Monoid"],
-        Transformer = __o["Transformer"];
+        Transformer = __o["Transformer"],
+        Identity;
     (Identity = (function(m) {
         var x, y, x0, Instance = (function(x) {
                 var self = this;

@@ -2,23 +2,20 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/dcont.kep'
  * DO NOT EDIT
 */
-define(["require", "exports"], (function(require, exports) {
+define(["require", "exports", "nu-stream/stream", "./unique", "../structure", "../_tail"], (function(require, exports,
+    __o, UniqueT, __o0, __o1) {
     "use strict";
-    var DContT, x, x0, y, __o = require("nu-stream/stream"),
-        append = __o["append"],
+    var append = __o["append"],
         cons = __o["cons"],
         first = __o["first"],
         rest = __o["rest"],
         isEmpty = __o["isEmpty"],
         NIL = __o["NIL"],
-        UniqueT = require("./unique"),
-        __o0 = require("../structure"),
         Monad = __o0["Monad"],
         Transformer = __o0["Transformer"],
-        __o1 = require("../_tail"),
         Tail = __o1["Tail"],
         trampoline = __o1["trampoline"],
-        Seg = (function(f) {
+        DContT, x, x0, y, Seg = (function(f) {
             var self = this;
             (self.frame = f);
         }),

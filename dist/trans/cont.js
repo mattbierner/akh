@@ -2,15 +2,13 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/cont.kep'
  * DO NOT EDIT
 */
-define(["require", "exports"], (function(require, exports) {
+define(["require", "exports", "../structure", "../_tail"], (function(require, exports, __o, __o0) {
     "use strict";
-    var ContT, __o = require("../structure"),
-        Monad = __o["Monad"],
+    var Monad = __o["Monad"],
         Transformer = __o["Transformer"],
-        __o0 = require("../_tail"),
         Tail = __o0["Tail"],
         trampoline = __o0["trampoline"],
-        ContMonat = (function(instance, callcc) {
+        ContT, ContMonat = (function(instance, callcc) {
             (instance.prototype.callcc = callcc);
             (instance.callcc = instance.prototype.callcc);
             return instance;

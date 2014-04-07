@@ -3,11 +3,12 @@
  * DO NOT EDIT
 */
 "use strict";
-var ErrorT, __o = require("../structure"),
+var __o = require("../structure"),
     Monad = __o["Monad"],
     Monoid = __o["Monoid"],
     EitherT = require("./either"),
-    eitherT = EitherT["eitherT"];
+    eitherT = EitherT["eitherT"],
+    ErrorT;
 (ErrorT = (function(m) {
     var Instance = EitherT(m);
     (Instance.prototype.fail = Instance.left);

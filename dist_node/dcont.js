@@ -3,9 +3,10 @@
  * DO NOT EDIT
 */
 "use strict";
-var DCont, Identity = require("./identity"),
+var Identity = require("./identity"),
     DContT = require("./trans/dcont"),
-    runDContT = DContT["runDContT"];
+    runDContT = DContT["runDContT"],
+    DCont;
 (DCont = DContT(Identity));
 var x = runDContT,
     y = Identity.runIdentity;

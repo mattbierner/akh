@@ -2,13 +2,12 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/structure.kep'
  * DO NOT EDIT
 */
-define(["require", "exports"], (function(require, exports) {
+define(["require", "exports", "./base"], (function(require, exports, base) {
     "use strict";
-    var Applicative, Chain, Functor, Monad, Monoid, Semigroup, Transformer, __curry = (function(x, y) {
+    var liftA2 = base["liftA2"],
+        Applicative, Chain, Functor, Monad, Monoid, Semigroup, Transformer, __curry = (function(x, y) {
             return x.bind(null, y);
-        }),
-        base = require("./base"),
-        liftA2 = base["liftA2"];
+        });
     (Applicative = (function(Instance, of, ap) {
         (Instance.prototype.of = of);
         (Instance.of = Instance.prototype.of);

@@ -3,8 +3,9 @@
  * DO NOT EDIT
 */
 "use strict";
-var State, Trampoline = require("./trampoline"),
-    StateT = require("./trans/state");
+var Trampoline = require("./trampoline"),
+    StateT = require("./trans/state"),
+    State;
 (State = StateT(Trampoline));
 var x = StateT.runStateT,
     y = Trampoline.run;

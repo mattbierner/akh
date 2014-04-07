@@ -2,11 +2,10 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/either.kep'
  * DO NOT EDIT
 */
-define(["require", "exports"], (function(require, exports) {
+define(["require", "exports", "./identity", "./trans/either"], (function(require, exports, Identity, EitherT) {
     "use strict";
-    var Either, Identity = require("./identity"),
-        EitherT = require("./trans/either"),
-        eitherT = EitherT["eitherT"];
+    var eitherT = EitherT["eitherT"],
+        Either;
     (Either = EitherT(Identity));
     var x = (function(m, l, r) {
         var y, y0;

@@ -3,8 +3,9 @@
  * DO NOT EDIT
 */
 "use strict";
-var Trampoline, x, __o = require("./structure"),
-    Monad = __o["Monad"];
+var __o = require("./structure"),
+    Monad = __o["Monad"],
+    Trampoline, x;
 (Trampoline = (function() {}));
 var Done = (function(x) {
     var self = this;

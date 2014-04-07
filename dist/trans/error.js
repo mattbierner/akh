@@ -2,13 +2,12 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/error.kep'
  * DO NOT EDIT
 */
-define(["require", "exports"], (function(require, exports) {
+define(["require", "exports", "../structure", "./either"], (function(require, exports, __o, EitherT) {
     "use strict";
-    var ErrorT, __o = require("../structure"),
-        Monad = __o["Monad"],
+    var Monad = __o["Monad"],
         Monoid = __o["Monoid"],
-        EitherT = require("./either"),
-        eitherT = EitherT["eitherT"];
+        eitherT = EitherT["eitherT"],
+        ErrorT;
     (ErrorT = (function(m) {
         var Instance = EitherT(m);
         (Instance.prototype.fail = Instance.left);

@@ -3,11 +3,11 @@
  * DO NOT EDIT
 */
 "use strict";
-var Applicative, Chain, Functor, Monad, Monoid, Semigroup, Transformer, __curry = (function(x, y) {
+var base = require("./base"),
+    liftA2 = base["liftA2"],
+    Applicative, Chain, Functor, Monad, Monoid, Semigroup, Transformer, __curry = (function(x, y) {
         return x.bind(null, y);
-    }),
-    base = require("./base"),
-    liftA2 = base["liftA2"];
+    });
 (Applicative = (function(Instance, of, ap) {
     (Instance.prototype.of = of);
     (Instance.of = Instance.prototype.of);

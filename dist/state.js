@@ -2,10 +2,9 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/state.kep'
  * DO NOT EDIT
 */
-define(["require", "exports"], (function(require, exports) {
+define(["require", "exports", "./trampoline", "./trans/state"], (function(require, exports, Trampoline, StateT) {
     "use strict";
-    var State, Trampoline = require("./trampoline"),
-        StateT = require("./trans/state");
+    var State;
     (State = StateT(Trampoline));
     var x = StateT.runStateT,
         y = Trampoline.run;

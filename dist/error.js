@@ -2,12 +2,10 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/error.kep'
  * DO NOT EDIT
 */
-define(["require", "exports"], (function(require, exports) {
+define(["require", "exports", "./identity", "./trans/error"], (function(require, exports, Identity, ErrorT) {
     "use strict";
-    var Error, Identity = require("./identity"),
-        ErrorT = require("./trans/error"),
-        runErrorT = ErrorT["runErrorT"],
-        id = (function(x) {
+    var runErrorT = ErrorT["runErrorT"],
+        Error, id = (function(x) {
             return x;
         });
     (Error = ErrorT(Identity));

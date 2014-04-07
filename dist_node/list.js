@@ -3,9 +3,10 @@
  * DO NOT EDIT
 */
 "use strict";
-var List, Identity = require("./identity"),
+var Identity = require("./identity"),
     ListT = require("./trans/list"),
-    runListT = ListT["runListT"];
+    runListT = ListT["runListT"],
+    List;
 (List = ListT(Identity));
 var x = runListT,
     y = Identity.runIdentity;

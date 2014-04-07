@@ -3,9 +3,10 @@
  * DO NOT EDIT
 */
 "use strict";
-var Either, Identity = require("./identity"),
+var Identity = require("./identity"),
     EitherT = require("./trans/either"),
-    eitherT = EitherT["eitherT"];
+    eitherT = EitherT["eitherT"],
+    Either;
 (Either = EitherT(Identity));
 var x = (function(m, l, r) {
     var y, y0;

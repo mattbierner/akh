@@ -2,10 +2,10 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trampoline.kep'
  * DO NOT EDIT
 */
-define(["require", "exports"], (function(require, exports) {
+define(["require", "exports", "./structure"], (function(require, exports, __o) {
     "use strict";
-    var Trampoline, x, __o = require("./structure"),
-        Monad = __o["Monad"];
+    var Monad = __o["Monad"],
+        Trampoline, x;
     (Trampoline = (function() {}));
     var Done = (function(x) {
         var self = this;

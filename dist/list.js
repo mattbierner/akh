@@ -2,11 +2,10 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/list.kep'
  * DO NOT EDIT
 */
-define(["require", "exports"], (function(require, exports) {
+define(["require", "exports", "./identity", "./trans/list"], (function(require, exports, Identity, ListT) {
     "use strict";
-    var List, Identity = require("./identity"),
-        ListT = require("./trans/list"),
-        runListT = ListT["runListT"];
+    var runListT = ListT["runListT"],
+        List;
     (List = ListT(Identity));
     var x = runListT,
         y = Identity.runIdentity;

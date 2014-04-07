@@ -3,8 +3,9 @@
  * DO NOT EDIT
 */
 "use strict";
-var Unique, UniqueT = require("./trans/unique"),
-    Trampoline = require("./trampoline");
+var UniqueT = require("./trans/unique"),
+    Trampoline = require("./trampoline"),
+    Unique;
 (Unique = UniqueT(Trampoline));
 var x = UniqueT.runUniqueT,
     y = Trampoline.run;

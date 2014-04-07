@@ -2,17 +2,15 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/list.kep'
  * DO NOT EDIT
 */
-define(["require", "exports"], (function(require, exports) {
+define(["require", "exports", "../base", "../structure"], (function(require, exports, __o, __o0) {
     "use strict";
-    var ListT, __o = require("../base"),
-        liftM = __o["liftM"],
+    var liftM = __o["liftM"],
         liftM2 = __o["liftM2"],
-        __o0 = require("../structure"),
         Functor = __o0["Functor"],
         Monoid = __o0["Monoid"],
         Monad = __o0["Monad"],
         Transformer = __o0["Transformer"],
-        map = (function(f, a) {
+        ListT, map = (function(f, a) {
             return Array.prototype.map.call(a, f);
         }),
         concat = Function.prototype.call.bind(Array.prototype.concat),

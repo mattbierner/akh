@@ -3,7 +3,7 @@
  * DO NOT EDIT
 */
 "use strict";
-var ListT, __o = require("../base"),
+var __o = require("../base"),
     liftM = __o["liftM"],
     liftM2 = __o["liftM2"],
     __o0 = require("../structure"),
@@ -11,7 +11,7 @@ var ListT, __o = require("../base"),
     Monoid = __o0["Monoid"],
     Monad = __o0["Monad"],
     Transformer = __o0["Transformer"],
-    map = (function(f, a) {
+    ListT, map = (function(f, a) {
         return Array.prototype.map.call(a, f);
     }),
     concat = Function.prototype.call.bind(Array.prototype.concat),
