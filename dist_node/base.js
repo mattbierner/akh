@@ -3,11 +3,7 @@
  * DO NOT EDIT
 */
 "use strict";
-var chain, map, ap, concat, liftM, liftM2, liftA, liftA2, next, sequencea, sequence, constant = (function(x) {
-        return (function() {
-            return x;
-        });
-    });
+var chain, map, ap, concat, liftM, liftM2, liftA, liftA2, next, sequencea, sequence;
 (chain = (function(m, f) {
     return m.chain(f);
 }));
@@ -20,9 +16,7 @@ var chain, map, ap, concat, liftM, liftM2, liftA, liftA2, next, sequencea, seque
 (concat = (function(a, b) {
     return a.concat(b);
 }));
-(liftM = (function(f, m) {
-    return m.map(f);
-}));
+(liftM = map);
 (liftM2 = (function(f, m1, m2) {
     return m1.chain((function(x) {
         return m2.map((function(y) {
@@ -44,10 +38,9 @@ var chain, map, ap, concat, liftM, liftM2, liftA, liftA2, next, sequencea, seque
         .ap(a2);
 }));
 (next = (function(p, q) {
-    var x;
-    return p.chain(((x = q), (function() {
-        return x;
-    })));
+    return p.chain((function() {
+        return q;
+    }));
 }));
 (sequencea = (function(arr) {
     return Array.prototype.reduce.call(arr, next);

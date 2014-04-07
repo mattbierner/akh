@@ -70,7 +70,7 @@ StateT = \m -> {
         
         \f =c->
             new Instance \s ->
-               thunk(c.run, s).chain \ t ->
+                thunk(c.run, s).chain \ t ->
                     Trampoline.of <| t.chain \ {x s} ->
                         run <| runStateT(f x, s));
     

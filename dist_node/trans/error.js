@@ -3,21 +3,21 @@
  * DO NOT EDIT
 */
 "use strict";
-var __o = require("../structure"),
+var ErrorT, __o = require("../structure"),
     Monad = __o["Monad"],
     Monoid = __o["Monoid"],
     EitherT = require("./either"),
-    eitherT = EitherT["eitherT"],
-    ErrorT;
+    eitherT = EitherT["eitherT"];
 (ErrorT = (function(m) {
     var Instance = EitherT(m);
-    (Instance.fail = (Instance.prototype.fail = Instance.left));
-    (Instance.handle = (function(m, e) {
-        return ErrorT.runErrorT(m, m.of, e);
+    (Instance.prototype.fail = Instance.left);
+    (Instance.fail = Instance.prototype.fail);
+    (Instance.handle = (function(m0, e) {
+        return ErrorT.runErrorT(m0, m0.of, e);
     }));
     (Instance.prototype.handle = (function(e) {
-        var m = this;
-        return Instance.handle(m, e);
+        var m0 = this;
+        return Instance.handle(m0, e);
     }));
     return Instance;
 }));

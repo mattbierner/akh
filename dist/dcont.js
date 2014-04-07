@@ -2,15 +2,16 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/dcont.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "./identity", "./trans/dcont"], (function(require, exports, Identity, DContT) {
+define(["require", "exports"], (function(require, exports) {
     "use strict";
-    var runDContT = DContT["runDContT"],
-        DCont;
+    var DCont, Identity = require("./identity"),
+        DContT = require("./trans/dcont"),
+        runDContT = DContT["runDContT"];
     (DCont = DContT(Identity));
-    (DCont.runDCont = (function(f, g) {
-        return (function() {
-            return f(g.apply(null, arguments));
-        });
-    })(Identity.runIdentity, runDContT));
+    var x = runDContT,
+        y = Identity.runIdentity;
+    (DCont.runDCont = (function() {
+        return y(x.apply(null, arguments));
+    }));
     return DCont;
 }));

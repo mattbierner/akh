@@ -2,30 +2,25 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/identity.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../structure"], (function(require, exports, __o) {
+define(["require", "exports"], (function(require, exports) {
     "use strict";
-    var __new = (function(x, y) {
-        return new(x)(y);
-    }),
+    var Identity, __o = require("../structure"),
         Monad = __o["Monad"],
         Monoid = __o["Monoid"],
-        Transformer = __o["Transformer"],
-        Identity;
+        Transformer = __o["Transformer"];
     (Identity = (function(m) {
-        var x, x0, y, x1, Instance = (function(x) {
+        var x, y, x0, Instance = (function(x) {
                 var self = this;
                 (self.value = x);
             });
-        Monad(Instance, ((x = Instance), (x0 = (function(y) {
-            return new(x)(y);
-        })), (y = m.of), (function(x1) {
-            var y0 = y(x1);
+        Monad(Instance, ((x = Instance), (y = m.of), (function(x0) {
+            var y0 = y(x0);
             return new(x)(y0);
         })), (function(f) {
-            var x1, y0, c = this;
+            var y0, c = this;
             return new(Instance)(Identity.runIdentityT(c)
-                .chain(((x1 = f), (y0 = Identity.runIdentityT), (function(x2) {
-                    return y0(x1(x2));
+                .chain(((y0 = Identity.runIdentityT), (function(x0) {
+                    return y0(f(x0));
                 }))));
         }));
         Monoid(Instance, new(Instance)(m.zero), (function(b) {
@@ -33,8 +28,8 @@ define(["require", "exports", "../structure"], (function(require, exports, __o) 
             return new(Instance)(Identity.runIdentityT(a)
                 .concat(Identity.runIdentityT(b)));
         }));
-        Transformer(Instance, m, ((x1 = Instance), (function(y0) {
-            return new(x1)(y0);
+        Transformer(Instance, m, ((x0 = Instance), (function(y0) {
+            return new(x0)(y0);
         })));
         return Instance;
     }));

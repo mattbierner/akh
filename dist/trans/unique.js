@@ -2,17 +2,18 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/unique.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "./state"], (function(require, exports, StateT) {
+define(["require", "exports"], (function(require, exports) {
     "use strict";
-    var UniqueT;
+    var UniqueT, StateT = require("./state");
     (UniqueT = (function(m) {
         var Instance = StateT(m);
-        (Instance.unique = (Instance.prototype.unique = Instance.get.chain((function(x) {
+        (Instance.prototype.unique = Instance.get.chain((function(x) {
             return Instance.put((x + 1))
                 .chain((function() {
                     return Instance.of(x);
                 }));
-        }))));
+        })));
+        (Instance.unique = Instance.prototype.unique);
         return Instance;
     }));
     (UniqueT.runUniqueT = (function(m, seed) {

@@ -3,14 +3,14 @@
  * DO NOT EDIT
 */
 "use strict";
-var __o = require("../structure"),
+var StateT, __o = require("../structure"),
     Monad = __o["Monad"],
     Monoid = __o["Monoid"],
     Transformer = __o["Transformer"],
     Trampoline = require("../trampoline"),
     thunk = Trampoline["thunk"],
     run = Trampoline["run"],
-    StateT, Pair = (function(x, s) {
+    Pair = (function(x, s) {
         return ({
             "x": x,
             "s": s
@@ -22,10 +22,9 @@ var __o = require("../structure"),
         (instance.prototype.put = put);
         (instance.put = instance.prototype.put);
         (instance.prototype.modify = (function(f) {
-            var x, y;
-            return get.chain(((x = f), (y = put), (function(x0) {
-                return y(x(x0));
-            })));
+            return get.chain((function(x) {
+                return put(f(x));
+            }));
         }));
         (instance.modify = instance.prototype.modify);
     }),
@@ -91,13 +90,7 @@ var x = (function(m, s) {
 (StateT.runStateT = (function() {
     return y(x.apply(null, arguments));
 }));
-var x0 = StateT.runStateT,
-    y0 = (function(n) {
-        return n.chain((function(__o0) {
-            var x1 = __o0["x"];
-            return n.of(x1);
-        }));
-    });
+var x0 = StateT.runStateT;
 (StateT.evalStateT = (function() {
     var n = x0.apply(null, arguments);
     return n.chain((function(__o0) {
@@ -105,13 +98,7 @@ var x0 = StateT.runStateT,
         return n.of(x1);
     }));
 }));
-var x1 = StateT.runStateT,
-    y1 = (function(n) {
-        return n.chain((function(__o0) {
-            var s = __o0["s"];
-            return n.of(s);
-        }));
-    });
+var x1 = StateT.runStateT;
 (StateT.execStateT = (function() {
     var n = x1.apply(null, arguments);
     return n.chain((function(__o0) {

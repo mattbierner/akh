@@ -2,20 +2,23 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/dcont.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "nu-stream/stream", "./unique", "../structure", "../_tail"], (function(require, exports,
-    __o, UniqueT, __o0, __o1) {
+define(["require", "exports"], (function(require, exports) {
     "use strict";
-    var append = __o["append"],
+    var DContT, x, x0, y, __o = require("nu-stream/stream"),
+        append = __o["append"],
         cons = __o["cons"],
         first = __o["first"],
         rest = __o["rest"],
         isEmpty = __o["isEmpty"],
         NIL = __o["NIL"],
+        UniqueT = require("./unique"),
+        __o0 = require("../structure"),
         Monad = __o0["Monad"],
         Transformer = __o0["Transformer"],
+        __o1 = require("../_tail"),
         Tail = __o1["Tail"],
         trampoline = __o1["trampoline"],
-        DContT, x, x0, y, y0, Seg = (function(f) {
+        Seg = (function(f) {
             var self = this;
             (self.frame = f);
         }),
@@ -38,8 +41,8 @@ define(["require", "exports", "nu-stream/stream", "./unique", "../structure", ".
                 xs = rest(k);
             if (((x instanceof P) && (x.prompt === t))) return [empty, xs];
             var __o2 = splitSeq(t, xs),
-                a = __o2[0],
-                b = __o2[1];
+                a = __o2["0"],
+                b = __o2["1"];
             return [push(x, a), b];
         }),
         DContMonad = (function(instance, newPrompt, pushPrompt, withSubCont, pushSubCont) {
@@ -73,9 +76,7 @@ define(["require", "exports", "nu-stream/stream", "./unique", "../structure", ".
         }),
         runDContT = ((x = (function(m, k) {
             return new(Tail)(m.run, k);
-        })), (x0 = trampoline), (y = UniqueT.runUniqueT), (y0 = (function(x1) {
-            return y(x0(x1));
-        })), (function() {
+        })), (x0 = trampoline), (y = UniqueT.runUniqueT), (function() {
             var x1 = x.apply(null, arguments);
             return y(x0(x1));
         }));
@@ -107,18 +108,18 @@ define(["require", "exports", "nu-stream/stream", "./unique", "../structure", ".
         }));
         Transformer(Instance, m, (function(t) {
             return new(Instance)((function(k) {
-                var x1, y1;
+                var x1, y0;
                 return M.lift(t.map(trampoline))
-                    .chain(((x1 = appk.bind(null, k)), (y1 = trampoline), (function(x2) {
-                        return y1(x1(x2));
+                    .chain(((x1 = appk.bind(null, k)), (y0 = trampoline), (function(x2) {
+                        return y0(x1(x2));
                     })));
             }));
         }));
         DContMonad(Instance, new(Instance)((function(k) {
-            var x1, y1;
-            return M.unique.chain(((x1 = appk.bind(null, k)), (y1 = trampoline), (function(
+            var x1, y0;
+            return M.unique.chain(((x1 = appk.bind(null, k)), (y0 = trampoline), (function(
                 x2) {
-                return y1(x1(x2));
+                return y0(x1(x2));
             })));
         })), (function(prompt, c) {
             return new(Instance)((function(k) {
@@ -127,8 +128,8 @@ define(["require", "exports", "nu-stream/stream", "./unique", "../structure", ".
         }), (function(prompt, f) {
             return new(Instance)((function(k) {
                 var __o2 = splitSeq(prompt, k),
-                    x1 = __o2[0],
-                    xs = __o2[1];
+                    x1 = __o2["0"],
+                    xs = __o2["1"];
                 return unDContT(f(x1), xs);
             }));
         }), (function(subk, c) {

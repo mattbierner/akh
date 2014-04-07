@@ -3,13 +3,12 @@
  * DO NOT EDIT
 */
 "use strict";
-var UniqueT = require("./trans/unique"),
-    Trampoline = require("./trampoline"),
-    Unique;
+var Unique, UniqueT = require("./trans/unique"),
+    Trampoline = require("./trampoline");
 (Unique = UniqueT(Trampoline));
-(Unique.runUnique = (function(f, g) {
-    return (function() {
-        return f(g.apply(null, arguments));
-    });
-})(Trampoline.run, UniqueT.runUniqueT));
+var x = UniqueT.runUniqueT,
+    y = Trampoline.run;
+(Unique.runUnique = (function() {
+    return y(x.apply(null, arguments));
+}));
 (module.exports = Unique);

@@ -1,5 +1,8 @@
 # ChangeLog
 
+ ## 1.1.1 - April 7, 2014
+* Performance improvements though recompile with khepri V0.21.13.
+
  ## 1.1.0 - April 3, 2014
 * Added `base::liftA` and `base::liftA2` to lift to an applicative.
 * Added derived applicative operation `ac` that curries `f` with the argument `a`.

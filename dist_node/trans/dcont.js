@@ -3,7 +3,7 @@
  * DO NOT EDIT
 */
 "use strict";
-var __o = require("nu-stream")["stream"],
+var DContT, x, x0, y, __o = require("nu-stream")["stream"],
     append = __o["append"],
     cons = __o["cons"],
     first = __o["first"],
@@ -17,7 +17,7 @@ var __o = require("nu-stream")["stream"],
     __o1 = require("../_tail"),
     Tail = __o1["Tail"],
     trampoline = __o1["trampoline"],
-    DContT, x, x0, y, y0, Seg = (function(f) {
+    Seg = (function(f) {
         var self = this;
         (self.frame = f);
     }),
@@ -40,8 +40,8 @@ var __o = require("nu-stream")["stream"],
             xs = rest(k);
         if (((x instanceof P) && (x.prompt === t))) return [empty, xs];
         var __o2 = splitSeq(t, xs),
-            a = __o2[0],
-            b = __o2[1];
+            a = __o2["0"],
+            b = __o2["1"];
         return [push(x, a), b];
     }),
     DContMonad = (function(instance, newPrompt, pushPrompt, withSubCont, pushSubCont) {
@@ -75,9 +75,7 @@ var __o = require("nu-stream")["stream"],
     }),
     runDContT = ((x = (function(m, k) {
         return new(Tail)(m.run, k);
-    })), (x0 = trampoline), (y = UniqueT.runUniqueT), (y0 = (function(x1) {
-        return y(x0(x1));
-    })), (function() {
+    })), (x0 = trampoline), (y = UniqueT.runUniqueT), (function() {
         var x1 = x.apply(null, arguments);
         return y(x0(x1));
     }));
@@ -109,17 +107,17 @@ var __o = require("nu-stream")["stream"],
     }));
     Transformer(Instance, m, (function(t) {
         return new(Instance)((function(k) {
-            var x1, y1;
+            var x1, y0;
             return M.lift(t.map(trampoline))
-                .chain(((x1 = appk.bind(null, k)), (y1 = trampoline), (function(x2) {
-                    return y1(x1(x2));
+                .chain(((x1 = appk.bind(null, k)), (y0 = trampoline), (function(x2) {
+                    return y0(x1(x2));
                 })));
         }));
     }));
     DContMonad(Instance, new(Instance)((function(k) {
-        var x1, y1;
-        return M.unique.chain(((x1 = appk.bind(null, k)), (y1 = trampoline), (function(x2) {
-            return y1(x1(x2));
+        var x1, y0;
+        return M.unique.chain(((x1 = appk.bind(null, k)), (y0 = trampoline), (function(x2) {
+            return y0(x1(x2));
         })));
     })), (function(prompt, c) {
         return new(Instance)((function(k) {
@@ -128,8 +126,8 @@ var __o = require("nu-stream")["stream"],
     }), (function(prompt, f) {
         return new(Instance)((function(k) {
             var __o2 = splitSeq(prompt, k),
-                x1 = __o2[0],
-                xs = __o2[1];
+                x1 = __o2["0"],
+                xs = __o2["1"];
             return unDContT(f(x1), xs);
         }));
     }), (function(subk, c) {

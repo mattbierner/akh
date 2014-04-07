@@ -11,7 +11,9 @@ var Tail, trampoline;
 }));
 (trampoline = (function(f) {
     var value = f;
-    while ((value instanceof Tail))(value = value.f(value.x));
+    while ((value instanceof Tail)) {
+        (value = value.f(value.x));
+    }
     return value;
 }));
 (exports["Tail"] = Tail);

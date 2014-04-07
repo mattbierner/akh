@@ -3,11 +3,11 @@
  * DO NOT EDIT
 */
 "use strict";
-var __o = require("../structure"),
+var EitherT, __o = require("../structure"),
     Monad = __o["Monad"],
     Monoid = __o["Monoid"],
     Transformer = __o["Transformer"],
-    EitherT, Right = (function(x) {
+    Right = (function(x) {
         return ({
             "right": true,
             "x": x

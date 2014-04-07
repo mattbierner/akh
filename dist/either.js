@@ -2,25 +2,23 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/either.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "./identity", "./trans/either"], (function(require, exports, Identity, EitherT) {
+define(["require", "exports"], (function(require, exports) {
     "use strict";
-    var eitherT = EitherT["eitherT"],
-        Either;
+    var Either, Identity = require("./identity"),
+        EitherT = require("./trans/either"),
+        eitherT = EitherT["eitherT"];
     (Either = EitherT(Identity));
-    (Either.either = (function(f, g) {
-        return (function() {
-            return f(g.apply(null, arguments));
-        });
-    })(Identity.runIdentity, (function(m, l, r) {
-        return eitherT(m, (function(f, g) {
-            return (function(x) {
-                return f(g(x));
-            });
-        })(Identity.of, l), (function(f, g) {
-            return (function(x) {
-                return f(g(x));
-            });
-        })(Identity.of, r));
-    })));
+    var x = (function(m, l, r) {
+        var y, y0;
+        return eitherT(m, ((y = Identity.of), (function(x0) {
+            return y(l(x0));
+        })), ((y0 = Identity.of), (function(x0) {
+            return y0(r(x0));
+        })));
+    }),
+        y = Identity.runIdentity;
+    (Either.either = (function() {
+        return y(x.apply(null, arguments));
+    }));
     return Either;
 }));

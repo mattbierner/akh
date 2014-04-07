@@ -3,12 +3,8 @@
  * DO NOT EDIT
 */
 "use strict";
-var __o = require("./structure"),
-    Monad = __o["Monad"],
-    __new = (function(x, y) {
-        return new(x)(y);
-    }),
-    Trampoline, x;
+var Trampoline, x, __o = require("./structure"),
+    Monad = __o["Monad"];
 (Trampoline = (function() {}));
 var Done = (function(x) {
     var self = this;

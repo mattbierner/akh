@@ -2,21 +2,21 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/cont.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "./identity", "./trans/cont"], (function(require, exports, Identity, ContT) {
+define(["require", "exports"], (function(require, exports) {
     "use strict";
-    var runContT = ContT["runContT"],
-        Cont;
+    var Cont, Identity = require("./identity"),
+        ContT = require("./trans/cont"),
+        runContT = ContT["runContT"];
     (Cont = ContT(Identity));
-    (Cont.runCont = (function(f, g) {
-        return (function() {
-            return f(g.apply(null, arguments));
-        });
-    })(Identity.runIdentity, (function(m, k) {
-        return runContT(m, (function(f, g) {
-            return (function(x) {
-                return f(g(x));
-            });
-        })(Identity.of, k));
-    })));
+    var x = (function(m, k) {
+        var y;
+        return runContT(m, ((y = Identity.of), (function(x0) {
+            return y(k(x0));
+        })));
+    }),
+        y = Identity.runIdentity;
+    (Cont.runCont = (function() {
+        return y(x.apply(null, arguments));
+    }));
     return Cont;
 }));

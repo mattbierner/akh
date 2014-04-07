@@ -1,4 +1,5 @@
 var List = require('../index').list;
+var base = require('../index').base;
 
 exports.simple_of = function(test) {
     var c = List.of(3);
@@ -175,3 +176,4 @@ exports.ac = function(test) {
     
     test.done();
 };
+

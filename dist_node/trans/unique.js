@@ -3,16 +3,16 @@
  * DO NOT EDIT
 */
 "use strict";
-var StateT = require("./state"),
-    UniqueT;
+var UniqueT, StateT = require("./state");
 (UniqueT = (function(m) {
     var Instance = StateT(m);
-    (Instance.unique = (Instance.prototype.unique = Instance.get.chain((function(x) {
+    (Instance.prototype.unique = Instance.get.chain((function(x) {
         return Instance.put((x + 1))
             .chain((function() {
                 return Instance.of(x);
             }));
-    }))));
+    })));
+    (Instance.unique = Instance.prototype.unique);
     return Instance;
 }));
 (UniqueT.runUniqueT = (function(m, seed) {

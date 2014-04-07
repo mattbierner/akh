@@ -3,12 +3,11 @@
  * DO NOT EDIT
 */
 "use strict";
-var base = require("./base"),
-    liftA2 = base["liftA2"],
-    __curry = (function(x, y) {
+var Applicative, Chain, Functor, Monad, Monoid, Semigroup, Transformer, __curry = (function(x, y) {
         return x.bind(null, y);
     }),
-    Applicative, Chain, Functor, Monad, Monoid, Semigroup, Transformer;
+    base = require("./base"),
+    liftA2 = base["liftA2"];
 (Applicative = (function(Instance, of, ap) {
     (Instance.prototype.of = of);
     (Instance.of = Instance.prototype.of);
@@ -47,9 +46,9 @@ var base = require("./base"),
     (Instance.of = Instance.prototype.of);
     Chain(Instance, chain);
     Functor(Instance, (Instance.prototype.map || (function(f) {
-        var x, y, m = this;
-        return m.chain(((x = f), (y = m.of), (function(x0) {
-            return y(x(x0));
+        var y, m = this;
+        return m.chain(((y = m.of), (function(x) {
+            return y(f(x));
         })));
     })));
     Applicative(Instance, of, (Instance.prototype.ap || (function(m) {
@@ -67,9 +66,9 @@ var base = require("./base"),
 }));
 var liftInner = (function(lift, outer, inner) {
     if (inner.liftInner) {
-        var x, y;
-        (outer.liftInner = liftInner(lift, ((x = lift), (y = inner.liftInner), (function(x0) {
-            return x(y(x0));
+        var y;
+        (outer.liftInner = liftInner(lift, ((y = inner.liftInner), (function(x) {
+            return lift(y(x));
         })), inner.liftInner));
     }
     return outer;
@@ -80,9 +79,9 @@ var liftInner = (function(lift, outer, inner) {
     (Instance.prototype.lift = lift);
     (Instance.lift = Instance.prototype.lift);
     if (m.lift) {
-        var x, y;
-        (Instance.prototype.liftInner = liftInner(lift, ((x = lift), (y = m.lift), (function(x0) {
-            return x(y(x0));
+        var y;
+        (Instance.prototype.liftInner = liftInner(lift, ((y = m.lift), (function(x) {
+            return lift(y(x));
         })), m));
         (Instance.liftInner = Instance.prototype.liftInner);
     }

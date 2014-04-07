@@ -3,37 +3,31 @@
  * DO NOT EDIT
 */
 "use strict";
-var Identity = require("./identity"),
+var Error, Identity = require("./identity"),
     ErrorT = require("./trans/error"),
     runErrorT = ErrorT["runErrorT"],
-    Error, id = (function(x) {
+    id = (function(x) {
         return x;
-    }),
-    constant = (function(x) {
-        return (function() {
-            return x;
-        });
     });
 (Error = ErrorT(Identity));
-(Error.runError = (function(f, g) {
-    return (function() {
-        return f(g.apply(null, arguments));
-    });
-})(Identity.runIdentity, (function(m, ok, err) {
-    return runErrorT(m, (function(f, g) {
-        return (function(x) {
-            return f(g(x));
-        });
-    })(Identity.of, ok), (function(f, g) {
-        return (function(x) {
-            return f(g(x));
-        });
-    })(Identity.of, err));
-})));
+var x = (function(m, ok, err) {
+    var y, y0;
+    return runErrorT(m, ((y = Identity.of), (function(x0) {
+        return y(ok(x0));
+    })), ((y0 = Identity.of), (function(x0) {
+        return y0(err(x0));
+    })));
+}),
+    y = Identity.runIdentity;
+(Error.runError = (function() {
+    return y(x.apply(null, arguments));
+}));
 (Error.tryError = (function(m, e) {
     return Error.runError(m, id, e);
 }));
 (Error.attemptError = (function(m, def) {
-    return Error.tryError(m, constant(def));
+    return Error.tryError(m, (function() {
+        return def;
+    }));
 }));
 (module.exports = Error);

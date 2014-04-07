@@ -2,13 +2,15 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/cont.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../structure", "../_tail"], (function(require, exports, __o, __o0) {
+define(["require", "exports"], (function(require, exports) {
     "use strict";
-    var Monad = __o["Monad"],
+    var ContT, __o = require("../structure"),
+        Monad = __o["Monad"],
         Transformer = __o["Transformer"],
+        __o0 = require("../_tail"),
         Tail = __o0["Tail"],
         trampoline = __o0["trampoline"],
-        ContT, ContMonat = (function(instance, callcc) {
+        ContMonat = (function(instance, callcc) {
             (instance.prototype.callcc = callcc);
             (instance.callcc = instance.prototype.callcc);
             return instance;
@@ -17,10 +19,10 @@ define(["require", "exports", "../structure", "../_tail"], (function(require, ex
             return new(Tail)(m.run, k);
         });
     (ContT = (function(m) {
-        var reify, Instance = (function(run) {
-                var self = this;
-                (self.run = run);
-            });
+        var Instance = (function(run) {
+            var self = this;
+            (self.run = run);
+        });
         Monad(Instance, (function(x) {
             return new(Instance)((function(k) {
                 return k(x);
@@ -35,28 +37,21 @@ define(["require", "exports", "../structure", "../_tail"], (function(require, ex
         }));
         Transformer(Instance, m, (function(t) {
             return new(Instance)((function(k) {
-                var x, y;
-                return t.chain(((x = k), (y = trampoline), (function(x0) {
-                    return y(x(x0));
+                var y;
+                return t.chain(((y = trampoline), (function(x) {
+                    return y(k(x));
                 })));
             }));
         }));
-        ContMonat(Instance, ((reify = (function(k) {
-            return (function(x) {
-                return new(Instance)((function(_) {
-                    return k(x);
-                }));
-            });
-        })), (function(f) {
+        ContMonat(Instance, (function(f) {
             return new(Instance)((function(k) {
-                var k0;
-                return runContT(f(((k0 = k), (function(x) {
+                return runContT(f((function(x) {
                     return new(Instance)((function(_) {
-                        return k0(x);
+                        return k(x);
                     }));
-                }))), k);
+                })), k);
             }));
-        })));
+        }));
         return Instance;
     }));
     var x = (function(m, k) {

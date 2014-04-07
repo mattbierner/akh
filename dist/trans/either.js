@@ -2,12 +2,13 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/either.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../structure"], (function(require, exports, __o) {
+define(["require", "exports"], (function(require, exports) {
     "use strict";
-    var Monad = __o["Monad"],
+    var EitherT, __o = require("../structure"),
+        Monad = __o["Monad"],
         Monoid = __o["Monoid"],
         Transformer = __o["Transformer"],
-        EitherT, Right = (function(x) {
+        Right = (function(x) {
             return ({
                 "right": true,
                 "x": x
