@@ -71,7 +71,6 @@ ListT = \m -> {
  * 
  * @param m ListT computation.
  */
-ListT.runListT = \m ->
-    m.run;
+ListT.runListT = (.run);
 
 }

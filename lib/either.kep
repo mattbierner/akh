@@ -21,10 +21,10 @@ Either = EitherT(Identity);
  * @param r Right result completion.
  */
 Either.either =
-    (\m l r ->
+    \m l r ->
         eitherT(m,
             l \> Identity.of,
-            r \> Identity.of))
+            r \> Identity.of) §
     \>> Identity.runIdentity;
 
 }

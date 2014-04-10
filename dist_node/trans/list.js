@@ -50,7 +50,7 @@ var __o = require("../base"),
     }));
     return Instance;
 }));
-(ListT.runListT = (function(m) {
-    return m.run;
+(ListT.runListT = (function(x) {
+    return x.run;
 }));
 (module.exports = ListT);

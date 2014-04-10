@@ -33,8 +33,8 @@ define(["require", "exports", "../structure"], (function(require, exports, __o) 
         })));
         return Instance;
     }));
-    (Identity.runIdentityT = (function(c) {
-        return c.value;
+    (Identity.runIdentityT = (function(x) {
+        return x.value;
     }));
     return Identity;
 }));

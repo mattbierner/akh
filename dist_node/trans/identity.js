@@ -33,7 +33,7 @@ var __o = require("../structure"),
     })));
     return Instance;
 }));
-(Identity.runIdentityT = (function(c) {
-    return c.value;
+(Identity.runIdentityT = (function(x) {
+    return x.value;
 }));
 (module.exports = Identity);

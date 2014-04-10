@@ -5,7 +5,7 @@
 define(["require", "exports", "./structure"], (function(require, exports, __o) {
     "use strict";
     var Monad = __o["Monad"],
-        Trampoline, x;
+        Trampoline;
     (Trampoline = (function() {}));
     var Done = (function(x) {
         var self = this;
@@ -32,14 +32,14 @@ define(["require", "exports", "./structure"], (function(require, exports, __o) {
         appk = (function(f, x) {
             return ((f instanceof Ap) ? new(Chain)(f.c(x), f.f) : f(x));
         });
-    Monad(Trampoline, ((x = Done), (function(y) {
-        return new(x)(y);
-    })), (function(f) {
+    Monad(Trampoline, (function(y) {
+        return new(Done)(y);
+    }), (function(f) {
         var c = this;
         return new(Chain)(c, f);
     }));
-    (Trampoline.thunk = (function(k, x0) {
-        return new(Thunk)(k, x0);
+    (Trampoline.thunk = (function(k, x) {
+        return new(Thunk)(k, x);
     }));
     (Trampoline.run = (function(cont) {
         var k = cont;

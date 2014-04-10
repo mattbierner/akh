@@ -7,11 +7,8 @@ var StateT = require("./state"),
     UniqueT;
 (UniqueT = (function(m) {
     var Instance = StateT(m);
-    (Instance.prototype.unique = Instance.get.chain((function(x) {
-        return Instance.put((x + 1))
-            .chain((function() {
-                return Instance.of(x);
-            }));
+    (Instance.prototype.unique = Instance.modify((function(y) {
+        return (1 + y);
     })));
     (Instance.unique = Instance.prototype.unique);
     return Instance;

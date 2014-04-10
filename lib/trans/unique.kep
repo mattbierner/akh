@@ -11,13 +11,11 @@ in {
 /**
  * Computation with support for getting an unique value.
  */
-UniqueT = \m -> {
+UniqueT := \m -> {
     var Instance = StateT(m);
     
     Instance.unique = Instance.prototype.unique =
-        Instance.get.chain \ x ->
-            Instance.put(x + 1)
-                .chain \-> Instance.of x;
+        Instance.modify (+, 1);
     
     return Instance;
 };

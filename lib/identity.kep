@@ -8,13 +8,12 @@ in {
 
 /* Structure
  ******************************************************************************/
-Identity = function \x =self-> {
+Identity := function \x =self-> {
     self.value = x;
 };
 
 Monad(Identity,
-    \x ->
-        new Identity(x),
+    (new, Identity),
     
     \f =c->
         f <| Identity.runIdentity c);
@@ -24,6 +23,6 @@ Monad(Identity,
 /**
  * Run an identity computation.
  */
-Identity.runIdentity = \c -> c.value;
+Identity.runIdentity = (.value);
 
 }

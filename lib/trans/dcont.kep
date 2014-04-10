@@ -1,4 +1,4 @@
-/**
+ /**
  * @fileOverview Delimited continuation monad transformer.
  * 
  * Based on:
@@ -20,14 +20,14 @@ in {
 /**
  * Control segment.
  */
-var Seg = function \f =self-> {
+var Seg := function \f =self-> {
     self.frame = f;
 };
 
 /**
  * Delimiter.
  */
-var P = function \t =self-> {
+var P := function \t =self-> {
     self.prompt = t;
 };
 
@@ -36,34 +36,34 @@ var P = function \t =self-> {
 /**
  * Empty control stack.
  */
-var empty = NIL;
+var empty := NIL;
 
 /**
  * Push a single frame onto a control stack.
  */
-var push = cons;
+var push := cons;
 
 /**
  * Push an entire slice of control stack onto a control stack.
  */
-var pushSeq = append;
+var pushSeq := append;
 
 /**
  * Push a delimiter `t` on onto control stack `k`.
  */
-var pushP = \t, k ->
+var pushP := \t k ->
     push(new P(t), k);
 
 /**
  * Push a segment for `f` onto control stack `k`.
  */
-var pushSeg = \f k ->
+var pushSeg := \f k ->
     push(new Seg(f), k);
 
 /**
  * Splits the control stack around prompt `t`.
  */
-var splitSeq = \t k -> {
+var splitSeq := \t k -> {
     if (isEmpty k)
         return [empty, empty];
     
@@ -81,7 +81,7 @@ var splitSeq = \t k -> {
 
 /* Interface
  ******************************************************************************/
-var DContMonad = \instance newPrompt pushPrompt withSubCont pushSubCont -> {
+var DContMonad := \instance newPrompt pushPrompt withSubCont pushSubCont -> {
     /**
      * M.newPrompt
      * 
@@ -152,9 +152,9 @@ var DContMonad = \instance newPrompt pushPrompt withSubCont pushSubCont -> {
 
 /* Transformer
  ******************************************************************************/
-var unDContT = \m k ->
+var unDContT := \m k ->
     new Tail(m.run, k);
-    
+
 var runDContT = unDContT \>> trampoline \> UniqueT.runUniqueT;
 
 /**

@@ -47,7 +47,7 @@ var chain, map, ap, concat, liftM, liftM2, liftA, liftA2, next, sequencea, seque
 }));
 (sequence = (function() {
     var args = arguments;
-    return sequencea(args);
+    return Array.prototype.reduce.call(args, next);
 }));
 (exports["chain"] = chain);
 (exports["map"] = map);

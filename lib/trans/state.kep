@@ -14,14 +14,11 @@ in {
 /**
  * Value, state pair.
  */
-var Pair = \x s -> ({
-    'x': x,
-    's': s
-});
+var Pair := \x s -> ({ x: x, s: s });
 
 /* Interface
  ******************************************************************************/
-var StateMonad = \instance get put -> {
+var StateMonad := \instance get put -> {
     /**
      * M.get
      * 
@@ -50,7 +47,7 @@ var StateMonad = \instance get put -> {
 /**
  * Run a state continuation to get the inner trampoline.
  */
-var runStateT = \m s ->
+var runStateT := \m s ->
     m.run(s);
 
 /**
@@ -58,8 +55,8 @@ var runStateT = \m s ->
  * 
  * @param m Base monad.
  */
-StateT = \m -> {
-    var Instance = function \run =self-> {
+StateT := \m -> {
+    var Instance := function \run =self-> {
         self.run = run;
     };
 
@@ -119,7 +116,7 @@ StateT.runStateT = runStateT \>> run;
 StateT.evalStateT =
     StateT.runStateT
     \>> \n ->
-        n.chain\{x} -> n.of(x);
+        n.chain \ {x} -> n.of(x);
 
 /**
  * Perform a stateful computation and return resulting state.
@@ -130,6 +127,6 @@ StateT.evalStateT =
 StateT.execStateT =
     StateT.runStateT
     \>> \n ->
-        n.chain\{s} -> n.of(s);
+        n.chain \ {s} -> n.of(s);
 
 }

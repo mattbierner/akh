@@ -1,5 +1,8 @@
 # ChangeLog
 
+ ## 1.1.2 - April 10, 2014
+* Performance improvements though recompile with khepri V0.23.0
+
  ## 1.1.1 - April 7, 2014
 * Performance improvements though recompile with khepri V0.21.13.
 

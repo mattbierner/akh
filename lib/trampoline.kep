@@ -11,14 +11,14 @@ in {
 /**
  * Trampoline monad.
  */
-Trampoline = function \ -> { };
+Trampoline := function \ -> { };
 
 /* Classes
  ******************************************************************************/
 /**
  * Completed trampoline computation.
  */
-var Done = function \x =self-> {
+var Done := function \x =self-> {
     self.x = x;
 };
 Done.prototype = new Trampoline();
@@ -26,7 +26,7 @@ Done.prototype = new Trampoline();
 /**
  * Deferred trampoline computation.
  */
-var Thunk = function \k x =self-> {
+var Thunk := function \k x =self-> {
     self.k = k;
     self.x = x;
 };
@@ -35,7 +35,7 @@ Thunk.prototype = new Trampoline();
 /**
  * Chained trampoline computation.
  */
-var Chain = function \c f =self-> {
+var Chain := function \c f =self-> {
     self.c = c;
     self.f = f;
 };
@@ -44,7 +44,7 @@ Chain.prototype = new Trampoline();
 /**
  * Defunctionalized trampoline chain application.
  */
-var Ap = function \c f =self-> {
+var Ap := function \c f =self-> {
     self.c = c;
     self.f = f;
 };

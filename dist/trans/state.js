@@ -9,13 +9,7 @@ define(["require", "exports", "../structure", "../trampoline"], (function(requir
         Transformer = __o["Transformer"],
         thunk = Trampoline["thunk"],
         run = Trampoline["run"],
-        StateT, Pair = (function(x, s) {
-            return ({
-                "x": x,
-                "s": s
-            });
-        }),
-        StateMonad = (function(instance, get, put) {
+        StateT, StateMonad = (function(instance, get, put) {
             (instance.prototype.get = get);
             (instance.get = instance.prototype.get);
             (instance.prototype.put = put);
@@ -37,7 +31,10 @@ define(["require", "exports", "../structure", "../trampoline"], (function(requir
         });
         Monad(Instance, (function(x) {
             return new(Instance)((function(s) {
-                return Trampoline.of(m.of(Pair(x, s)));
+                return Trampoline.of(m.of(({
+                    x: x,
+                    s: s
+                })));
             }));
         }), (function(f) {
             var c = this;
@@ -45,9 +42,9 @@ define(["require", "exports", "../structure", "../trampoline"], (function(requir
                 return thunk(c.run, s)
                     .chain((function(t) {
                         return Trampoline.of(t.chain((function(__o0) {
-                            var x = __o0["x"],
+                            var m0, x = __o0["x"],
                                 s0 = __o0["s"];
-                            return run(runStateT(f(x), s0));
+                            return run(((m0 = f(x)), m0.run(s0)));
                         })));
                     }));
             }));
@@ -59,7 +56,7 @@ define(["require", "exports", "../structure", "../trampoline"], (function(requir
             return new(Instance)((function(s) {
                 return thunk(a.run, s)
                     .chain((function(t) {
-                        return runStateT(b, s)
+                        return b.run(s)
                             .chain((function(k) {
                                 return Trampoline.of(t.concat(k));
                             }));
@@ -69,37 +66,43 @@ define(["require", "exports", "../structure", "../trampoline"], (function(requir
         Transformer(Instance, m, (function(t) {
             return new(Instance)((function(s) {
                 return Trampoline.of(t.chain((function(x) {
-                    return m.of(Pair(x, s));
+                    return m.of(({
+                        x: x,
+                        s: s
+                    }));
                 })));
             }));
         }));
         StateMonad(Instance, new(Instance)((function(s) {
-            return Trampoline.of(m.of(Pair(s, s)));
+            return Trampoline.of(m.of(({
+                x: s,
+                s: s
+            })));
         })), (function(s) {
             return new(Instance)((function(_) {
-                return Trampoline.of(m.of(Pair(s, s)));
+                return Trampoline.of(m.of(({
+                    x: s,
+                    s: s
+                })));
             }));
         }));
         return Instance;
     }));
-    var x = (function(m, s) {
-        return m.run(s);
-    }),
-        y = run;
+    var y = run;
     (StateT.runStateT = (function() {
-        return y(x.apply(null, arguments));
+        return y(runStateT.apply(null, arguments));
     }));
-    var x0 = StateT.runStateT;
+    var x = StateT.runStateT;
     (StateT.evalStateT = (function() {
-        var n = x0.apply(null, arguments);
+        var n = x.apply(null, arguments);
         return n.chain((function(__o0) {
-            var x1 = __o0["x"];
-            return n.of(x1);
+            var x0 = __o0["x"];
+            return n.of(x0);
         }));
     }));
-    var x1 = StateT.runStateT;
+    var x0 = StateT.runStateT;
     (StateT.execStateT = (function() {
-        var n = x1.apply(null, arguments);
+        var n = x0.apply(null, arguments);
         return n.chain((function(__o0) {
             var s = __o0["s"];
             return n.of(s);

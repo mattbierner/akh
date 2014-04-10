@@ -23,7 +23,7 @@ ErrorT = \m -> {
     Instance.handle = \m e ->
         ErrorT.runErrorT(m, m.of, e);
     
-    Instance.prototype.handle= \e =m-> Instance.handle(m, e);;
+    Instance.prototype.handle= \e =m-> Instance.handle(m, e);
     
     return Instance;
 };

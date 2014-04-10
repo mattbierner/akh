@@ -49,8 +49,8 @@ define(["require", "exports", "../base", "../structure"], (function(require, exp
         }));
         return Instance;
     }));
-    (ListT.runListT = (function(m) {
-        return m.run;
+    (ListT.runListT = (function(x) {
+        return x.run;
     }));
     return ListT;
 }));

@@ -15,7 +15,7 @@ define(["require", "exports", "nu-stream/stream", "./unique", "../structure", ".
         Transformer = __o0["Transformer"],
         Tail = __o1["Tail"],
         trampoline = __o1["trampoline"],
-        DContT, x, x0, y, Seg = (function(f) {
+        DContT, x, y, Seg = (function(f) {
             var self = this;
             (self.frame = f);
         }),
@@ -26,20 +26,14 @@ define(["require", "exports", "nu-stream/stream", "./unique", "../structure", ".
         empty = NIL,
         push = cons,
         pushSeq = append,
-        pushP = (function(t, k) {
-            return push(new(P)(t), k);
-        }),
-        pushSeg = (function(f, k) {
-            return push(new(Seg)(f), k);
-        }),
         splitSeq = (function(t, k) {
             if (isEmpty(k)) return [empty, empty];
             var x = first(k),
                 xs = rest(k);
             if (((x instanceof P) && (x.prompt === t))) return [empty, xs];
             var __o2 = splitSeq(t, xs),
-                a = __o2["0"],
-                b = __o2["1"];
+                a = __o2[0],
+                b = __o2[1];
             return [push(x, a), b];
         }),
         DContMonad = (function(instance, newPrompt, pushPrompt, withSubCont, pushSubCont) {
@@ -71,11 +65,9 @@ define(["require", "exports", "nu-stream/stream", "./unique", "../structure", ".
         unDContT = (function(m, k) {
             return new(Tail)(m.run, k);
         }),
-        runDContT = ((x = (function(m, k) {
-            return new(Tail)(m.run, k);
-        })), (x0 = trampoline), (y = UniqueT.runUniqueT), (function() {
-            var x1 = x.apply(null, arguments);
-            return y(x0(x1));
+        runDContT = ((x = trampoline), (y = UniqueT.runUniqueT), (function() {
+            var x0 = unDContT.apply(null, arguments);
+            return y(x(x0));
         }));
     (DContT = (function(m) {
         var M = UniqueT(m),
@@ -83,55 +75,63 @@ define(["require", "exports", "nu-stream/stream", "./unique", "../structure", ".
                 var self = this;
                 (self.run = run);
             }),
-            appk = (function(k, x1) {
+            appk = (function(k, x0) {
                 var c = k;
                 do {
-                    if (((typeof c) === "function")) return M.of(c(x1));
+                    if (((typeof c) === "function")) return M.of(c(x0));
                     var top = first(c);
-                    if ((top instanceof Seg)) return unDContT(top.frame(x1), rest(c));
+                    if ((top instanceof Seg)) {
+                        var m0 = top.frame(x0),
+                            k0 = rest(c);
+                        return new(Tail)(m0.run, k0);
+                    }
                     (c = ((top instanceof P) ? rest(c) : top));
                 }
                 while (true);
             });
-        Monad(Instance, (function(x1) {
+        Monad(Instance, (function(x0) {
             return new(Instance)((function(k) {
-                return appk(k, x1);
+                return appk(k, x0);
             }));
         }), (function(f) {
             var c = this;
             return new(Instance)((function(k) {
-                return unDContT(c, pushSeg(f, k));
+                var k0 = push(new(Seg)(f), k);
+                return new(Tail)(c.run, k0);
             }));
         }));
         Transformer(Instance, m, (function(t) {
             return new(Instance)((function(k) {
-                var x1, y0;
+                var x0, y0;
                 return M.lift(t.map(trampoline))
-                    .chain(((x1 = appk.bind(null, k)), (y0 = trampoline), (function(x2) {
-                        return y0(x1(x2));
+                    .chain(((x0 = appk.bind(null, k)), (y0 = trampoline), (function(x1) {
+                        return y0(x0(x1));
                     })));
             }));
         }));
         DContMonad(Instance, new(Instance)((function(k) {
-            var x1, y0;
-            return M.unique.chain(((x1 = appk.bind(null, k)), (y0 = trampoline), (function(
-                x2) {
-                return y0(x1(x2));
+            var x0, y0;
+            return M.unique.chain(((x0 = appk.bind(null, k)), (y0 = trampoline), (function(
+                x1) {
+                return y0(x0(x1));
             })));
         })), (function(prompt, c) {
             return new(Instance)((function(k) {
-                return unDContT(c, pushP(prompt, k));
+                var k0 = push(new(P)(prompt), k);
+                return new(Tail)(c.run, k0);
             }));
         }), (function(prompt, f) {
             return new(Instance)((function(k) {
                 var __o2 = splitSeq(prompt, k),
-                    x1 = __o2["0"],
-                    xs = __o2["1"];
-                return unDContT(f(x1), xs);
+                    x0 = __o2[0],
+                    xs = __o2[1],
+                    m0 = f(x0);
+                return new(Tail)(m0.run, xs);
             }));
         }), (function(subk, c) {
             return new(Instance)((function(k) {
-                return unDContT(c, pushSeq(subk, k));
+                var k0 = pushSeq(subk, k);
+                return new(Tail)(c.run, k0);
             }));
         }));
         return Instance;

@@ -6,12 +6,11 @@ with
     import '../structure' {Monad Monoid Transformer}
 in {
 
-var Right = \x -> ({'right': true, 'x': x});
+var Right := \x -> ({ right: true, x: x});
 
-var Left = \x -> ({'right': false, 'x': x});
+var Left := \x -> ({ right: false, x: x});
 
-var runEitherT = \m ->
-    m.run;
+var runEitherT := (.run);
 
 /* Transformer
  ******************************************************************************/
@@ -20,7 +19,7 @@ var runEitherT = \m ->
  * 
  * @param m Base monad.
  */
-EitherT = \m -> {
+EitherT := \m -> {
     var Instance = function \run =self-> {
         self.run = run;
     };

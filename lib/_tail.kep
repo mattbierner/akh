@@ -6,12 +6,12 @@ package (
     trampoline)
 {
 
-Tail = function \f x =self-> {
+Tail := function \f x =self-> {
     self.f = f;
     self.x = x;
 };
 
-trampoline = \f -> {
+trampoline := \f -> {
     var value = f;
     while (value instanceof Tail)
         value = value.f(value.x);

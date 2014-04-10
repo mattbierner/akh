@@ -51,6 +51,6 @@ Identity = \m -> {
 /**
  * Run an identity computation.
  */
-Identity.runIdentityT = \c -> c.value;
+Identity.runIdentityT = (.value);
 
 }
