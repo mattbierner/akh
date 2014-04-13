@@ -1,6 +1,6 @@
 # ChangeLog
 
- ## 2.0.0 - April XX, 2014
+ ## 2.0.0 - April 13, 2014
 * Split interfaces into own files. `akh::spec::*`.
 * Autolifting of state `get` `put` and `modify` in most base types.
 * Added `Codensity` monad.
