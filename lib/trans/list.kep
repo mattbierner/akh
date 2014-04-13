@@ -6,7 +6,8 @@
 package ListT
 with
     import '../base' {liftM liftM2},
-    import '../structure' {Functor Monoid Monad Transformer}
+    import '../structure' {Functor Monoid Monad Transformer},
+    import '../spec/state' StateMonad
 in {
 
 var foldr := \f z a -> Array.prototype.reduceRight.call(a, f, z);
@@ -64,6 +65,8 @@ ListT := \m -> {
         \t ->
             new Instance (
                 liftM(\x -> [x], t)));
+    
+    StateMonad.tryLiftState(Instance, m);
     
     return Instance;
 };

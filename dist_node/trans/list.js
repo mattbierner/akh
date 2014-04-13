@@ -11,6 +11,7 @@ var __o = require("../base"),
     Monoid = __o0["Monoid"],
     Monad = __o0["Monad"],
     Transformer = __o0["Transformer"],
+    StateMonad = require("../spec/state"),
     ListT, map = (function(f, a) {
         return Array.prototype.map.call(a, f);
     }),
@@ -51,6 +52,7 @@ var __o = require("../base"),
             return [x];
         }), t));
     }));
+    StateMonad.tryLiftState(Instance, m);
     return Instance;
 }));
 (ListT.runListT = runListT);

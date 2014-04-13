@@ -4,8 +4,10 @@
 package ErrorT
 with
     import '../structure' {Monad Monoid},
-    import './either' EitherT#{eitherT},
-    import '../spec/error' ErrorMonad
+    import '../spec/error' ErrorMonad,
+    import '../spec/state' StateMonad,
+
+    import './either' EitherT#{eitherT}
 in {
 
 /* Transformer
@@ -23,6 +25,8 @@ ErrorT := \m -> {
         
         \e =c->
             ErrorT.runErrorT(c, c.of, e));
+    
+    StateMonad.tryLiftState(Instance, m);
     
     return Instance;
 };

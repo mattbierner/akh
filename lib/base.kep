@@ -65,7 +65,9 @@ liftA := \f a -> a.of(f).ap(a);
  * Lift binary function `f` to an applicative, getting arguments from applicative values.
  */
 liftA2 := \f a1 a2 ->
-    a1.of(\x -> \y -> f(x, y)).ap(a1).ap(a2);
+    a1.of(\x -> \y -> f(x, y))
+        .ap(a1)
+        .ap(a2);
 
 /* Monad Sequencing
  ******************************************************************************/

@@ -1,0 +1,97 @@
+/**
+ * @fileOverview State monad transformer.
+ * 
+ * Value and state are stored in Pairs of `{x, s}`.
+ * 
+ * This is not stack safe on its own, large computations will blow up the stack.
+ * Wrap in Codensity for stack safety: `Codensity (StateT M)`. `akh::trans::state`
+ * automatically does this but will degrade performance if this behavior is not required.
+ */
+package StateT
+with
+    import '../structure' {Monad Monoid Transformer},
+    import '../base' {map},
+    import '../spec/state' StateMonad
+in {
+
+/**
+ * Value, state pair.
+ */
+var Pair := \x s -> ({ x: x, s: s });
+
+/* Transformer
+ ******************************************************************************/
+var runStateT := \m s ->
+    m.run(s);
+
+/**
+ * State monad transformer.
+ * 
+ * @param m Base monad.
+ */
+StateT := \m -> {
+    var Instance := function \run =self-> {
+        self.run = run;
+    };
+
+    Monad(Instance,
+        \x ->
+            new Instance\s ->
+                m.of <| Pair(x, s),
+        
+        \f =c->
+            new Instance\s ->
+                runStateT(c, s).chain \ {x s} ->
+                    runStateT(f x, s));
+    
+    Monoid(Instance,
+        new Instance\_ ->
+            m.zero,
+        
+        \b =a->
+            new Instance\s ->
+                runStateT(a, s).concat(runStateT(b, s)));
+    
+    Transformer(Instance, m,
+        \t ->
+            new Instance\s ->
+                t.chain\x -> m.of <| Pair(x, s));
+    
+    StateMonad(Instance,
+        new Instance\s ->
+            m.of <| Pair(s, s),
+        
+        \s ->
+            new Instance\_ ->
+                m.of <| Pair(s, s));
+    
+    return Instance;
+};
+
+/* Running
+ ******************************************************************************/
+/**
+ * Perform a stateful computation and return resulting value, state pair.
+ * 
+ * @param m StateT computation.
+ * @param s Initial state.
+ */
+StateT.runStateT = runStateT;
+
+/**
+ * Perform a stateful computation and return resulting value.
+ * 
+ * @param m StateT computation.
+ * @param s Initial state.
+ */
+StateT.evalStateT = StateT.runStateT \>> map @ \ {x} -> x;
+
+/**
+ * Perform a stateful computation and return resulting state.
+ * 
+ * @param m StateT computation.
+ * @param s Initial state.
+ */
+StateT.execStateT = StateT.runStateT \>> map @ \ {s} -> s;
+
+}

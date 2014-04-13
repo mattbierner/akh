@@ -112,7 +112,6 @@ LiftInner = let
     }
 in
     \Instance m lift -> {
-        // Derived
         if (m.lift)
             Instance.liftInner = Instance.prototype.liftInner = liftInner(lift, (lift <\ m.lift), m);
         

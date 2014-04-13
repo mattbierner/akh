@@ -2,7 +2,8 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/list.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../base", "../structure"], (function(require, exports, __o, __o0) {
+define(["require", "exports", "../base", "../structure", "../spec/state"], (function(require, exports, __o, __o0,
+    StateMonad) {
     "use strict";
     var liftM = __o["liftM"],
         liftM2 = __o["liftM2"],
@@ -50,6 +51,7 @@ define(["require", "exports", "../base", "../structure"], (function(require, exp
                 return [x];
             }), t));
         }));
+        StateMonad.tryLiftState(Instance, m);
         return Instance;
     }));
     (ListT.runListT = runListT);

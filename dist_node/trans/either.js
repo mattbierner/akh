@@ -8,6 +8,7 @@ var __o = require("../structure"),
     Monoid = __o["Monoid"],
     Transformer = __o["Transformer"],
     EitherMonad = require("../spec/either"),
+    StateMonad = require("../spec/state"),
     EitherT;
 (EitherT = (function(m) {
     var x, x0, x1, Instance = (function(run) {
@@ -62,6 +63,7 @@ var __o = require("../structure"),
             y = x1(x3);
         return new(Instance)(y);
     })), Instance.of);
+    StateMonad.tryLiftState(Instance, m);
     return Instance;
 }));
 (EitherT.eitherT = (function(m, l, r) {

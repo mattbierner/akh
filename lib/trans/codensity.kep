@@ -6,7 +6,6 @@ with
     import '../structure' {Monad Monoid Transformer},
     import '../_tail' {Tail trampoline},
     import '../spec/state' StateMonad
-
 in {
 
 var runCodensity := \m k->

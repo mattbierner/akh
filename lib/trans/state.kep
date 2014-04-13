@@ -3,78 +3,33 @@
  * 
  * Value and state are stored in Pairs of `{x, s}`.
  * 
- * This is not stack safe on its own, large computations will blow up the stack.
- * Wrap in Codensity for stack safety: `Codensity (StateT M)`
+ * This auto wraps the real state transformer in a `Codensity` and is stack safe.
  */
 package StateT
 with
-    import '../structure' {Monad Monoid Transformer LiftInner},
-    import './codensity' Codensity,
+    import '../structure' {LiftInner},
     import '../base' {map},
-    import '../spec/state' StateMonad
+    import './codensity' Codensity,
+    import './statei' StateI
 in {
 
-/**
- * Value, state pair.
- */
-var Pair := \x s -> ({ x: x, s: s });
-
-/* Transformer
- ******************************************************************************/
-/**
- * Run a state continuation to get the inner trampoline.
- */
-var runStateT := \m s ->
-    m.run(s);
-
-/**
- * State monad transformer.
- * 
- * @param m Base monad.
- */
-StateT := \m -> {
-    var Instance := function \run =self-> {
-        self.run = run;
-    };
-
-    Monad(Instance,
-        \x ->
-            new Instance\s ->
-                m.of <| Pair(x, s),
-        
-        \f =c->
-            new Instance\s ->
-                runStateT(c, s).chain \ {x s} ->
-                    runStateT(f x, s));
-    
-    Monoid(Instance,
-        new Instance\_ ->
-            m.zero,
-        
-        \b =a->
-            new Instance\s ->
-                runStateT(a, s).concat(runStateT(b, s)));
-    
-    Transformer(Instance, m,
-        \t ->
-            new Instance\s ->
-                t.chain\x -> m.of <| Pair(x, s));
-    
-    StateMonad(Instance,
-        new Instance\s ->
-            m.of <| Pair(s, s),
-        
-        \s ->
-            new Instance\_ ->
-                m.of <| Pair(s, s));
-    
+var CodensityProxy = \Instance m -> {
     var X = Codensity Instance;
-    
     X.lift = X.prototype.lift = X.lift <\ Instance.lift;
     X.inner = m;
     LiftInner(X, m, X.lift);
     return X;
 };
+
+/* Transformer
+ ******************************************************************************/
+/**
+ * State monad transformer.
+ * 
+ * @param m Base monad.
+ */
+StateT := \m ->
+    CodensityProxy(StateI m, m);
 
 /* Running
  ******************************************************************************/
@@ -84,7 +39,10 @@ StateT := \m -> {
  * @param m StateT computation.
  * @param s Initial state.
  */
-StateT.runStateT = \m s -> runStateT(Codensity.runCodensity(m, \c -> m.inner.of(c)), s);
+StateT.runStateT = \m s ->
+    StateI.runStateT(
+        Codensity.runCodensity(m, m.inner.of),
+        s);
 
 /**
  * Perform a stateful computation and return resulting value.

@@ -29,7 +29,7 @@ StateMonad := \Instance get put -> {
 };
 
 /**
- * 
+ * Try to autolift the state operations from `m` to `Instance`.
  */
 StateMonad.tryLiftState = \Instance m -> {
     if (m.get && m.put)

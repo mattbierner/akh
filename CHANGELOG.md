@@ -1,10 +1,14 @@
 # ChangeLog
 
  ## 2.0.0 - April XX, 2014
-* Added `Codensity` monad.
 * Split interfaces into own files. `akh::spec::*`.
 * Autolifting of state `get` `put` and `modify` in most base types.
-*
+* Added `Codensity` monad.
+* Removed trampoline.
+* Split StateT into two files.
+** `akh::trans::state` has the main, stack safe impl which auto wraps in a `Codensity`.
+** `akh::trans::statei` has the actual impl, which is stack unsafe but should be used in
+  stacks so as not to dup the `Codensity` logic.
 
  ## 1.1.2 - April 10, 2014
 * Performance improvements though recompile with khepri V0.23.0

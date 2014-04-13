@@ -2,7 +2,8 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/either.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../structure", "../spec/either"], (function(require, exports, __o, EitherMonad) {
+define(["require", "exports", "../structure", "../spec/either", "../spec/state"], (function(require, exports, __o,
+    EitherMonad, StateMonad) {
     "use strict";
     var Monad = __o["Monad"],
         Monoid = __o["Monoid"],
@@ -61,6 +62,7 @@ define(["require", "exports", "../structure", "../spec/either"], (function(requi
                 y = x1(x3);
             return new(Instance)(y);
         })), Instance.of);
+        StateMonad.tryLiftState(Instance, m);
         return Instance;
     }));
     (EitherT.eitherT = (function(m, l, r) {
