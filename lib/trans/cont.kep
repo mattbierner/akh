@@ -3,28 +3,14 @@
  */
 package ContT
 with
+    import '../_tail' {Tail trampoline},
     import '../structure' {Monad Transformer},
-    import '../_tail' {Tail trampoline}
+    import '../spec/cont' ContMonad
 in {
-    
-/* Interface
- ******************************************************************************/
-var ContMonat = \instance callcc -> {
-    /**
-     * M.callcc(f)
-     * 
-     * Call `f` with the current continuation. If `f` returns a computation,
-     * discard the existing continuation and return the result. If `f` returns 
-     * the result of calling the continuation with a computation, execution continues.
-     */
-    instance.callcc = instance.prototype.callcc = callcc;
-    
-    return instance;
-};
 
 /* Transformer
  ******************************************************************************/
-var runContT = \m k ->
+var runContT := \m k ->
     new Tail(m.run, k);
 
 /**
@@ -32,8 +18,8 @@ var runContT = \m k ->
  * 
  * @param m Base monad.
  */
-ContT = \m -> {
-    var Instance = function \run =self-> {
+ContT := \m -> {
+    var Instance := function \run =self-> {
         self.run = run;
     };
     
@@ -51,8 +37,7 @@ ContT = \m -> {
             new Instance\k ->
                 t.chain(k \> trampoline));
     
-    // Callcc
-    ContMonat(Instance,
+    ContMonad(Instance,
         let
             reify = \k ->
                 \x ->

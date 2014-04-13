@@ -14,6 +14,7 @@ var __o = require("nu-stream")["stream"],
     __o0 = require("../structure"),
     Monad = __o0["Monad"],
     Transformer = __o0["Transformer"],
+    DContMonad = require("../spec/dcont"),
     __o1 = require("../_tail"),
     Tail = __o1["Tail"],
     trampoline = __o1["trampoline"],
@@ -37,32 +38,6 @@ var __o = require("nu-stream")["stream"],
             a = __o2[0],
             b = __o2[1];
         return [push(x, a), b];
-    }),
-    DContMonad = (function(instance, newPrompt, pushPrompt, withSubCont, pushSubCont) {
-        (instance.prototype.newPrompt = newPrompt);
-        (instance.newPrompt = instance.prototype.newPrompt);
-        (instance.prototype.pushPrompt = pushPrompt);
-        (instance.pushPrompt = instance.prototype.pushPrompt);
-        (instance.prototype.withSubCont = withSubCont);
-        (instance.withSubCont = instance.prototype.withSubCont);
-        (instance.prototype.pushSubCont = pushSubCont);
-        (instance.pushSubCont = instance.prototype.pushSubCont);
-        (instance.prototype.reset = (function(f) {
-            return newPrompt.chain((function(p) {
-                return pushPrompt(p, f(p));
-            }));
-        }));
-        (instance.reset = instance.prototype.reset);
-        (instance.prototype.shift = (function(p, f) {
-            var t = this;
-            return withSubCont(p, (function(k) {
-                return pushPrompt(p, f((function(c) {
-                    return pushPrompt(p, pushSubCont(k, c));
-                })));
-            }));
-        }));
-        (instance.shift = instance.prototype.shift);
-        return instance;
     }),
     unDContT = (function(m, k) {
         return new(Tail)(m.run, k);

@@ -1,0 +1,15 @@
+/**
+ * @fileOverview Error monad interface
+ */
+package ErrorMonad
+{
+
+ErrorMonad := \Instance fail handle -> {
+    
+    Instance.fail = Instance.prototype.fail = fail;
+    
+    Instance.prototype.handle = handle;
+    Instance.handle = \m e -> m.handle(e);
+};
+
+}

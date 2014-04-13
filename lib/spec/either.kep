@@ -1,0 +1,23 @@
+/**
+ * @fileOverview Either monad interface
+ */
+package EitherMonad
+{
+
+EitherMonad := \Instance left right -> {
+    /**
+     * M.right(x)
+     * 
+     * Right monad value
+     */
+    Instance.right = Instance.prototype.right = right;
+    
+    /**
+     * M.left(x)
+     * 
+     * Left monad value
+     */
+    Instance.left = Instance.prototype.left = left;
+};
+
+}

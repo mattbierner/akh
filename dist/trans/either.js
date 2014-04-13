@@ -2,64 +2,65 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/either.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../structure"], (function(require, exports, __o) {
+define(["require", "exports", "../structure", "../spec/either"], (function(require, exports, __o, EitherMonad) {
     "use strict";
     var Monad = __o["Monad"],
         Monoid = __o["Monoid"],
         Transformer = __o["Transformer"],
         EitherT;
     (EitherT = (function(m) {
-        var x, Instance = (function(run) {
+        var x, x0, x1, Instance = (function(run) {
                 var self = this;
                 (self.run = run);
             });
-        Monad(Instance, (function(x) {
-            return new(Instance)(m.of(({
+        Monad(Instance, ((x = m.of), (function(x0) {
+            var x1 = ({
                 right: true,
-                x: x
-            })));
-        }), (function(f) {
+                x: x0
+            }),
+                y = x(x1);
+            return new(Instance)(y);
+        })), (function(f) {
             var c = this;
             return new(Instance)(c.run.chain((function(__o0) {
-                var x0, right = __o0["right"],
-                    x = __o0["x"];
-                return (right ? ((x0 = f(x)), x0.run) : m.of(({
+                var x1, right = __o0["right"],
+                    x0 = __o0["x"];
+                return (right ? ((x1 = f(x0)), x1.run) : m.of(({
                     right: false,
-                    x: x
+                    x: x0
                 })));
             })));
         }));
-        Monoid(Instance, new(Instance)(m.of(((x = m.zero), ({
+        Monoid(Instance, new(Instance)(m.of(((x0 = m.zero), ({
             right: false,
-            x: x
+            x: x0
         })))), (function(b) {
             var a = this;
             return new(Instance)(a.run.chain((function(__o0) {
                 var right = __o0["right"],
-                    x0 = __o0["x"];
+                    x1 = __o0["x"];
                 return (right ? m.of(({
                     right: true,
-                    x: x0
+                    x: x1
                 })) : b.run);
             })));
         }));
         Transformer(Instance, m, (function(t) {
-            return new(Instance)(t.chain((function(x0) {
+            return new(Instance)(t.chain((function(x1) {
                 return m.of(({
                     right: true,
-                    x: x0
+                    x: x1
                 }));
             })));
         }));
-        (Instance.prototype.right = Instance.of);
-        (Instance.right = Instance.prototype.right);
-        (Instance.prototype.left = (function(x0) {
-            return new(Instance)(m.of(({
+        EitherMonad(Instance, ((x1 = m.of), (function(x2) {
+            var x3 = ({
                 right: false,
-                x: x0
-            })));
-        }));
-        (Instance.left = Instance.prototype.left);
+                x: x2
+            }),
+                y = x1(x3);
+            return new(Instance)(y);
+        })), Instance.of);
         return Instance;
     }));
     (EitherT.eitherT = (function(m, l, r) {

@@ -1,15 +1,15 @@
 /**
- * @fileOverview State computation
+ * @fileOverview State computation.
  */
 package State
 with
-    import './trampoline' Trampoline,
+    import './identity' Identity,
     import './trans/state' StateT
 in {
 
 /* Structure
  ******************************************************************************/
-State = StateT(Trampoline);
+State := StateT(Identity);
 
 /* Running
  ******************************************************************************/
@@ -19,7 +19,7 @@ State = StateT(Trampoline);
  * @param m State computation.
  * @param s Initial state.
  */
-State.runState = StateT.runStateT \>> Trampoline.run;
+State.runState = StateT.runStateT \>> Identity.runIdentity;
 
 /**
  * Perform a state computation and return resulting value.
@@ -27,7 +27,7 @@ State.runState = StateT.runStateT \>> Trampoline.run;
  * @param m State computation.
  * @param s Initial state.
  */
-State.evalState = StateT.evalStateT \>> Trampoline.run;
+State.evalState = StateT.evalStateT \>> Identity.runIdentity;
 
 /**
  * Perform a state computation and return resulting state.
@@ -35,6 +35,6 @@ State.evalState = StateT.evalStateT \>> Trampoline.run;
  * @param m State computation.
  * @param s Initial state.
  */
-State.execState = StateT.execStateT \>> Trampoline.run;
+State.execState = StateT.execStateT \>> Identity.runIdentity;
 
 }

@@ -2,18 +2,14 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/cont.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../structure", "../_tail"], (function(require, exports, __o, __o0) {
+define(["require", "exports", "../_tail", "../structure", "../spec/cont"], (function(require, exports, __o, __o0,
+    ContMonad) {
     "use strict";
-    var Monad = __o["Monad"],
-        Transformer = __o["Transformer"],
-        Tail = __o0["Tail"],
-        trampoline = __o0["trampoline"],
-        ContT, ContMonat = (function(instance, callcc) {
-            (instance.prototype.callcc = callcc);
-            (instance.callcc = instance.prototype.callcc);
-            return instance;
-        }),
-        runContT = (function(m, k) {
+    var Tail = __o["Tail"],
+        trampoline = __o["trampoline"],
+        Monad = __o0["Monad"],
+        Transformer = __o0["Transformer"],
+        ContT, runContT = (function(m, k) {
             return new(Tail)(m.run, k);
         });
     (ContT = (function(m) {
@@ -28,9 +24,11 @@ define(["require", "exports", "../structure", "../_tail"], (function(require, ex
         }), (function(f) {
             var c = this;
             return new(Instance)((function(k) {
-                return runContT(c, (function(x) {
-                    return runContT(f(x), k);
-                }));
+                var k0 = (function(x) {
+                    var m0 = f(x);
+                    return new(Tail)(m0.run, k);
+                });
+                return new(Tail)(c.run, k0);
             }));
         }));
         Transformer(Instance, m, (function(t) {
@@ -41,23 +39,21 @@ define(["require", "exports", "../structure", "../_tail"], (function(require, ex
                 })));
             }));
         }));
-        ContMonat(Instance, (function(f) {
+        ContMonad(Instance, (function(f) {
             return new(Instance)((function(k) {
-                return runContT(f((function(x) {
+                var m0 = f((function(x) {
                     return new(Instance)((function(_) {
                         return k(x);
                     }));
-                })), k);
+                }));
+                return new(Tail)(m0.run, k);
             }));
         }));
         return Instance;
     }));
-    var x = (function(m, k) {
-        return new(Tail)(m.run, k);
-    }),
-        y = trampoline;
+    var y = trampoline;
     (ContT.runContT = (function() {
-        return y(x.apply(null, arguments));
+        return y(runContT.apply(null, arguments));
     }));
     return ContT;
 }));

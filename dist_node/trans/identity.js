@@ -7,33 +7,32 @@ var __o = require("../structure"),
     Monad = __o["Monad"],
     Monoid = __o["Monoid"],
     Transformer = __o["Transformer"],
-    Identity;
+    Identity, runIdentityT = (function(x) {
+        return x.value;
+    });
 (Identity = (function(m) {
-    var x, y, x0, Instance = (function(x) {
+    var y, Instance = (function(x) {
             var self = this;
             (self.value = x);
         });
-    Monad(Instance, ((x = Instance), (y = m.of), (function(x0) {
-        var y0 = y(x0);
-        return new(x)(y0);
+    Monad(Instance, ((y = m.of), (function(x) {
+        var y0 = y(x);
+        return new(Instance)(y0);
     })), (function(f) {
-        var y0, c = this;
-        return new(Instance)(Identity.runIdentityT(c)
-            .chain(((y0 = Identity.runIdentityT), (function(x0) {
-                return y0(f(x0));
-            }))));
+        var c = this;
+        return new(Instance)(c.value.chain((function(x) {
+            var x0 = f(x);
+            return x0.value;
+        })));
     }));
     Monoid(Instance, new(Instance)(m.zero), (function(b) {
         var a = this;
-        return new(Instance)(Identity.runIdentityT(a)
-            .concat(Identity.runIdentityT(b)));
+        return new(Instance)(a.value.concat(b.value));
     }));
-    Transformer(Instance, m, ((x0 = Instance), (function(y0) {
-        return new(x0)(y0);
-    })));
+    Transformer(Instance, m, (function(y0) {
+        return new(Instance)(y0);
+    }));
     return Instance;
 }));
-(Identity.runIdentityT = (function(x) {
-    return x.value;
-}));
+(Identity.runIdentityT = runIdentityT);
 (module.exports = Identity);

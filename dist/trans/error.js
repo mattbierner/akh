@@ -2,7 +2,8 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/error.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../structure", "./either"], (function(require, exports, __o, EitherT) {
+define(["require", "exports", "../structure", "./either", "../spec/error"], (function(require, exports, __o, EitherT,
+    ErrorMonad) {
     "use strict";
     var Monad = __o["Monad"],
         Monoid = __o["Monoid"],
@@ -10,14 +11,9 @@ define(["require", "exports", "../structure", "./either"], (function(require, ex
         ErrorT;
     (ErrorT = (function(m) {
         var Instance = EitherT(m);
-        (Instance.prototype.fail = Instance.left);
-        (Instance.fail = Instance.prototype.fail);
-        (Instance.handle = (function(m0, e) {
-            return ErrorT.runErrorT(m0, m0.of, e);
-        }));
-        (Instance.prototype.handle = (function(e) {
-            var m0 = this;
-            return Instance.handle(m0, e);
+        ErrorMonad(Instance, Instance.left, (function(e) {
+            var c = this;
+            return ErrorT.runErrorT(c, c.of, e);
         }));
         return Instance;
     }));

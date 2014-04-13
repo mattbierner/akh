@@ -1,0 +1,41 @@
+/**
+ * @fileOverview State monad interface.
+ */
+package StateMonad
+{
+
+StateMonad := \Instance get put -> {
+    /**
+     * M.get
+     * 
+     * Return the current state.
+     */
+    Instance.get = Instance.prototype.get = get;
+    
+    /**
+     * M.put(s)
+     * 
+     * Set the current state to `s`.
+     */
+    Instance.put = Instance.prototype.put = put;
+    
+    /**
+     * M.modify(f)
+     * 
+     * Map the current state to a new state with function `f`.
+     */
+    Instance.modify = Instance.prototype.modify = \f ->
+        get.chain(f \> put);
+};
+
+/**
+ * 
+ */
+StateMonad.tryLiftState = \Instance m -> {
+    if (m.get && m.put)
+        StateMonad(Instance,
+            Instance.lift m.get,
+            Instance.lift <\ m.put);
+};
+
+}

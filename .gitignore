@@ -3,6 +3,7 @@
 .project
 node_modules
 _site
+.settings
 
 # OS Files #
 ############

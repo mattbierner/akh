@@ -8,6 +8,7 @@ package (
     Monad
     Monoid
     Semigroup
+    LiftInner
     Transformer)
 with
     import './base' base#{liftA2}
@@ -99,9 +100,8 @@ Semigroup = \Instance plus -> {
 };
 
 /**
- * Define monad transformer of `Instance`.
  */
-Transformer = let 
+LiftInner = let 
     liftInner := \lift outer inner -> {
         if (inner.liftInner)
             outer.liftInner = liftInner(
@@ -112,15 +112,25 @@ Transformer = let
     }
 in
     \Instance m lift -> {
-        Instance.inner = Instance.prototype.inner = m;
-        
-        Instance.lift = Instance.prototype.lift = lift;
-        
         // Derived
         if (m.lift)
             Instance.liftInner = Instance.prototype.liftInner = liftInner(lift, (lift <\ m.lift), m);
         
         return Instance;
     };
+
+/**
+ * Define monad transformer of `Instance`.
+ */
+Transformer = \Instance m lift -> {
+    Instance.inner = Instance.prototype.inner = m;
+    
+    Instance.lift = Instance.prototype.lift = lift;
+    
+    // Derived
+    LiftInner(Instance, m, lift);
+
+    return Instance;
+};
 
 }

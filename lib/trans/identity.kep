@@ -8,6 +8,8 @@ in {
 
 /* Transform
  ******************************************************************************/
+var runIdentityT := (.value);
+
 /**
  * Identity monad transformer.
  * 
@@ -19,8 +21,8 @@ in {
  * 
  * @param m Base monad.
  */
-Identity = \m -> {
-    var Instance = function \x =self-> {
+Identity := \m -> {
+    var Instance := function \x =self-> {
         self.value = x;
     };
     
@@ -29,16 +31,16 @@ Identity = \m -> {
         
         \f =c->
             new Instance (
-                Identity.runIdentityT(c)
-                    .chain(f \> Identity.runIdentityT)));
+                runIdentityT(c)
+                    .chain(f \> runIdentityT)));
     
     Monoid(Instance,
         new Instance m.zero,
         
         \b =a->
             new Instance (
-                Identity.runIdentityT(a)
-                    .concat (Identity.runIdentityT b)));
+                runIdentityT(a)
+                    .concat (runIdentityT b)));
     
     Transformer(Instance, m,
         (new, Instance));
@@ -51,6 +53,6 @@ Identity = \m -> {
 /**
  * Run an identity computation.
  */
-Identity.runIdentityT = (.value);
+Identity.runIdentityT = runIdentityT;
 
 }

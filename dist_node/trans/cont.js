@@ -3,18 +3,14 @@
  * DO NOT EDIT
 */
 "use strict";
-var __o = require("../structure"),
-    Monad = __o["Monad"],
-    Transformer = __o["Transformer"],
-    __o0 = require("../_tail"),
-    Tail = __o0["Tail"],
-    trampoline = __o0["trampoline"],
-    ContT, ContMonat = (function(instance, callcc) {
-        (instance.prototype.callcc = callcc);
-        (instance.callcc = instance.prototype.callcc);
-        return instance;
-    }),
-    runContT = (function(m, k) {
+var __o = require("../_tail"),
+    Tail = __o["Tail"],
+    trampoline = __o["trampoline"],
+    __o0 = require("../structure"),
+    Monad = __o0["Monad"],
+    Transformer = __o0["Transformer"],
+    ContMonad = require("../spec/cont"),
+    ContT, runContT = (function(m, k) {
         return new(Tail)(m.run, k);
     });
 (ContT = (function(m) {
@@ -29,9 +25,11 @@ var __o = require("../structure"),
     }), (function(f) {
         var c = this;
         return new(Instance)((function(k) {
-            return runContT(c, (function(x) {
-                return runContT(f(x), k);
-            }));
+            var k0 = (function(x) {
+                var m0 = f(x);
+                return new(Tail)(m0.run, k);
+            });
+            return new(Tail)(c.run, k0);
         }));
     }));
     Transformer(Instance, m, (function(t) {
@@ -42,22 +40,20 @@ var __o = require("../structure"),
             })));
         }));
     }));
-    ContMonat(Instance, (function(f) {
+    ContMonad(Instance, (function(f) {
         return new(Instance)((function(k) {
-            return runContT(f((function(x) {
+            var m0 = f((function(x) {
                 return new(Instance)((function(_) {
                     return k(x);
                 }));
-            })), k);
+            }));
+            return new(Tail)(m0.run, k);
         }));
     }));
     return Instance;
 }));
-var x = (function(m, k) {
-    return new(Tail)(m.run, k);
-}),
-    y = trampoline;
+var y = trampoline;
 (ContT.runContT = (function() {
-    return y(x.apply(null, arguments));
+    return y(runContT.apply(null, arguments));
 }));
 (module.exports = ContT);

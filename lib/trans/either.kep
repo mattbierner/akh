@@ -3,31 +3,30 @@
  */
 package EitherT
 with
-    import '../structure' {Monad Monoid Transformer}
+    import '../structure' {Monad Monoid Transformer},
+    import '../spec/either' EitherMonad
 in {
 
 var Right := \x -> ({ right: true, x: x});
 
 var Left := \x -> ({ right: false, x: x});
 
-var runEitherT := (.run);
-
 /* Transformer
  ******************************************************************************/
+var runEitherT := (.run);
+
 /**
  * Either monad transformer.
  * 
  * @param m Base monad.
  */
 EitherT := \m -> {
-    var Instance = function \run =self-> {
+    var Instance := function \run =self-> {
         self.run = run;
     };
     
     Monad(Instance,
-        \x ->
-            new Instance (
-                m.of <| Right x),
+        Right \> m.of \> (new, Instance),
         
         \f =c->
             new Instance ( 
@@ -52,12 +51,10 @@ EitherT := \m -> {
             new Instance (
                 t.chain(\x -> m.of <| Right x)));
     
-    // Either
-    Instance.right = Instance.prototype.right = Instance.of;
-    
-    Instance.left = Instance.prototype.left = \x ->
-        new Instance (
-            m.of <| Left x);
+    EitherMonad(Instance,
+        Left \> m.of \> (new, Instance),
+        
+        Instance.of);
     
     return Instance;
 };

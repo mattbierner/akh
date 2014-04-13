@@ -1,0 +1,53 @@
+/**
+ * @fileOverview Codensity
+ */
+package Codensity
+with
+    import '../structure' {Monad Monoid Transformer},
+    import '../_tail' {Tail trampoline},
+    import '../spec/state' StateMonad
+
+in {
+
+var runCodensity := \m k->
+    new Tail(m.run, k);
+
+/* Monad
+ ******************************************************************************/
+Codensity := \m -> {
+    var Instance := function \run =self-> {
+        self.run = run;
+    };
+    
+    Monad(Instance,
+        \x ->
+            new Instance\k -> k x,
+        
+        \f =c->
+            new Instance\k->
+                runCodensity(c, \x ->
+                    runCodensity(f x, k)));
+    
+    Monoid(Instance,
+        new Instance\_ -> m.zero,
+        
+        \b =a->
+            new Instance\k->
+                Codensity.runCodensity(a, k)
+                    .concat(Codensity.runCodensity(b, k)));
+    
+    Transformer(Instance, m,
+        \c ->
+            new Instance\k ->
+                c.chain(k \> trampoline));
+    
+    StateMonad.tryLiftState(Instance, m);
+    
+    return Instance;
+};
+
+/* Running
+ ******************************************************************************/
+Codensity.runCodensity = runCodensity \>> trampoline;
+
+}

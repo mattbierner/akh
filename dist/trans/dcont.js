@@ -2,8 +2,8 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/dcont.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "nu-stream/stream", "./unique", "../structure", "../_tail"], (function(require, exports,
-    __o, UniqueT, __o0, __o1) {
+define(["require", "exports", "nu-stream/stream", "./unique", "../structure", "../spec/dcont", "../_tail"], (function(
+    require, exports, __o, UniqueT, __o0, DContMonad, __o1) {
     "use strict";
     var append = __o["append"],
         cons = __o["cons"],
@@ -35,32 +35,6 @@ define(["require", "exports", "nu-stream/stream", "./unique", "../structure", ".
                 a = __o2[0],
                 b = __o2[1];
             return [push(x, a), b];
-        }),
-        DContMonad = (function(instance, newPrompt, pushPrompt, withSubCont, pushSubCont) {
-            (instance.prototype.newPrompt = newPrompt);
-            (instance.newPrompt = instance.prototype.newPrompt);
-            (instance.prototype.pushPrompt = pushPrompt);
-            (instance.pushPrompt = instance.prototype.pushPrompt);
-            (instance.prototype.withSubCont = withSubCont);
-            (instance.withSubCont = instance.prototype.withSubCont);
-            (instance.prototype.pushSubCont = pushSubCont);
-            (instance.pushSubCont = instance.prototype.pushSubCont);
-            (instance.prototype.reset = (function(f) {
-                return newPrompt.chain((function(p) {
-                    return pushPrompt(p, f(p));
-                }));
-            }));
-            (instance.reset = instance.prototype.reset);
-            (instance.prototype.shift = (function(p, f) {
-                var t = this;
-                return withSubCont(p, (function(k) {
-                    return pushPrompt(p, f((function(c) {
-                        return pushPrompt(p, pushSubCont(k, c));
-                    })));
-                }));
-            }));
-            (instance.shift = instance.prototype.shift);
-            return instance;
         }),
         unDContT = (function(m, k) {
             return new(Tail)(m.run, k);

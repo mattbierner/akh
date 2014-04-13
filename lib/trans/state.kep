@@ -3,44 +3,21 @@
  * 
  * Value and state are stored in Pairs of `{x, s}`.
  * 
- * @TODO: There is probably a better way to implement tail calls.
+ * This is not stack safe on its own, large computations will blow up the stack.
+ * Wrap in Codensity for stack safety: `Codensity (StateT M)`
  */
 package StateT
 with
-    import '../structure' {Monad Monoid Transformer},
-    import '../trampoline' Trampoline#{thunk run}
+    import '../structure' {Monad Monoid Transformer LiftInner},
+    import './codensity' Codensity,
+    import '../base' {map},
+    import '../spec/state' StateMonad
 in {
 
 /**
  * Value, state pair.
  */
 var Pair := \x s -> ({ x: x, s: s });
-
-/* Interface
- ******************************************************************************/
-var StateMonad := \instance get put -> {
-    /**
-     * M.get
-     * 
-     * Return the current state.
-     */
-    instance.get = instance.prototype.get = get;
-    
-    /**
-     * M.put(s)
-     * 
-     * Set the current state to `s`.
-     */
-    instance.put = instance.prototype.put = put;
-    
-    /**
-     * M.modify(f)
-     * 
-     * Map the current state to a new state with function `f`.
-     */
-    instance.modify = instance.prototype.modify = \f ->
-        get.chain(f \> put);
-};
 
 /* Transformer
  ******************************************************************************/
@@ -63,38 +40,40 @@ StateT := \m -> {
     Monad(Instance,
         \x ->
             new Instance\s ->
-                Trampoline.of <| m.of <| Pair(x, s),
+                m.of <| Pair(x, s),
         
         \f =c->
-            new Instance \s ->
-                thunk(c.run, s).chain \ t ->
-                    Trampoline.of <| t.chain \ {x s} ->
-                        run <| runStateT(f x, s));
+            new Instance\s ->
+                runStateT(c, s).chain \ {x s} ->
+                    runStateT(f x, s));
     
     Monoid(Instance,
         new Instance\_ ->
-            Trampoline.of <| m.zero,
+            m.zero,
         
         \b =a->
             new Instance\s ->
-                thunk(a.run, s).chain \ t ->
-                    runStateT(b, s).chain \ k ->
-                        Trampoline.of <| t.concat(k));
+                runStateT(a, s).concat(runStateT(b, s)));
     
     Transformer(Instance, m,
         \t ->
             new Instance\s ->
-                Trampoline.of <| t.chain\x -> m.of <| Pair(x, s));
+                t.chain\x -> m.of <| Pair(x, s));
     
     StateMonad(Instance,
         new Instance\s ->
-            Trampoline.of <| m.of <| Pair(s, s),
+            m.of <| Pair(s, s),
         
         \s ->
-            new Instance \_ ->
-                Trampoline.of <| m.of <| Pair(s, s));
+            new Instance\_ ->
+                m.of <| Pair(s, s));
     
-    return Instance;
+    var X = Codensity Instance;
+    
+    X.lift = X.prototype.lift = X.lift <\ Instance.lift;
+    X.inner = m;
+    LiftInner(X, m, X.lift);
+    return X;
 };
 
 /* Running
@@ -105,7 +84,7 @@ StateT := \m -> {
  * @param m StateT computation.
  * @param s Initial state.
  */
-StateT.runStateT = runStateT \>> run;
+StateT.runStateT = \m s -> runStateT(Codensity.runCodensity(m, \c -> m.inner.of(c)), s);
 
 /**
  * Perform a stateful computation and return resulting value.
@@ -113,10 +92,7 @@ StateT.runStateT = runStateT \>> run;
  * @param m StateT computation.
  * @param s Initial state.
  */
-StateT.evalStateT =
-    StateT.runStateT
-    \>> \n ->
-        n.chain \ {x} -> n.of(x);
+StateT.evalStateT = StateT.runStateT \>> map @ \ {x} -> x;
 
 /**
  * Perform a stateful computation and return resulting state.
@@ -124,9 +100,6 @@ StateT.evalStateT =
  * @param m StateT computation.
  * @param s Initial state.
  */
-StateT.execStateT =
-    StateT.runStateT
-    \>> \n ->
-        n.chain \ {s} -> n.of(s);
+StateT.execStateT = StateT.runStateT \>> map @ \ {s} -> s;
 
 }

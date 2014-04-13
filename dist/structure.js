@@ -5,7 +5,7 @@
 define(["require", "exports", "./base"], (function(require, exports, base) {
     "use strict";
     var liftA2 = base["liftA2"],
-        Applicative, Chain, Functor, Monad, Monoid, Semigroup, Transformer, __curry = (function(x, y) {
+        Applicative, Chain, Functor, Monad, Monoid, Semigroup, LiftInner, Transformer, __curry = (function(x, y) {
             return x.bind(null, y);
         });
     (Applicative = (function(Instance, of, ap) {
@@ -73,11 +73,7 @@ define(["require", "exports", "./base"], (function(require, exports, base) {
         }
         return outer;
     });
-    (Transformer = (function(Instance, m, lift) {
-        (Instance.prototype.inner = m);
-        (Instance.inner = Instance.prototype.inner);
-        (Instance.prototype.lift = lift);
-        (Instance.lift = Instance.prototype.lift);
+    (LiftInner = (function(Instance, m, lift) {
         if (m.lift) {
             var y;
             (Instance.prototype.liftInner = liftInner(lift, ((y = m.lift), (function(x) {
@@ -87,11 +83,20 @@ define(["require", "exports", "./base"], (function(require, exports, base) {
         }
         return Instance;
     }));
+    (Transformer = (function(Instance, m, lift) {
+        (Instance.prototype.inner = m);
+        (Instance.inner = Instance.prototype.inner);
+        (Instance.prototype.lift = lift);
+        (Instance.lift = Instance.prototype.lift);
+        LiftInner(Instance, m, lift);
+        return Instance;
+    }));
     (exports["Applicative"] = Applicative);
     (exports["Chain"] = Chain);
     (exports["Functor"] = Functor);
     (exports["Monad"] = Monad);
     (exports["Monoid"] = Monoid);
     (exports["Semigroup"] = Semigroup);
+    (exports["LiftInner"] = LiftInner);
     (exports["Transformer"] = Transformer);
 }));

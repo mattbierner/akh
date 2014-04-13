@@ -4,7 +4,8 @@
 package ErrorT
 with
     import '../structure' {Monad Monoid},
-    import './either' EitherT#{eitherT}
+    import './either' EitherT#{eitherT},
+    import '../spec/error' ErrorMonad
 in {
 
 /* Transformer
@@ -14,16 +15,14 @@ in {
  * 
  * @param m Base monad.
  */
-ErrorT = \m -> {
+ErrorT := \m -> {
     var Instance = EitherT(m);
     
-    // Error
-    Instance.fail = Instance.prototype.fail = Instance.left;
-    
-    Instance.handle = \m e ->
-        ErrorT.runErrorT(m, m.of, e);
-    
-    Instance.prototype.handle= \e =m-> Instance.handle(m, e);
+    ErrorMonad(Instance,
+        Instance.left,
+        
+        \e =c->
+            ErrorT.runErrorT(c, c.of, e));
     
     return Instance;
 };

@@ -7,106 +7,99 @@ var __o = require("../structure"),
     Monad = __o["Monad"],
     Monoid = __o["Monoid"],
     Transformer = __o["Transformer"],
-    Trampoline = require("../trampoline"),
-    thunk = Trampoline["thunk"],
-    run = Trampoline["run"],
-    StateT, StateMonad = (function(instance, get, put) {
-        (instance.prototype.get = get);
-        (instance.get = instance.prototype.get);
-        (instance.prototype.put = put);
-        (instance.put = instance.prototype.put);
-        (instance.prototype.modify = (function(f) {
-            return get.chain((function(x) {
-                return put(f(x));
-            }));
-        }));
-        (instance.modify = instance.prototype.modify);
-    }),
-    runStateT = (function(m, s) {
-        return m.run(s);
-    });
+    LiftInner = __o["LiftInner"],
+    Codensity = require("./codensity"),
+    __o0 = require("../base"),
+    map = __o0["map"],
+    StateMonad = require("../spec/state"),
+    StateT;
 (StateT = (function(m) {
-    var Instance = (function(run0) {
+    var Instance = (function(run) {
         var self = this;
-        (self.run = run0);
+        (self.run = run);
     });
     Monad(Instance, (function(x) {
         return new(Instance)((function(s) {
-            return Trampoline.of(m.of(({
+            return m.of(({
                 x: x,
                 s: s
-            })));
+            }));
         }));
     }), (function(f) {
         var c = this;
         return new(Instance)((function(s) {
-            return thunk(c.run, s)
-                .chain((function(t) {
-                    return Trampoline.of(t.chain((function(__o0) {
-                        var m0, x = __o0["x"],
-                            s0 = __o0["s"];
-                        return run(((m0 = f(x)), m0.run(s0)));
-                    })));
+            return c.run(s)
+                .chain((function(__o1) {
+                    var x = __o1["x"],
+                        s0 = __o1["s"],
+                        m0 = f(x);
+                    return m0.run(s0);
                 }));
         }));
     }));
     Monoid(Instance, new(Instance)((function(_) {
-        return Trampoline.of(m.zero);
+        return m.zero;
     })), (function(b) {
         var a = this;
         return new(Instance)((function(s) {
-            return thunk(a.run, s)
-                .chain((function(t) {
-                    return b.run(s)
-                        .chain((function(k) {
-                            return Trampoline.of(t.concat(k));
-                        }));
-                }));
+            return a.run(s)
+                .concat(b.run(s));
         }));
     }));
     Transformer(Instance, m, (function(t) {
         return new(Instance)((function(s) {
-            return Trampoline.of(t.chain((function(x) {
+            return t.chain((function(x) {
                 return m.of(({
                     x: x,
                     s: s
                 }));
-            })));
+            }));
         }));
     }));
     StateMonad(Instance, new(Instance)((function(s) {
-        return Trampoline.of(m.of(({
+        return m.of(({
             x: s,
             s: s
-        })));
+        }));
     })), (function(s) {
         return new(Instance)((function(_) {
-            return Trampoline.of(m.of(({
+            return m.of(({
                 x: s,
                 s: s
-            })));
+            }));
         }));
     }));
-    return Instance;
+    var X = Codensity(Instance),
+        x = X.lift,
+        y = Instance.lift;
+    (X.prototype.lift = (function(x0) {
+        return x(y(x0));
+    }));
+    (X.lift = X.prototype.lift);
+    (X.inner = m);
+    LiftInner(X, m, X.lift);
+    return X;
 }));
-var y = run;
-(StateT.runStateT = (function() {
-    return y(runStateT.apply(null, arguments));
+(StateT.runStateT = (function(m, s) {
+    var m0 = Codensity.runCodensity(m, (function(c) {
+        return m.inner.of(c);
+    }));
+    return m0.run(s);
 }));
-var x = StateT.runStateT;
+var x = StateT.runStateT,
+    y = map.bind(null, (function(__o1) {
+        var x0 = __o1["x"];
+        return x0;
+    }));
 (StateT.evalStateT = (function() {
-    var n = x.apply(null, arguments);
-    return n.chain((function(__o0) {
-        var x0 = __o0["x"];
-        return n.of(x0);
-    }));
+    return y(x.apply(null, arguments));
 }));
-var x0 = StateT.runStateT;
-(StateT.execStateT = (function() {
-    var n = x0.apply(null, arguments);
-    return n.chain((function(__o0) {
-        var s = __o0["s"];
-        return n.of(s);
+var x0 = StateT.runStateT,
+    y0 = map.bind(null, (function(__o1) {
+        var s = __o1["s"];
+        return s;
     }));
+(StateT.execStateT = (function() {
+    return y0(x0.apply(null, arguments));
 }));
 (module.exports = StateT);

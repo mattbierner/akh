@@ -15,7 +15,10 @@ define(["require", "exports", "../base", "../structure"], (function(require, exp
         }),
         concat = Function.prototype.call.bind(Array.prototype.concat),
         flatten = Function.prototype.apply.bind(Array.prototype.concat, []),
-        flattenM = liftM.bind(null, flatten);
+        flattenM = liftM.bind(null, flatten),
+        runListT = (function(x) {
+            return x.run;
+        });
     (ListT = (function(m) {
         var f, z, Instance = (function(run) {
                 var self = this;
@@ -31,16 +34,16 @@ define(["require", "exports", "../base", "../structure"], (function(require, exp
             });
         Monoid(Instance, new(Instance)(m.of([])), (function(b) {
             var a = this;
-            return new(Instance)(liftM2(concat, ListT.runListT(a), ListT.runListT(b)));
+            return new(Instance)(liftM2(concat, a.run, b.run));
         }));
         Monad(Instance, (function(x) {
             return new(Instance)(m.of([x]));
         }), (function(f0) {
-            var y, c = this;
-            return new(Instance)(flattenM(ListT.runListT(c)
-                .chain(mapM.bind(null, ((y = ListT.runListT), (function(x) {
-                    return y(f0(x));
-                }))))));
+            var c = this;
+            return new(Instance)(flattenM(c.run.chain(mapM.bind(null, (function(x) {
+                var x0 = f0(x);
+                return x0.run;
+            })))));
         }));
         Transformer(Instance, m, (function(t) {
             return new(Instance)(liftM((function(x) {
@@ -49,8 +52,6 @@ define(["require", "exports", "../base", "../structure"], (function(require, exp
         }));
         return Instance;
     }));
-    (ListT.runListT = (function(x) {
-        return x.run;
-    }));
+    (ListT.runListT = runListT);
     return ListT;
 }));

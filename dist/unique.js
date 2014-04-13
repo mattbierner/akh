@@ -2,12 +2,12 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/unique.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "./trans/unique", "./trampoline"], (function(require, exports, UniqueT, Trampoline) {
+define(["require", "exports", "./trans/unique", "./identity"], (function(require, exports, UniqueT, Identity) {
     "use strict";
     var Unique;
-    (Unique = UniqueT(Trampoline));
+    (Unique = UniqueT(Identity));
     var x = UniqueT.runUniqueT,
-        y = Trampoline.run;
+        y = Identity.runIdentity;
     (Unique.runUnique = (function() {
         return y(x.apply(null, arguments));
     }));

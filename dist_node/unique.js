@@ -4,11 +4,11 @@
 */
 "use strict";
 var UniqueT = require("./trans/unique"),
-    Trampoline = require("./trampoline"),
+    Identity = require("./identity"),
     Unique;
-(Unique = UniqueT(Trampoline));
+(Unique = UniqueT(Identity));
 var x = UniqueT.runUniqueT,
-    y = Trampoline.run;
+    y = Identity.runIdentity;
 (Unique.runUnique = (function() {
     return y(x.apply(null, arguments));
 }));

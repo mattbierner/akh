@@ -23,13 +23,15 @@ var flattenM := liftM @ flatten;
 
 /* Transformer
  ******************************************************************************/
+var runListT := (.run);
+
 /**
  * List monad transformer.
  * 
  * @param m Base monad.
  */
-ListT = \m -> {
-    var Instance = function \run =self-> {
+ListT := \m -> {
+    var Instance := function \run =self-> {
         self.run = run;
     };
 
@@ -43,7 +45,9 @@ ListT = \m -> {
         
         \b =a->
             new Instance (
-                liftM2(concat, ListT.runListT(a), ListT.runListT(b))));
+                liftM2(concat,
+                    runListT a,
+                    runListT b)));
     
     Monad(Instance,
         \x ->
@@ -52,8 +56,8 @@ ListT = \m -> {
         
         \f =c->
             new Instance (
-                ListT.runListT(c)
-                    .chain(mapM @ (f \> ListT.runListT))
+                runListT(c)
+                    .chain(mapM @ (f \> runListT))
                     |> flattenM));
     
     Transformer(Instance, m,
@@ -71,6 +75,6 @@ ListT = \m -> {
  * 
  * @param m ListT computation.
  */
-ListT.runListT = (.run);
+ListT.runListT = runListT;
 
 }

@@ -1,5 +1,11 @@
 # ChangeLog
 
+ ## 2.0.0 - April XX, 2014
+* Added `Codensity` monad.
+* Split interfaces into own files. `akh::spec::*`.
+* Autolifting of state `get` `put` and `modify` in most base types.
+*
+
  ## 1.1.2 - April 10, 2014
 * Performance improvements though recompile with khepri V0.23.0
 
