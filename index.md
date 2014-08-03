@@ -8,7 +8,7 @@ layout: base
     
     <ol>
         <li>Large flightless bird found in <a href='https://github.com/fantasyland/fantasy-land'>Fantasy Land</a></li>
-        <li>Javascript <a> href='https://en.wikibooks.org/wiki/Haskell/Monad_transformers'>monad transformer</a> library. Puts monads in your monads so you can compute while you compute.</li>
+        <li>Javascript <a href='https://en.wikibooks.org/wiki/Haskell/Monad_transformers'>monad transformer</a> library. Puts monads in your monads so you can compute while you compute.</li>
     </ol>
 </div>
 
