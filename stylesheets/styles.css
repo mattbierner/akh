@@ -501,7 +501,7 @@ h3 {
 }
 
 a {
-  color: #5cb09e;
+  color: #55a3d8;
   font-weight: 400;
   text-decoration: none;
 }
@@ -632,6 +632,10 @@ code, pre {
 
 pre {
   overflow-x: auto;
+  background: #f7f7f7;
+  border-radius: 2px;
+  border: 1px solid #f1f1f1;
+  padding: 0 0.5rem;
 }
 
 section {
