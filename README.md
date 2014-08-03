@@ -46,7 +46,7 @@ var c =
          .map(_ +, 'aa');
 
 // Run the computation to get list of state value pairs
-run(c, 'initial_state');
+run(c, 'state');
 [
     {'x': '1aa', 's': 'state1xyz'},
     {'x': '3aa', 's': 'new_state'},
@@ -102,7 +102,6 @@ require(['akh/list'], function(List) {
 * DCont - `akh::dcont` - Delimited continuation computation. (Monad, Functor, Applicative Functor)
 * EitherT - `akh::either` - Either computation. (Monad, Functor, Applicative Functor)
 * ErrorT - `akh::error` - Error computation. (Monad, Functor, Applicative Functor)
-* Trampoline - `akh::trampoline` Trampolined computation (Monad, Functor, Applicative Functor)
 * Unique - `akh::unique` Get Unique int (Monad, Monoid, Functor, Applicative Functor)
 
 

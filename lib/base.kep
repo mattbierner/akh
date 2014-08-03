@@ -10,12 +10,17 @@ package (
     liftA
     liftA2
     
+    compose
+    composer
+    
     next
     sequencea
     sequence)
 {
 
 var constant := \x -> \ -> x;
+
+var flip := \f -> \x y -> f(y, x);
 
 /* Generic versions of ops
  ******************************************************************************/
@@ -68,6 +73,20 @@ liftA2 := \f a1 a2 ->
     a1.of(\x -> \y -> f(x, y))
         .ap(a1)
         .ap(a2);
+
+/* Composition
+ ******************************************************************************/
+/**
+ * Left-to-right Kleisli composition.
+ */
+compose := \f g ->
+    \x ->
+        f(x).chain(g);
+
+/**
+ * right-to-right Kleisli composition.
+ */
+composer := flip compose;
 
 /* Monad Sequencing
  ******************************************************************************/
