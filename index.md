@@ -21,7 +21,7 @@ error, and list monads in Javascript.
 But beyond toy examples, real world problems often require functionality from one
 or more of these structures. A networked application may require both error handling and IO,
 or an algorithm implementation may use state, error handling, and continuation control.
-Monad transformers allow us to compose these simple structures together in a maintainable and flexible way.
+**Monad transformers allow us to compose simple structures in a maintainable and flexible way.**
 
 
 ## What Can Your Akh Do for You?
@@ -33,7 +33,10 @@ Akh includes a basic set of monad transformers and monads derived from these
 transformers. Akh structures follow the [Fantasy Land][fl] specification.
 
 This example shows using the `StateT` transformer on a `List` monad to create
-brachable, stateful computations. The example is in [Khepri][khepri] but regular js works fine too.
+brachable, stateful computations. The example is in [Khepri][khepri], but plain
+old JS works fine too. Akh supports both [node][npm] and[AMD][amd].
+
+
 
 ``` javascript
 with
@@ -67,7 +70,7 @@ run(c, 'initial_state');
 }
 ```
 
-Results:
+Results from `c`:
 
 ``` javascript
 [
@@ -78,9 +81,48 @@ Results:
 ]
 ```
 
+## What's up Akh?
+See [Fantasy Land][fl] for the type specifications and the [Documentation][documentation]
+for more comprehensive descriptions and examples.
+
+#### Monad Transformers
+* IdentityT - `akh::trans::identity` - Transforms a monad to itself *(Monad, Functor, Applicative Functor)*
+* StateT - `akh::trans::state` - Adds state to a computation *(Monad, Monoid, Functor, Applicative Functor)*
+* ListT - `akh::trans::list` - Makes a computation operate on lists*(Monad, Monoid, Functor, Applicative Functor)*
+* ContT - `akh::trans::cont` - Adds continuation control (Monad, Functor, Applicative Functor)*
+* DContT - `akh::trans::dcont` - Adds delimited continuation control  *(Monad, Functor, Applicative Functor)*
+* EitherT - `akh::trans::either` - Adds choice to computation *(Monad, Monoid, Functor, Applicative Functor)*
+* ErrorT - `akh::trans::error` - Adds Error handling to computation *(Monad, Monoid, Functor, Applicative Functor)*
+
+#### Monads
+* Identity - `akh::identity` - Identity computation *(Monad, Functor, Applicative Functor)*
+* State - `akh::state` - Stateful computation *(Monad, Functor, Applicative Functor)*
+* List - `akh::list` - List computation *(Monad, Monoid, Functor, Applicative Functor)*
+* Cont - `akh::cont` - Continuation computation *(Monad, Functor, Applicative Functor)*
+* DCont - `akh::dcont` - Delimited continuation computation *(Monad, Functor, Applicative Functor)*
+* EitherT - `akh::either` - Either computation *(Monad, Functor, Applicative Functor)*
+* ErrorT - `akh::error` - Error computation *(Monad, Functor, Applicative Functor)*
+
+#### Utilities
+* Codensity - `akh::trans::codensity` - Reassociates a monad to prevent stack issues *(Monad, Monid, Functor, Applicative Functor)*
+
+
+## What Can You Do For Your Akh?
+Thanks for asking.
+
+Improvement and additions to Akh are welcome. Please report any [issues][issues]
+or send a pull request.
+
+
 
 [khepri]: http://khepri-lang.com
+
+[npm]: https://www.npmjs.org/package/akh
+[issues]: https://github.com/mattbierner/akh/issues
 [documentation]: https://github.com/mattbierner/akh/wiki
+
 [monadtransformers]:https://en.wikibooks.org/wiki/Haskell/Monad_transformers
+
 [fl]: https://github.com/fantasyland/fantasy-land
+[amd]: https://github.com/amdjs/amdjs-api/wiki/AMD
 
