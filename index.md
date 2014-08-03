@@ -34,7 +34,7 @@ transformers. Akh structures follow the [Fantasy Land][fl] specification.
 
 This example shows using the `StateT` transformer on a `List` monad to create
 brachable, stateful computations. The example is in [Khepri][khepri], but plain
-old JS works fine too. Akh supports both [node][npm] and[AMD][amd].
+old JS works fine too. Akh supports both [node][npm] and [AMD][amd].
 
 
 
@@ -88,7 +88,7 @@ for more comprehensive descriptions and examples.
 #### Monad Transformers
 * IdentityT - `akh::trans::identity` - Transforms a monad to itself *(Monad, Functor, Applicative Functor)*
 * StateT - `akh::trans::state` - Adds state to a computation *(Monad, Monoid, Functor, Applicative Functor)*
-* ListT - `akh::trans::list` - Makes a computation operate on lists*(Monad, Monoid, Functor, Applicative Functor)*
+* ListT - `akh::trans::list` - Makes a computation operate on lists *(Monad, Monoid, Functor, Applicative Functor)*
 * ContT - `akh::trans::cont` - Adds continuation control (Monad, Functor, Applicative Functor)*
 * DContT - `akh::trans::dcont` - Adds delimited continuation control  *(Monad, Functor, Applicative Functor)*
 * EitherT - `akh::trans::either` - Adds choice to computation *(Monad, Monoid, Functor, Applicative Functor)*
@@ -107,7 +107,7 @@ for more comprehensive descriptions and examples.
 * Codensity - `akh::trans::codensity` - Reassociates a monad to prevent stack issues *(Monad, Monid, Functor, Applicative Functor)*
 
 
-## What Can You Do For Your Akh?
+## What Can You Do For Your Akh? 
 Thanks for asking.
 
 Improvement and additions to Akh are welcome. Please report any [issues][issues]
