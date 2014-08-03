@@ -641,52 +641,6 @@ section {
   margin-top: 70px;
 }
 
-article h1,
-article h2 {
-    width: 100%;
-    clear: both;
-}
-
-article > h3,
-article > p {
-    width: 50%;
-    float: left;
-    clear: both;
-    padding: 0 1.4rem;
-}
-
-article .highlight {
-    float: right;
-    width: 50%;
-    clear: right;
-    margin-bottom: 1rem;
-}
-
-article p:first-child {
-    width: 100%;
-    font-style: normal;
-    padding-left: 0;
-    padding-right: 0;
-    margin-bottom: 1rem;
-    font-size: 1rem;
-}
-
-article > h3 {
-    margin: 0;
-    line-height: 1.2rem;
-}
-
-article p {
-    font-style: italic;
-    font-size: 0.85rem;
-}
-
-article h2 + p {
-    width: 100%;
-    font-style: normal;
-}
-
-
 
 footer.wrapper {
     text-align: center;
@@ -701,31 +655,6 @@ footer p {
 
 
 @media print, screen and (max-width: 580px) {
- 
-article > h3,
-article > p,
-article .highlight {
-    width: 100%;
-    float: none;
-    clear: none;
-    
-}
-
-article > h3,
-article > p {
-    padding: 0;
-    margin-bottom: 0.2rem;
-}
-
-article .highlight {
-    margin-bottom: 0.8rem;
-    background: #f7f7f7;
-    padding: 0.2rem;
-}
-
-article .highlight pre {
-    margin-bottom: 0;
-}
 
 
 
