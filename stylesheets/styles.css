@@ -529,14 +529,12 @@ strong {
 }
 
 header.wrapper {
-    margin-top: 2em;
     padding-bottom: 1.2rem;
 }
 
 header #title {
-    display: table;
-    float: left;
     color: #333;
+    margin-top: 2em;
     padding-bottom: 1.2rem;
 }
 
@@ -545,31 +543,18 @@ header #links {
 }
 
 header #logo {
-    float: left;
-    width: 10rem;
-    height: 10rem;
-    line-height: 10rem;
+    width: 100%;
     text-align: center;
-    vertical-align: middle;
-    border-radius: 1000px;
-    background: #33b6ff;
 }
 
-header #logo-text {
-    display: inline-block;
-    padding: 0;
-    vertical-align: middle;
-    font-size: 3rem;
-    font-weight: 200;
-    color: #fdfdfd;
+header #logo img {
+    width: 240px;
+    heigh: auto;
 }
 
 header #title-text {
-    display: table-cell;
-    vertical-align: middle;
-    margin: 0;
-    padding: 0;
-    padding-left: 0.8rem;
+    width: 100%;
+    text-align: center;
     color: #222;
     
 }
@@ -585,6 +570,9 @@ header #blurb {
 
 header #version {
     font-size: 0.85em;
+    position: absolute;
+    top: 0;
+    right: 0;
  }
 
 
