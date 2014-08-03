@@ -3,10 +3,14 @@ layout: base
 ---
 
 
-Nu is small (~1k gzipped) Javascript library for creating and operating on lazy,
-potentially infinite streams.  Streams are a simple **ordered sequence abstraction**,
-that are both **lazy** and **persistent**.
-
+<div id='subheader'>
+    <div><span>Akh</span> - noun</div>
+    
+    <ol>
+        <li>Large flightless bird found in <a href='https://github.com/fantasyland/fantasy-land'>Fantasy Land</a></li>
+        <li>Javascript <a> href='https://en.wikibooks.org/wiki/Haskell/Monad_transformers'>monad transformer</a> library. Puts monads in your monads so you can compute while you compute.</li>
+    </ol>
+</div>
 
 ## Knowledge, Pure Foundation
 
@@ -491,6 +495,7 @@ functionality such as  `concat`, memoizing streams, and `reduce` can be found in
 the [documentation][documentation].
 
 
-[documentation]: https://github.com/mattbierner/nu/wiki
-
+[documentation]: https://github.com/mattbierner/akh/wiki
+[monadtransformers]:https://en.wikibooks.org/wiki/Haskell/Monad_transformers
+[fl]: https://github.com/fantasyland/fantasy-land
 
