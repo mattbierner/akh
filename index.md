@@ -13,7 +13,7 @@ layout: base
 </div>
 
 
-## Monad Transformers?
+## Monad transformers?
 Even in untyped, non-functional language like Javascript, monads are an extremely
 useful abstraction. It is fairly trivial to define and use monads like the state,
 error, and list monads in Javascript.
@@ -24,18 +24,18 @@ or an algorithm implementation may use state, error handling, and continuation c
 **Monad transformers allow us to compose simple structures in a maintainable and flexible way.**
 
 
-## What Can Your Akh Do for You?
+## What can your Akh do for you?
 <a href="https://github.com/fantasyland/fantasy-land">
     <img src="https://raw.github.com/fantasyland/fantasy-land/master/logo.png" align="right" width="82px" height="82px" alt="Fantasy Land logo" />
 </a>
 
-Akh includes a basic set of monad transformers and monads derived from these
-transformers. Akh structures follow the [Fantasy Land][fl] specification.
+Akh includes a [basic set][documentation] of common monad transformers, 
+along with monads derived from these transformers. Akh structures implement the
+[Fantasy Land][fl] specification. Akh supports both [Node][npm] and [AMD][amd] style packages.
 
 This example shows using the `StateT` transformer on a `List` monad to create
 brachable, stateful computations. The example is in [Khepri][khepri], but plain
-old JS works fine too. Akh supports both [node][npm] and [AMD][amd].
-
+old JS works fine too.
 
 
 ``` javascript
@@ -107,7 +107,7 @@ for more comprehensive descriptions and examples.
 * Codensity - `akh::trans::codensity` - Reassociates a monad to prevent stack issues *(Monad, Monid, Functor, Applicative Functor)*
 
 
-## What Can You Do For Your Akh? 
+## What can you do for your Akh? 
 Thanks for asking.
 
 Improvement and additions to Akh are welcome. Please report any [issues][issues]
