@@ -60,7 +60,7 @@ var c = M.of(1)
     .concat(
          M.put('new_state').map(\ -> 3),
          M.of 10,
-         M.get // get the current state)
+         M.get) // get the current state
      
      // And operate on them
      .map(_ + 'aa');
@@ -74,10 +74,10 @@ Results from `c`:
 
 ``` javascript
 [
-    {'x': '1aa', 's': 'state1xyz'},
+    {'x': '1aa', 's': 'initial_state1xyz'},
     {'x': '3aa', 's': 'new_state'},
-    {'x': '10aa', 's': 'state1xyz'}
-    {'x': 'state1xyzaa', 's': 'state1xyz'}
+    {'x': '10aa', 's': 'initial_state1xyz'}
+    {'x': 'initial_state1xyzaa', 's': 'initial_state1xyz'}
 ]
 ```
 
