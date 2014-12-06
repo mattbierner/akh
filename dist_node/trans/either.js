@@ -4,29 +4,29 @@
 */
 "use strict";
 var __o = require("../structure"),
-    Monad = __o["Monad"],
-    Monoid = __o["Monoid"],
-    Transformer = __o["Transformer"],
     EitherMonad = require("../spec/either"),
     StateMonad = require("../spec/state"),
-    EitherT;
+    EitherT, Monad = __o["Monad"],
+    Monoid = __o["Monoid"],
+    Transformer = __o["Transformer"];
 (EitherT = (function(m) {
     var x, x0, x1, Instance = (function(run) {
             var self = this;
             (self.run = run);
         });
-    Monad(Instance, ((x = m.of), (function(x0) {
-        var x1 = ({
+    Monad(Instance, ((x = m.of), (function(z) {
+        var z0 = ({
             right: true,
-            x: x0
+            x: z
         }),
-            y = x(x1);
+            y = x(z0);
         return new(Instance)(y);
     })), (function(f) {
         var c = this;
         return new(Instance)(c.run.chain((function(__o0) {
-            var x1, right = __o0["right"],
-                x0 = __o0["x"];
+            var right = __o0["right"],
+                x0 = __o0["x"],
+                x1;
             return (right ? ((x1 = f(x0)), x1.run) : m.of(({
                 right: false,
                 x: x0
@@ -55,12 +55,12 @@ var __o = require("../structure"),
             }));
         })));
     }));
-    EitherMonad(Instance, ((x1 = m.of), (function(x2) {
-        var x3 = ({
+    EitherMonad(Instance, ((x1 = m.of), (function(z) {
+        var z0 = ({
             right: false,
-            x: x2
+            x: z
         }),
-            y = x1(x3);
+            y = x1(z0);
         return new(Instance)(y);
     })), Instance.of);
     StateMonad.tryLiftState(Instance, m);

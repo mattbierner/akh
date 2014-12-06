@@ -44,7 +44,6 @@ Chain = \Instance chain -> {
     return Instance;
 };
 
-
 /**
  * Define functor of `Instance`.
  */

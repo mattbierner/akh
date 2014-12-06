@@ -5,11 +5,11 @@
 define(["require", "exports", "../structure", "../base", "../spec/state"], (function(require, exports, __o, __o0,
     StateMonad) {
     "use strict";
-    var Monad = __o["Monad"],
+    var StateT, Monad = __o["Monad"],
         Monoid = __o["Monoid"],
         Transformer = __o["Transformer"],
         map = __o0["map"],
-        StateT, runStateT = (function(m, s) {
+        runStateT = (function(m, s) {
             return m.run(s);
         });
     (StateT = (function(m) {
@@ -72,20 +72,20 @@ define(["require", "exports", "../structure", "../base", "../spec/state"], (func
     }));
     (StateT.runStateT = runStateT);
     var x = StateT.runStateT,
-        y = map.bind(null, (function(__o1) {
-            var x0 = __o1["x"];
-            return x0;
+        y = map.bind(null, (function(x0) {
+            return x0.x;
         }));
     (StateT.evalStateT = (function() {
-        return y(x.apply(null, arguments));
+        var args = arguments;
+        return y(x.apply(null, args));
     }));
     var x0 = StateT.runStateT,
-        y0 = map.bind(null, (function(__o1) {
-            var s = __o1["s"];
-            return s;
+        y0 = map.bind(null, (function(x1) {
+            return x1.s;
         }));
     (StateT.execStateT = (function() {
-        return y0(x0.apply(null, arguments));
+        var args = arguments;
+        return y0(x0.apply(null, args));
     }));
     return StateT;
 }));

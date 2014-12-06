@@ -105,6 +105,6 @@ sequencea := \arr -> Array.prototype.reduce.call(arr, next);
 /**
  * Perform a sequence of computations from arguments left to right.
  */
-sequence := \args(...) -> sequencea(args);
+sequence := \-args(...)-> sequencea(args);
 
 }

@@ -4,17 +4,17 @@
 */
 "use strict";
 var __o = require("../structure"),
-    LiftInner = __o["LiftInner"],
     __o0 = require("../base"),
-    map = __o0["map"],
     Codensity = require("./codensity"),
     StateI = require("./statei"),
-    StateT, CodensityProxy = (function(Instance, m) {
+    StateT, LiftInner = __o["LiftInner"],
+    map = __o0["map"],
+    CodensityProxy = (function(Instance, m) {
         var X = Codensity(Instance),
             x = X.lift,
             y = Instance.lift;
-        (X.prototype.lift = (function(x0) {
-            return x(y(x0));
+        (X.prototype.lift = (function(z) {
+            return x(y(z));
         }));
         (X.lift = X.prototype.lift);
         (X.inner = m);
@@ -28,19 +28,19 @@ var __o = require("../structure"),
     return StateI.runStateT(Codensity.runCodensity(m, m.inner.of), s);
 }));
 var x = StateT.runStateT,
-    y = map.bind(null, (function(__o1) {
-        var x0 = __o1["x"];
-        return x0;
+    y = map.bind(null, (function(x0) {
+        return x0.x;
     }));
 (StateT.evalStateT = (function() {
-    return y(x.apply(null, arguments));
+    var args = arguments;
+    return y(x.apply(null, args));
 }));
 var x0 = StateT.runStateT,
-    y0 = map.bind(null, (function(__o1) {
-        var s = __o1["s"];
-        return s;
+    y0 = map.bind(null, (function(x1) {
+        return x1.x;
     }));
 (StateT.execStateT = (function() {
-    return y0(x0.apply(null, arguments));
+    var args = arguments;
+    return y0(x0.apply(null, args));
 }));
 (module.exports = StateT);

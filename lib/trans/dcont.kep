@@ -75,7 +75,7 @@ var splitSeq := \t k -> {
         return [empty, xs];
     
     return let
-        [a, b] = splitSeq(t, xs)
+        [a b] = splitSeq(t, xs)
     in
         [push(x, a), b];
 };
@@ -140,12 +140,12 @@ DContT = \m -> {
         new Instance\k ->
             M.unique.chain(appk @ k \> trampoline),
         
-        // pushPrompt;
+        // pushPrompt
         \prompt c ->
             new Instance\k ->
                 unDContT(c, pushP(prompt, k)),
         
-        // withSubCont;
+        // withSubCont
         \prompt f ->
             new Instance\k -> let
                 [x, xs] = splitSeq(prompt, k)

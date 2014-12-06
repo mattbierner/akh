@@ -84,7 +84,7 @@ StateT.runStateT = runStateT;
  * @param m StateT computation.
  * @param s Initial state.
  */
-StateT.evalStateT = StateT.runStateT \>> map @ \ {x} -> x;
+StateT.evalStateT = StateT.runStateT \>> map @ .x;
 
 /**
  * Perform a stateful computation and return resulting state.
@@ -92,6 +92,6 @@ StateT.evalStateT = StateT.runStateT \>> map @ \ {x} -> x;
  * @param m StateT computation.
  * @param s Initial state.
  */
-StateT.execStateT = StateT.runStateT \>> map @ \ {s} -> s;
+StateT.execStateT = StateT.runStateT \>> map @ .s;
 
 }

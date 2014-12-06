@@ -74,3 +74,31 @@ exports.concat = function(test) {
     test.done();
 };
 
+
+exports.many_chain = function(test) {
+    var c = M.of(0);
+    
+    for (var i = 0; i < 100000; ++i) {
+        c = c.map(function(x) {
+            return x + 1;
+        });
+    }
+    
+    test.deepEqual(
+        runState(c, 's'),
+        [{'x': 100000, 's': 's'}]);
+    test.done();
+};
+
+exports.many_chain_inner = function(test) {
+    var f = function(x) {
+        if (x > 10000) return M.of(x);
+        return M.of(x + 1).chain(f);
+    }
+    
+    test.deepEqual(
+        runState(f(0), 0),
+        [{'x': 10001, 's': 0}]);
+    
+    test.done();
+};

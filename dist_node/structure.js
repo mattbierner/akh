@@ -4,8 +4,8 @@
 */
 "use strict";
 var base = require("./base"),
-    liftA2 = base["liftA2"],
-    Applicative, Chain, Functor, Monad, Monoid, Semigroup, LiftInner, Transformer, __curry = (function(x, y) {
+    Applicative, Chain, Functor, Monad, Monoid, Semigroup, LiftInner, Transformer, liftA2 = base["liftA2"],
+    __curry = (function(x, y) {
         return x.bind(null, y);
     });
 (Applicative = (function(Instance, of, ap) {
@@ -47,8 +47,8 @@ var base = require("./base"),
     Chain(Instance, chain);
     Functor(Instance, (Instance.prototype.map || (function(f) {
         var y, m = this;
-        return m.chain(((y = m.of), (function(x) {
-            return y(f(x));
+        return m.chain(((y = m.of), (function(z) {
+            return y(f(z));
         })));
     })));
     Applicative(Instance, of, (Instance.prototype.ap || (function(m) {
@@ -67,8 +67,8 @@ var base = require("./base"),
 var liftInner = (function(lift, outer, inner) {
     if (inner.liftInner) {
         var y;
-        (outer.liftInner = liftInner(lift, ((y = inner.liftInner), (function(x) {
-            return lift(y(x));
+        (outer.liftInner = liftInner(lift, ((y = inner.liftInner), (function(z) {
+            return lift(y(z));
         })), inner.liftInner));
     }
     return outer;
@@ -76,8 +76,8 @@ var liftInner = (function(lift, outer, inner) {
 (LiftInner = (function(Instance, m, lift) {
     if (m.lift) {
         var y;
-        (Instance.prototype.liftInner = liftInner(lift, ((y = m.lift), (function(x) {
-            return lift(y(x));
+        (Instance.prototype.liftInner = liftInner(lift, ((y = m.lift), (function(z) {
+            return lift(y(z));
         })), m));
         (Instance.liftInner = Instance.prototype.liftInner);
     }

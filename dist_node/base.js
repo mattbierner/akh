@@ -57,7 +57,8 @@ var chain, map, ap, concat, liftM, liftM2, liftA, liftA2, compose, composer, nex
 (sequencea = (function(arr) {
     return Array.prototype.reduce.call(arr, next);
 }));
-(sequence = (function(args) {
+(sequence = (function() {
+    var args = arguments;
     return Array.prototype.reduce.call(args, next);
 }));
 (exports["chain"] = chain);

@@ -4,13 +4,13 @@
 */
 "use strict";
 var __o = require("../structure"),
-    Monad = __o["Monad"],
+    __o0 = require("../base"),
+    StateMonad = require("../spec/state"),
+    StateT, Monad = __o["Monad"],
     Monoid = __o["Monoid"],
     Transformer = __o["Transformer"],
-    __o0 = require("../base"),
     map = __o0["map"],
-    StateMonad = require("../spec/state"),
-    StateT, runStateT = (function(m, s) {
+    runStateT = (function(m, s) {
         return m.run(s);
     });
 (StateT = (function(m) {
@@ -73,19 +73,19 @@ var __o = require("../structure"),
 }));
 (StateT.runStateT = runStateT);
 var x = StateT.runStateT,
-    y = map.bind(null, (function(__o1) {
-        var x0 = __o1["x"];
-        return x0;
+    y = map.bind(null, (function(x0) {
+        return x0.x;
     }));
 (StateT.evalStateT = (function() {
-    return y(x.apply(null, arguments));
+    var args = arguments;
+    return y(x.apply(null, args));
 }));
 var x0 = StateT.runStateT,
-    y0 = map.bind(null, (function(__o1) {
-        var s = __o1["s"];
-        return s;
+    y0 = map.bind(null, (function(x1) {
+        return x1.s;
     }));
 (StateT.execStateT = (function() {
-    return y0(x0.apply(null, arguments));
+    var args = arguments;
+    return y0(x0.apply(null, args));
 }));
 (module.exports = StateT);

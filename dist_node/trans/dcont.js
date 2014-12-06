@@ -4,21 +4,21 @@
 */
 "use strict";
 var __o = require("nu-stream")["stream"],
-    append = __o["append"],
+    UniqueT = require("./unique"),
+    __o0 = require("../structure"),
+    DContMonad = require("../spec/dcont"),
+    __o1 = require("../_tail"),
+    DContT, append = __o["append"],
     cons = __o["cons"],
     first = __o["first"],
     rest = __o["rest"],
     isEmpty = __o["isEmpty"],
     NIL = __o["NIL"],
-    UniqueT = require("./unique"),
-    __o0 = require("../structure"),
     Monad = __o0["Monad"],
     Transformer = __o0["Transformer"],
-    DContMonad = require("../spec/dcont"),
-    __o1 = require("../_tail"),
     Tail = __o1["Tail"],
     trampoline = __o1["trampoline"],
-    DContT, x, y, Seg = (function(f) {
+    y, Seg = (function(f) {
         var self = this;
         (self.frame = f);
     }),
@@ -26,25 +26,23 @@ var __o = require("nu-stream")["stream"],
         var self = this;
         (self.prompt = t);
     }),
-    empty = NIL,
-    push = cons,
-    pushSeq = append,
     splitSeq = (function(t, k) {
-        if (isEmpty(k)) return [empty, empty];
+        if (isEmpty(k)) return [NIL, NIL];
         var x = first(k),
             xs = rest(k);
-        if (((x instanceof P) && (x.prompt === t))) return [empty, xs];
+        if (((x instanceof P) && (x.prompt === t))) return [NIL, xs];
         var __o2 = splitSeq(t, xs),
             a = __o2[0],
             b = __o2[1];
-        return [push(x, a), b];
+        return [cons(x, a), b];
     }),
     unDContT = (function(m, k) {
         return new(Tail)(m.run, k);
     }),
-    runDContT = ((x = trampoline), (y = UniqueT.runUniqueT), (function() {
-        var x0 = unDContT.apply(null, arguments);
-        return y(x(x0));
+    runDContT = ((y = UniqueT.runUniqueT), (function() {
+        var args = arguments,
+            z = unDContT.apply(null, args);
+        return y(trampoline(z));
     }));
 (DContT = (function(m) {
     var M = UniqueT(m),
@@ -52,13 +50,13 @@ var __o = require("nu-stream")["stream"],
             var self = this;
             (self.run = run);
         }),
-        appk = (function(k, x0) {
+        appk = (function(k, x) {
             var c = k;
             do {
-                if (((typeof c) === "function")) return M.of(c(x0));
+                if (((typeof c) === "function")) return M.of(c(x));
                 var top = first(c);
                 if ((top instanceof Seg)) {
-                    var m0 = top.frame(x0),
+                    var m0 = top.frame(x),
                         k0 = rest(c);
                     return new(Tail)(m0.run, k0);
                 }
@@ -66,53 +64,53 @@ var __o = require("nu-stream")["stream"],
             }
             while (true);
         });
-    Monad(Instance, (function(x0) {
+    Monad(Instance, (function(x) {
         return new(Instance)((function(k) {
-            return appk(k, x0);
+            return appk(k, x);
         }));
     }), (function(f) {
         var c = this;
         return new(Instance)((function(k) {
-            var k0 = push(new(Seg)(f), k);
+            var k0 = cons(new(Seg)(f), k);
             return new(Tail)(c.run, k0);
         }));
     }));
     Transformer(Instance, m, (function(t) {
         return new(Instance)((function(k) {
-            var x0, y0;
+            var x;
             return M.lift(t.map(trampoline))
-                .chain(((x0 = appk.bind(null, k)), (y0 = trampoline), (function(x1) {
-                    return y0(x0(x1));
+                .chain(((x = appk.bind(null, k)), (function(z) {
+                    return trampoline(x(z));
                 })));
         }));
     }));
     DContMonad(Instance, new(Instance)((function(k) {
-        var x0, y0;
-        return M.unique.chain(((x0 = appk.bind(null, k)), (y0 = trampoline), (function(x1) {
-            return y0(x0(x1));
+        var x;
+        return M.unique.chain(((x = appk.bind(null, k)), (function(z) {
+            return trampoline(x(z));
         })));
     })), (function(prompt, c) {
         return new(Instance)((function(k) {
-            var k0 = push(new(P)(prompt), k);
+            var k0 = cons(new(P)(prompt), k);
             return new(Tail)(c.run, k0);
         }));
     }), (function(prompt, f) {
         return new(Instance)((function(k) {
             var __o2 = splitSeq(prompt, k),
-                x0 = __o2[0],
+                x = __o2[0],
                 xs = __o2[1],
-                m0 = f(x0);
+                m0 = f(x);
             return new(Tail)(m0.run, xs);
         }));
     }), (function(subk, c) {
         return new(Instance)((function(k) {
-            var k0 = pushSeq(subk, k);
+            var k0 = append(subk, k);
             return new(Tail)(c.run, k0);
         }));
     }));
     return Instance;
 }));
 (DContT.runDContT = (function(m, k) {
-    return runDContT(m, push(k, empty));
+    return runDContT(m, cons(k, NIL));
 }));
 (module.exports = DContT);

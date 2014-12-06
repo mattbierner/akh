@@ -79,8 +79,6 @@ exports.modify = function(test) {
     test.done();
 };
 
-
-
 exports.many_chain = function(test) {
     var c = State.of(0);
     
