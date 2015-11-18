@@ -17,33 +17,31 @@ Collection of simple monad and monad transformers that implement [Fantasy Land's
 ### Quick Example
 Example is in [Khepri][khepri] but regular js works fine too.
 
-```
-with
-    import 'akh::list' List,
-    import 'akh::trans::state' StateT
-in {
+```js
+const List = require('akh').list;
+const StateT = require('akh').trans.state;
 
 // Define a new monad using the state transformer on the list monad.
-var M = StateT (List);
+const M = StateT(List);
 
-var run = StateT.runStateT \>> List.runList;
+const run = (c, state) => List.runList(StateT.runStateT(c, state));
 
 // Create a stateful computation
-var c =
+const c =
     M.of(1) // simple value
     
-        // modify State
-        .chain(\x ->
-            M.modify \ s -> s + x + 'xyz')
+        // modify state
+        .chain(x =>
+            M.modify(s => s + x + 'xyz'))
         
         // Branch states
         .concat(
-             M.put('new_state').map(\ -> 3),
-             M.of 10,
+             M.put('new_state').map(_ => 3),
+             M.of(10),
              M.get // get the current state)
          
          // And operate on them
-         .map(_ +, 'aa');
+         .map(x => x + 'aa');
 
 // Run the computation to get list of state value pairs
 run(c, 'state');
@@ -62,7 +60,7 @@ run(c, 'state');
 ### Node
 Node files live in `dist_node`
 
-```
+```sh
 $ npm install akh
 ```
 
@@ -70,7 +68,7 @@ $ npm install akh
 ### With AMD
 Node files live in `dist`
 
-```
+```js
 requirejs.config({
     paths: {
         'akh': './dist'
@@ -117,7 +115,7 @@ focused on functional programming that compiles to Javascript.
 Khepri sources are in `lib` directory with node output in `dist_node`
 and AMD output in `dist`.
 
-```
+```sh
 # install khepri
 $ npm install -g khepri
 
