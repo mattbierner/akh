@@ -1,5 +1,9 @@
 # ChangeLog
 
+ ## 2.0.1 - November 18, 2015
+* Fixed exec state returning value instead of state.
+* Made sure all code uses modern Khepri.
+
  ## 2.0.0 - April 13, 2014
 * Split interfaces into own files. `akh::spec::*`.
 * Autolifting of state `get` `put` and `modify` in most base types.

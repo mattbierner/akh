@@ -4,13 +4,10 @@
 */
 "use strict";
 var __o = require("../structure"),
-    Monad = __o["Monad"],
-    Monoid = __o["Monoid"],
     ErrorMonad = require("../spec/error"),
     StateMonad = require("../spec/state"),
     EitherT = require("./either"),
-    eitherT = EitherT["eitherT"],
-    ErrorT;
+    ErrorT, eitherT = EitherT["eitherT"];
 (ErrorT = (function(m) {
     var Instance = EitherT(m);
     ErrorMonad(Instance, Instance.left, (function(e) {

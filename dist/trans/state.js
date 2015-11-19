@@ -35,7 +35,7 @@ define(["require", "exports", "../structure", "../base", "./codensity", "./state
     }));
     var x0 = StateT.runStateT,
         y0 = map.bind(null, (function(x1) {
-            return x1.x;
+            return x1.s;
         }));
     (StateT.execStateT = (function() {
         var args = arguments;

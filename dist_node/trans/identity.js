@@ -4,10 +4,10 @@
 */
 "use strict";
 var __o = require("../structure"),
-    Monad = __o["Monad"],
+    Identity, Monad = __o["Monad"],
     Monoid = __o["Monoid"],
     Transformer = __o["Transformer"],
-    Identity, runIdentityT = (function(x) {
+    runIdentityT = (function(x) {
         return x.value;
     });
 (Identity = (function(m) {
@@ -15,14 +15,14 @@ var __o = require("../structure"),
             var self = this;
             (self.value = x);
         });
-    Monad(Instance, ((y = m.of), (function(x) {
-        var y0 = y(x);
+    Monad(Instance, ((y = m.of), (function(z) {
+        var y0 = y(z);
         return new(Instance)(y0);
     })), (function(f) {
         var c = this;
-        return new(Instance)(c.value.chain((function(x) {
-            var x0 = f(x);
-            return x0.value;
+        return new(Instance)(c.value.chain((function(z) {
+            var x = f(z);
+            return x.value;
         })));
     }));
     Monoid(Instance, new(Instance)(m.zero), (function(b) {

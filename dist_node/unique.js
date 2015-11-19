@@ -10,6 +10,7 @@ var UniqueT = require("./trans/unique"),
 var x = UniqueT.runUniqueT,
     y = Identity.runIdentity;
 (Unique.runUnique = (function() {
-    return y(x.apply(null, arguments));
+    var args = arguments;
+    return y(x.apply(null, args));
 }));
 (module.exports = Unique);

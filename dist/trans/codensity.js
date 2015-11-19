@@ -5,12 +5,12 @@
 define(["require", "exports", "../structure", "../_tail", "../spec/state"], (function(require, exports, __o, __o0,
     StateMonad) {
     "use strict";
-    var Monad = __o["Monad"],
+    var Codensity, Monad = __o["Monad"],
         Monoid = __o["Monoid"],
         Transformer = __o["Transformer"],
         Tail = __o0["Tail"],
         trampoline = __o0["trampoline"],
-        Codensity, runCodensity = (function(m, k) {
+        runCodensity = (function(m, k) {
             return new(Tail)(m.run, k);
         });
     (Codensity = (function(m) {
@@ -43,18 +43,17 @@ define(["require", "exports", "../structure", "../_tail", "../spec/state"], (fun
         }));
         Transformer(Instance, m, (function(c) {
             return new(Instance)((function(k) {
-                var y;
-                return c.chain(((y = trampoline), (function(x) {
-                    return y(k(x));
-                })));
+                return c.chain((function(z) {
+                    return trampoline(k(z));
+                }));
             }));
         }));
         StateMonad.tryLiftState(Instance, m);
         return Instance;
     }));
-    var y = trampoline;
     (Codensity.runCodensity = (function() {
-        return y(runCodensity.apply(null, arguments));
+        var args = arguments;
+        return trampoline(runCodensity.apply(null, args));
     }));
     return Codensity;
 }));

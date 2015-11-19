@@ -58,6 +58,6 @@ StateT.evalStateT = StateT.runStateT \>> map @ .x;
  * @param m StateT computation.
  * @param s Initial state.
  */
-StateT.execStateT = StateT.runStateT \>> map @ .x;
+StateT.execStateT = StateT.runStateT \>> map @ .s;
 
 }

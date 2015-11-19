@@ -5,13 +5,12 @@
 define(["require", "exports", "../base", "../structure", "../spec/state"], (function(require, exports, __o, __o0,
     StateMonad) {
     "use strict";
-    var liftM = __o["liftM"],
+    var ListT, liftM = __o["liftM"],
         liftM2 = __o["liftM2"],
-        Functor = __o0["Functor"],
         Monoid = __o0["Monoid"],
         Monad = __o0["Monad"],
         Transformer = __o0["Transformer"],
-        ListT, map = (function(f, a) {
+        map = (function(f, a) {
             return Array.prototype.map.call(a, f);
         }),
         concat = Function.prototype.call.bind(Array.prototype.concat),
@@ -31,7 +30,8 @@ define(["require", "exports", "../base", "../structure", "../spec/state"], (func
                 return Array.prototype.reduceRight.call(a, f, z);
             })),
             mapM = (function() {
-                return sequence(map.apply(null, arguments));
+                var args = arguments;
+                return sequence(map.apply(null, args));
             });
         Monoid(Instance, new(Instance)(m.of([])), (function(b) {
             var a = this;
@@ -41,9 +41,9 @@ define(["require", "exports", "../base", "../structure", "../spec/state"], (func
             return new(Instance)(m.of([x]));
         }), (function(f0) {
             var c = this;
-            return new(Instance)(flattenM(c.run.chain(mapM.bind(null, (function(x) {
-                var x0 = f0(x);
-                return x0.run;
+            return new(Instance)(flattenM(c.run.chain(mapM.bind(null, (function(z0) {
+                var x = f0(z0);
+                return x.run;
             })))));
         }));
         Transformer(Instance, m, (function(t) {

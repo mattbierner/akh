@@ -4,9 +4,7 @@
 */
 define(["require", "exports", "./structure"], (function(require, exports, __o) {
     "use strict";
-    var Functor = __o["Functor"],
-        Monad = __o["Monad"],
-        Identity;
+    var Identity, Monad = __o["Monad"];
     (Identity = (function(x) {
         var self = this;
         (self.value = x);

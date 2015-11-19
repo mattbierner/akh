@@ -4,13 +4,13 @@
 */
 "use strict";
 var __o = require("../_tail"),
-    Tail = __o["Tail"],
-    trampoline = __o["trampoline"],
     __o0 = require("../structure"),
+    ContMonad = require("../spec/cont"),
+    ContT, Tail = __o["Tail"],
+    trampoline = __o["trampoline"],
     Monad = __o0["Monad"],
     Transformer = __o0["Transformer"],
-    ContMonad = require("../spec/cont"),
-    ContT, runContT = (function(m, k) {
+    runContT = (function(m, k) {
         return new(Tail)(m.run, k);
     });
 (ContT = (function(m) {
@@ -34,10 +34,9 @@ var __o = require("../_tail"),
     }));
     Transformer(Instance, m, (function(t) {
         return new(Instance)((function(k) {
-            var y;
-            return t.chain(((y = trampoline), (function(x) {
-                return y(k(x));
-            })));
+            return t.chain((function(z) {
+                return trampoline(k(z));
+            }));
         }));
     }));
     ContMonad(Instance, (function(f) {
@@ -52,8 +51,8 @@ var __o = require("../_tail"),
     }));
     return Instance;
 }));
-var y = trampoline;
 (ContT.runContT = (function() {
-    return y(runContT.apply(null, arguments));
+    var args = arguments;
+    return trampoline(runContT.apply(null, args));
 }));
 (module.exports = ContT);

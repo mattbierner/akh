@@ -10,8 +10,8 @@ var StateMonad;
     (Instance.prototype.put = put);
     (Instance.put = Instance.prototype.put);
     (Instance.prototype.modify = (function(f) {
-        return get.chain((function(x) {
-            return put(f(x));
+        return get.chain((function(z) {
+            return put(f(z));
         }));
     }));
     (Instance.modify = Instance.prototype.modify);
@@ -19,8 +19,8 @@ var StateMonad;
 (StateMonad.tryLiftState = (function(Instance, m) {
     var x, y;
     if ((m.get && m.put)) StateMonad(Instance, Instance.lift(m.get), ((x = Instance.lift), (y = m.put), (
-        function(x0) {
-            return x(y(x0));
+        function(z) {
+            return x(y(z));
         })));
 }));
 (module.exports = StateMonad);

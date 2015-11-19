@@ -5,12 +5,10 @@
 "use strict";
 var Identity = require("./identity"),
     ListT = require("./trans/list"),
-    runListT = ListT["runListT"],
-    List;
+    List, runListT = ListT["runListT"];
 (List = ListT(Identity));
-var x = runListT,
-    y = Identity.runIdentity;
-(List.runList = (function(x0) {
-    return y(x(x0));
+var y = Identity.runIdentity;
+(List.runList = (function(z) {
+    return y(runListT(z));
 }));
 (module.exports = List);

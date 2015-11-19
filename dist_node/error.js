@@ -5,22 +5,23 @@
 "use strict";
 var Identity = require("./identity"),
     ErrorT = require("./trans/error"),
-    runErrorT = ErrorT["runErrorT"],
-    Error, id = (function(x) {
+    Error, runErrorT = ErrorT["runErrorT"],
+    id = (function(x) {
         return x;
     });
 (Error = ErrorT(Identity));
 var x = (function(m, ok, err) {
     var y, y0;
-    return runErrorT(m, ((y = Identity.of), (function(x0) {
-        return y(ok(x0));
-    })), ((y0 = Identity.of), (function(x0) {
-        return y0(err(x0));
+    return runErrorT(m, ((y = Identity.of), (function(z) {
+        return y(ok(z));
+    })), ((y0 = Identity.of), (function(z) {
+        return y0(err(z));
     })));
 }),
     y = Identity.runIdentity;
 (Error.runError = (function() {
-    return y(x.apply(null, arguments));
+    var args = arguments;
+    return y(x.apply(null, args));
 }));
 (Error.tryError = (function(m, e) {
     return Error.runError(m, id, e);

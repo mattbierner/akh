@@ -4,14 +4,14 @@
 */
 "use strict";
 var __o = require("../structure"),
-    Monad = __o["Monad"],
+    __o0 = require("../_tail"),
+    StateMonad = require("../spec/state"),
+    Codensity, Monad = __o["Monad"],
     Monoid = __o["Monoid"],
     Transformer = __o["Transformer"],
-    __o0 = require("../_tail"),
     Tail = __o0["Tail"],
     trampoline = __o0["trampoline"],
-    StateMonad = require("../spec/state"),
-    Codensity, runCodensity = (function(m, k) {
+    runCodensity = (function(m, k) {
         return new(Tail)(m.run, k);
     });
 (Codensity = (function(m) {
@@ -44,17 +44,16 @@ var __o = require("../structure"),
     }));
     Transformer(Instance, m, (function(c) {
         return new(Instance)((function(k) {
-            var y;
-            return c.chain(((y = trampoline), (function(x) {
-                return y(k(x));
-            })));
+            return c.chain((function(z) {
+                return trampoline(k(z));
+            }));
         }));
     }));
     StateMonad.tryLiftState(Instance, m);
     return Instance;
 }));
-var y = trampoline;
 (Codensity.runCodensity = (function() {
-    return y(runCodensity.apply(null, arguments));
+    var args = arguments;
+    return trampoline(runCodensity.apply(null, args));
 }));
 (module.exports = Codensity);

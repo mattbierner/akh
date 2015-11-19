@@ -4,13 +4,12 @@
 */
 define(["require", "exports", "./identity", "./trans/dcont"], (function(require, exports, Identity, DContT) {
     "use strict";
-    var runDContT = DContT["runDContT"],
-        DCont;
+    var DCont, runDContT = DContT["runDContT"];
     (DCont = DContT(Identity));
-    var x = runDContT,
-        y = Identity.runIdentity;
+    var y = Identity.runIdentity;
     (DCont.runDCont = (function() {
-        return y(x.apply(null, arguments));
+        var args = arguments;
+        return y(runDContT.apply(null, args));
     }));
     return DCont;
 }));

@@ -25,10 +25,10 @@ Error := ErrorT(Identity);
  * @param err Failure result completion.
  */
 Error.runError =
-    \m ok err ->
+    (\m ok err ->
         runErrorT(m,
             ok \> Identity.of,
-            err \> Identity.of) §
+            err \> Identity.of))
     \>> Identity.runIdentity;
 
 /**

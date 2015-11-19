@@ -4,20 +4,20 @@
 */
 define(["require", "exports", "./identity", "./trans/either"], (function(require, exports, Identity, EitherT) {
     "use strict";
-    var eitherT = EitherT["eitherT"],
-        Either;
+    var Either, eitherT = EitherT["eitherT"];
     (Either = EitherT(Identity));
     var x = (function(m, l, r) {
         var y, y0;
-        return eitherT(m, ((y = Identity.of), (function(x0) {
-            return y(l(x0));
-        })), ((y0 = Identity.of), (function(x0) {
-            return y0(r(x0));
+        return eitherT(m, ((y = Identity.of), (function(z) {
+            return y(l(z));
+        })), ((y0 = Identity.of), (function(z) {
+            return y0(r(z));
         })));
     }),
         y = Identity.runIdentity;
     (Either.either = (function() {
-        return y(x.apply(null, arguments));
+        var args = arguments;
+        return y(x.apply(null, args));
     }));
     return Either;
 }));

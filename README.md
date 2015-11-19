@@ -15,7 +15,7 @@ Collection of simple monad and monad transformers that implement [Fantasy Land's
 
 
 ### Quick Example
-Example is in [Khepri][khepri] but regular js works fine too.
+
 
 ```js
 const List = require('akh').list;

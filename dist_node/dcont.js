@@ -5,12 +5,11 @@
 "use strict";
 var Identity = require("./identity"),
     DContT = require("./trans/dcont"),
-    runDContT = DContT["runDContT"],
-    DCont;
+    DCont, runDContT = DContT["runDContT"];
 (DCont = DContT(Identity));
-var x = runDContT,
-    y = Identity.runIdentity;
+var y = Identity.runIdentity;
 (DCont.runDCont = (function() {
-    return y(x.apply(null, arguments));
+    var args = arguments;
+    return y(runDContT.apply(null, args));
 }));
 (module.exports = DCont);

@@ -1,3 +1,4 @@
+"use strict";
 var Either = require('../index').either;
 
 var l = function(x) { return [false, x]; }

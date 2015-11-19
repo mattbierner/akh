@@ -4,13 +4,11 @@
 */
 define(["require", "exports", "./identity", "./trans/list"], (function(require, exports, Identity, ListT) {
     "use strict";
-    var runListT = ListT["runListT"],
-        List;
+    var List, runListT = ListT["runListT"];
     (List = ListT(Identity));
-    var x = runListT,
-        y = Identity.runIdentity;
-    (List.runList = (function(x0) {
-        return y(x(x0));
+    var y = Identity.runIdentity;
+    (List.runList = (function(z) {
+        return y(runListT(z));
     }));
     return List;
 }));

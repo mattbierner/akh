@@ -20,8 +20,8 @@ Cont := ContT(Identity);
  * @param k Outer continuation.
  */
 Cont.runCont =
-    \m k ->
-        runContT(m, k \> Identity.of) §
+    (\m k ->
+        runContT(m, k \> Identity.of))
     \>> Identity.runIdentity;
 
 }

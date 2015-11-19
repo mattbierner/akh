@@ -5,11 +5,11 @@
 define(["require", "exports", "../_tail", "../structure", "../spec/cont"], (function(require, exports, __o, __o0,
     ContMonad) {
     "use strict";
-    var Tail = __o["Tail"],
+    var ContT, Tail = __o["Tail"],
         trampoline = __o["trampoline"],
         Monad = __o0["Monad"],
         Transformer = __o0["Transformer"],
-        ContT, runContT = (function(m, k) {
+        runContT = (function(m, k) {
             return new(Tail)(m.run, k);
         });
     (ContT = (function(m) {
@@ -33,10 +33,9 @@ define(["require", "exports", "../_tail", "../structure", "../spec/cont"], (func
         }));
         Transformer(Instance, m, (function(t) {
             return new(Instance)((function(k) {
-                var y;
-                return t.chain(((y = trampoline), (function(x) {
-                    return y(k(x));
-                })));
+                return t.chain((function(z) {
+                    return trampoline(k(z));
+                }));
             }));
         }));
         ContMonad(Instance, (function(f) {
@@ -51,9 +50,9 @@ define(["require", "exports", "../_tail", "../structure", "../spec/cont"], (func
         }));
         return Instance;
     }));
-    var y = trampoline;
     (ContT.runContT = (function() {
-        return y(runContT.apply(null, arguments));
+        var args = arguments;
+        return trampoline(runContT.apply(null, args));
     }));
     return ContT;
 }));

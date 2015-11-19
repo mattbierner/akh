@@ -9,7 +9,8 @@ define(["require", "exports", "./trans/unique", "./identity"], (function(require
     var x = UniqueT.runUniqueT,
         y = Identity.runIdentity;
     (Unique.runUnique = (function() {
-        return y(x.apply(null, arguments));
+        var args = arguments;
+        return y(x.apply(null, args));
     }));
     return Unique;
 }));
