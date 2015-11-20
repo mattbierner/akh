@@ -7,11 +7,6 @@ define(["require", "exports", "./identity", "./trans/error"], (function(require,
     var Error, runErrorT = ErrorT["runErrorT"],
         id = (function(x) {
             return x;
-        }),
-        constant = (function(x) {
-            return (function() {
-                return x;
-            });
         });
     (Error = ErrorT(Identity));
     var x = (function(m, ok, err) {

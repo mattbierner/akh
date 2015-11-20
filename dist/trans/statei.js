@@ -9,12 +9,6 @@ define(["require", "exports", "../structure", "../base", "../spec/state"], (func
         Monoid = __o["Monoid"],
         Transformer = __o["Transformer"],
         map = __o0["map"],
-        Pair = (function(x, s) {
-            return ({
-                x: x,
-                s: s
-            });
-        }),
         runStateT = (function(m, s) {
             return m._run(s);
         });

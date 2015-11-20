@@ -5,19 +5,24 @@
 "use strict";
 var Identity = require("./identity"),
     EitherT = require("./trans/either"),
-    Either, eitherT = EitherT["eitherT"];
+    Either;
 (Either = EitherT(Identity));
-var x = (function(m, l, r) {
-    var y, y0;
-    return eitherT(m, ((y = Identity.of), (function(z) {
-        return y(l(z));
-    })), ((y0 = Identity.of), (function(z) {
-        return y0(r(z));
+var x = EitherT.runEitherT,
+    y = Identity.runIdentity;
+(Either.runEither = (function(z) {
+    return y(x(z));
+}));
+var x0 = (function(m, l, r) {
+    var y0, y1;
+    return EitherT.eitherT(m, ((y0 = Identity.of), (function(z) {
+        return y0(l(z));
+    })), ((y1 = Identity.of), (function(z) {
+        return y1(r(z));
     })));
 }),
-    y = Identity.runIdentity;
+    y0 = Identity.runIdentity;
 (Either.either = (function() {
     var args = arguments;
-    return y(x.apply(null, args));
+    return y0(x0.apply(null, args));
 }));
 (module.exports = Either);

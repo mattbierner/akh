@@ -13,10 +13,10 @@ define(["require", "exports", "../_tail", "../structure", "../spec/cont"], (func
             return new(Tail)(m._run, k);
         });
     (ContT = (function(m) {
-        var reify, Instance = (function(run) {
-                var self = this;
-                (self._run = run);
-            });
+        var Instance = (function(run) {
+            var self = this;
+            (self._run = run);
+        });
         Monad(Instance, (function(x) {
             return new(Instance)((function(k) {
                 return k(x);
@@ -38,13 +38,7 @@ define(["require", "exports", "../_tail", "../structure", "../spec/cont"], (func
                 }));
             }));
         }));
-        ContMonad(Instance, ((reify = (function(k) {
-            return (function(x) {
-                return new(Instance)((function(_) {
-                    return k(x);
-                }));
-            });
-        })), (function(f) {
+        ContMonad(Instance, (function(f) {
             return new(Instance)((function(k) {
                 var m0 = f((function(x) {
                     return new(Instance)((function(_) {
@@ -53,7 +47,7 @@ define(["require", "exports", "../_tail", "../structure", "../spec/cont"], (func
                 }));
                 return new(Tail)(m0._run, k);
             }));
-        })));
+        }));
         return Instance;
     }));
     (ContT.runContT = (function() {

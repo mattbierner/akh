@@ -11,13 +11,13 @@ define(["require", "exports", "../structure", "../spec/either", "../spec/state"]
         Right = (function(x) {
             return ({
                 right: true,
-                x: x
+                value: x
             });
         }),
         Left = (function(x) {
             return ({
-                right: false,
-                x: x
+                left: true,
+                value: x
             });
         }),
         runEitherT = (function(x) {
@@ -31,7 +31,7 @@ define(["require", "exports", "../structure", "../spec/either", "../spec/state"]
         Monad(Instance, ((x = m.of), (function(z) {
             var z0 = ({
                 right: true,
-                x: z
+                value: z
             }),
                 y = x(z0);
             return new(Instance)(y);
@@ -39,25 +39,25 @@ define(["require", "exports", "../structure", "../spec/either", "../spec/state"]
             var c = this;
             return new(Instance)(c._run.chain((function(__o0) {
                 var right = __o0["right"],
-                    x0 = __o0["x"],
-                    x1;
-                return (right ? ((x1 = f(x0)), x1._run) : m.of(({
-                    right: false,
-                    x: x0
+                    value = __o0["value"],
+                    x0;
+                return (right ? ((x0 = f(value)), x0._run) : m.of(({
+                    left: true,
+                    value: value
                 })));
             })));
         }));
         Monoid(Instance, new(Instance)(m.of(((x0 = m.zero), ({
-            right: false,
-            x: x0
+            left: true,
+            value: x0
         })))), (function(b) {
             var a = this;
             return new(Instance)(a._run.chain((function(__o0) {
                 var right = __o0["right"],
-                    x1 = __o0["x"];
+                    value = __o0["value"];
                 return (right ? m.of(({
                     right: true,
-                    x: x1
+                    value: value
                 })) : b._run);
             })));
         }));
@@ -65,14 +65,14 @@ define(["require", "exports", "../structure", "../spec/either", "../spec/state"]
             return new(Instance)(t.chain((function(x1) {
                 return m.of(({
                     right: true,
-                    x: x1
+                    value: x1
                 }));
             })));
         }));
         EitherMonad(Instance, ((x1 = m.of), (function(z) {
             var z0 = ({
-                right: false,
-                x: z
+                left: true,
+                value: z
             }),
                 y = x1(z0);
             return new(Instance)(y);
@@ -80,11 +80,12 @@ define(["require", "exports", "../structure", "../spec/either", "../spec/state"]
         StateMonad.tryLiftState(Instance, m);
         return Instance;
     }));
+    (EitherT.runEitherT = runEitherT);
     (EitherT.eitherT = (function(m, l, r) {
         return m._run.chain((function(__o0) {
             var right = __o0["right"],
-                x = __o0["x"];
-            return (right ? r(x) : l(x));
+                value = __o0["value"];
+            return (right ? r(value) : l(value));
         }));
     }));
     return EitherT;

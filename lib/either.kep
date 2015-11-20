@@ -4,7 +4,7 @@
 package Either
 with
     import './identity' Identity,
-    import './trans/either' EitherT#{eitherT}
+    import './trans/either' EitherT
 in {
 
 /* Structure
@@ -14,6 +14,13 @@ Either := EitherT(Identity);
 /* Running
  ******************************************************************************/
 /**
+ * Extract to an `Either` value.
+ * 
+ * @param m Either computation.
+ */
+Either.runEither = EitherT.runEitherT \> Identity.runIdentity;
+
+/**
  * Perform a either computation.
  * 
  * @param m Either computation.
@@ -22,7 +29,7 @@ Either := EitherT(Identity);
  */
 Either.either =
     (\m l r ->
-        eitherT(m,
+        EitherT.eitherT(m,
             l \> Identity.of,
             r \> Identity.of))
     \>> Identity.runIdentity;

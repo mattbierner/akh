@@ -11,6 +11,10 @@ exports.simple_of = function(test) {
         Either.either(c, l, r),
         [true, 3]);
     
+    test.deepEqual(
+        Either.runEither(c),
+        { right: true, value: 3});
+    
     test.done();
 };
 
@@ -20,6 +24,10 @@ exports.left = function(test) {
     test.deepEqual(
         Either.either(c, l, r),
         [false, 3]);
+    
+     test.deepEqual(
+        Either.runEither(c),
+        { left: true, value: 3});
     
     test.done();
 };

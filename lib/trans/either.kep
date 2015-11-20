@@ -8,9 +8,9 @@ with
     import '../spec/state' StateMonad
 in {
 
-var Right := \x -> ({ right: true, x: x});
+var Right := \x -> ({ right: true, value: x});
 
-var Left := \x -> ({ right: false, x: x});
+var Left := \x -> ({ left: true, value: x});
 
 /* Transformer
  ******************************************************************************/
@@ -31,10 +31,10 @@ EitherT := \m -> {
         
         \f =c->
             new Instance ( 
-                runEitherT(c).chain \ {right x} ->
+                runEitherT(c).chain \ {right value} ->
                     ?right
-                        :runEitherT (f x)
-                        :m.of <| Left x));
+                        :runEitherT (f value)
+                        :m.of <| Left value));
     
     Monoid(Instance,
         new Instance (
@@ -42,9 +42,9 @@ EitherT := \m -> {
         
         \b =a->
             new Instance (
-                runEitherT(a).chain \ {right x} ->
+                runEitherT(a).chain \ {right value} ->
                     ?right
-                        :m.of <| Right x
+                        :m.of <| Right value
                         :runEitherT b));
     
     Transformer(Instance, m,
@@ -65,6 +65,13 @@ EitherT := \m -> {
 /* Running
  ******************************************************************************/
 /**
+ * Get an inner monad of an `Either` value.
+ * 
+ * @param m EitherT computation.
+ */
+EitherT.runEitherT = runEitherT;
+
+/**
  * Perform an either computation with mapping functions.
  * 
  * @param m EitherT computation.
@@ -73,7 +80,7 @@ EitherT := \m -> {
  */
 EitherT.eitherT = \m l r ->
     runEitherT(m)
-        .chain\{right x} ->
-            ?right : r x : l x;
+        .chain\{right value} ->
+            ?right : r value : l value;
 
 }

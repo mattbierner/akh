@@ -1,5 +1,11 @@
 # ChangeLog
 
+ ## 2.1.0 - November 20, 2015
+* Added `EitherT.runEitherT` and `Either.runEither` to extract either values
+  without needing to pass in callback functions.
+* Updated some internal structures to make it more clear that some values are
+  private.
+
  ## 2.0.1 - November 18, 2015
 * Fixed exec state returning value instead of state.
 * Made sure all code uses modern Khepri.

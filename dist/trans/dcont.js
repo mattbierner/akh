@@ -23,12 +23,6 @@ define(["require", "exports", "nu-stream/stream", "./unique", "../structure", ".
             var self = this;
             (self.prompt = t);
         }),
-        pushP = (function(t, k) {
-            return cons(new(P)(t), k);
-        }),
-        pushSeg = (function(f, k) {
-            return cons(new(Seg)(f), k);
-        }),
         splitSeq = (function(t, k) {
             if (isEmpty(k)) return [NIL, NIL];
             var x = first(k),
