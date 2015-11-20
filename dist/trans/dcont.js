@@ -23,6 +23,12 @@ define(["require", "exports", "nu-stream/stream", "./unique", "../structure", ".
             var self = this;
             (self.prompt = t);
         }),
+        pushP = (function(t, k) {
+            return cons(new(P)(t), k);
+        }),
+        pushSeg = (function(f, k) {
+            return cons(new(Seg)(f), k);
+        }),
         splitSeq = (function(t, k) {
             if (isEmpty(k)) return [NIL, NIL];
             var x = first(k),
@@ -34,7 +40,7 @@ define(["require", "exports", "nu-stream/stream", "./unique", "../structure", ".
             return [cons(x, a), b];
         }),
         unDContT = (function(m, k) {
-            return new(Tail)(m.run, k);
+            return new(Tail)(m._run, k);
         }),
         runDContT = ((y = UniqueT.runUniqueT), (function() {
             var args = arguments,
@@ -45,7 +51,7 @@ define(["require", "exports", "nu-stream/stream", "./unique", "../structure", ".
         var M = UniqueT(m),
             Instance = (function(run) {
                 var self = this;
-                (self.run = run);
+                (self._run = run);
             }),
             appk = (function(k, x) {
                 var c = k;
@@ -55,7 +61,7 @@ define(["require", "exports", "nu-stream/stream", "./unique", "../structure", ".
                     if ((top instanceof Seg)) {
                         var m0 = top.frame(x),
                             k0 = rest(c);
-                        return new(Tail)(m0.run, k0);
+                        return new(Tail)(m0._run, k0);
                     }
                     (c = ((top instanceof P) ? rest(c) : top));
                 }
@@ -69,7 +75,7 @@ define(["require", "exports", "nu-stream/stream", "./unique", "../structure", ".
             var c = this;
             return new(Instance)((function(k) {
                 var k0 = cons(new(Seg)(f), k);
-                return new(Tail)(c.run, k0);
+                return new(Tail)(c._run, k0);
             }));
         }));
         Transformer(Instance, m, (function(t) {
@@ -89,7 +95,7 @@ define(["require", "exports", "nu-stream/stream", "./unique", "../structure", ".
         })), (function(prompt, c) {
             return new(Instance)((function(k) {
                 var k0 = cons(new(P)(prompt), k);
-                return new(Tail)(c.run, k0);
+                return new(Tail)(c._run, k0);
             }));
         }), (function(prompt, f) {
             return new(Instance)((function(k) {
@@ -97,12 +103,12 @@ define(["require", "exports", "nu-stream/stream", "./unique", "../structure", ".
                     x = __o2[0],
                     xs = __o2[1],
                     m0 = f(x);
-                return new(Tail)(m0.run, xs);
+                return new(Tail)(m0._run, xs);
             }));
         }), (function(subk, c) {
             return new(Instance)((function(k) {
                 var k0 = append(subk, k);
-                return new(Tail)(c.run, k0);
+                return new(Tail)(c._run, k0);
             }));
         }));
         return Instance;

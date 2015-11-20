@@ -9,13 +9,13 @@ with
 in {
 
 var runCodensity := \m k->
-    new Tail(m.run, k);
+    new Tail(m._run, k);
 
 /* Monad
  ******************************************************************************/
 Codensity := \m -> {
     var Instance := function \run =self-> {
-        self.run = run;
+        self._run = run;
     };
     
     Monad(Instance,

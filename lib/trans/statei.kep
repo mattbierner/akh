@@ -22,7 +22,7 @@ var Pair := \x s -> ({ x: x, s: s });
 /* Transformer
  ******************************************************************************/
 var runStateT := \m s ->
-    m.run(s);
+    m._run(s);
 
 /**
  * State monad transformer.
@@ -31,7 +31,7 @@ var runStateT := \m s ->
  */
 StateT := \m -> {
     var Instance := function \run =self-> {
-        self.run = run;
+        self._run = run;
     };
 
     Monad(Instance,

@@ -18,12 +18,12 @@ var __o = require("../base"),
     flatten = Function.prototype.apply.bind(Array.prototype.concat, []),
     flattenM = liftM.bind(null, flatten),
     runListT = (function(x) {
-        return x.run;
+        return x._run;
     });
 (ListT = (function(m) {
     var f, z, Instance = (function(run) {
             var self = this;
-            (self.run = run);
+            (self._run = run);
         }),
         sequence = ((f = liftM2.bind(null, (function(x, y) {
             return concat(y, x);
@@ -36,15 +36,15 @@ var __o = require("../base"),
         });
     Monoid(Instance, new(Instance)(m.of([])), (function(b) {
         var a = this;
-        return new(Instance)(liftM2(concat, a.run, b.run));
+        return new(Instance)(liftM2(concat, a._run, b._run));
     }));
     Monad(Instance, (function(x) {
         return new(Instance)(m.of([x]));
     }), (function(f0) {
         var c = this;
-        return new(Instance)(flattenM(c.run.chain(mapM.bind(null, (function(z0) {
+        return new(Instance)(flattenM(c._run.chain(mapM.bind(null, (function(z0) {
             var x = f0(z0);
-            return x.run;
+            return x._run;
         })))));
     }));
     Transformer(Instance, m, (function(t) {

@@ -8,7 +8,7 @@ in {
 
 /* Transform
  ******************************************************************************/
-var runIdentityT := (.value);
+var runIdentityT := (._value);
 
 /**
  * Identity monad transformer.
@@ -23,7 +23,7 @@ var runIdentityT := (.value);
  */
 Identity := \m -> {
     var Instance := function \x =self-> {
-        self.value = x;
+        self._value = x;
     };
     
     Monad(Instance,

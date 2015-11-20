@@ -83,7 +83,7 @@ var splitSeq := \t k -> {
 /* Transformer
  ******************************************************************************/
 var unDContT := \m k ->
-    new Tail(m.run, k);
+    new Tail(m._run, k);
 
 var runDContT = unDContT \>> trampoline \> UniqueT.runUniqueT;
 
@@ -96,7 +96,7 @@ DContT = \m -> {
     var M = UniqueT(m);
     
     var Instance = function \run =self-> {
-        self.run = run;
+        self._run = run;
     };
     
     /**

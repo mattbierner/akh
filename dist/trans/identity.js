@@ -8,26 +8,26 @@ define(["require", "exports", "../structure"], (function(require, exports, __o) 
         Monoid = __o["Monoid"],
         Transformer = __o["Transformer"],
         runIdentityT = (function(x) {
-            return x.value;
+            return x._value;
         });
     (Identity = (function(m) {
         var y, Instance = (function(x) {
                 var self = this;
-                (self.value = x);
+                (self._value = x);
             });
         Monad(Instance, ((y = m.of), (function(z) {
             var y0 = y(z);
             return new(Instance)(y0);
         })), (function(f) {
             var c = this;
-            return new(Instance)(c.value.chain((function(z) {
+            return new(Instance)(c._value.chain((function(z) {
                 var x = f(z);
-                return x.value;
+                return x._value;
             })));
         }));
         Monoid(Instance, new(Instance)(m.zero), (function(b) {
             var a = this;
-            return new(Instance)(a.value.concat(b.value));
+            return new(Instance)(a._value.concat(b._value));
         }));
         Transformer(Instance, m, (function(y0) {
             return new(Instance)(y0);

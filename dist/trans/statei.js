@@ -9,13 +9,19 @@ define(["require", "exports", "../structure", "../base", "../spec/state"], (func
         Monoid = __o["Monoid"],
         Transformer = __o["Transformer"],
         map = __o0["map"],
+        Pair = (function(x, s) {
+            return ({
+                x: x,
+                s: s
+            });
+        }),
         runStateT = (function(m, s) {
-            return m.run(s);
+            return m._run(s);
         });
     (StateT = (function(m) {
         var Instance = (function(run) {
             var self = this;
-            (self.run = run);
+            (self._run = run);
         });
         Monad(Instance, (function(x) {
             return new(Instance)((function(s) {
@@ -27,12 +33,12 @@ define(["require", "exports", "../structure", "../base", "../spec/state"], (func
         }), (function(f) {
             var c = this;
             return new(Instance)((function(s) {
-                return c.run(s)
+                return c._run(s)
                     .chain((function(__o1) {
                         var x = __o1["x"],
                             s0 = __o1["s"],
                             m0 = f(x);
-                        return m0.run(s0);
+                        return m0._run(s0);
                     }));
             }));
         }));
@@ -41,8 +47,8 @@ define(["require", "exports", "../structure", "../base", "../spec/state"], (func
         })), (function(b) {
             var a = this;
             return new(Instance)((function(s) {
-                return a.run(s)
-                    .concat(b.run(s));
+                return a._run(s)
+                    .concat(b._run(s));
             }));
         }));
         Transformer(Instance, m, (function(t) {

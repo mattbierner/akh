@@ -24,7 +24,7 @@ var flattenM := liftM @ flatten;
 
 /* Transformer
  ******************************************************************************/
-var runListT := (.run);
+var runListT := (._run);
 
 /**
  * List monad transformer.
@@ -33,7 +33,7 @@ var runListT := (.run);
  */
 ListT := \m -> {
     var Instance := function \run =self-> {
-        self.run = run;
+        self._run = run;
     };
 
     var sequence := foldr @ (liftM2 @ (flip concat), m.of []);

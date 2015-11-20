@@ -14,7 +14,7 @@ var Left := \x -> ({ right: false, x: x});
 
 /* Transformer
  ******************************************************************************/
-var runEitherT := .run;
+var runEitherT := (._run);
 
 /**
  * Either monad transformer.
@@ -23,7 +23,7 @@ var runEitherT := .run;
  */
 EitherT := \m -> {
     var Instance := function \run =self-> {
-        self.run = run;
+        self._run = run;
     };
     
     Monad(Instance,

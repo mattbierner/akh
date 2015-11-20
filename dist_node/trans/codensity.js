@@ -12,12 +12,12 @@ var __o = require("../structure"),
     Tail = __o0["Tail"],
     trampoline = __o0["trampoline"],
     runCodensity = (function(m, k) {
-        return new(Tail)(m.run, k);
+        return new(Tail)(m._run, k);
     });
 (Codensity = (function(m) {
     var Instance = (function(run) {
         var self = this;
-        (self.run = run);
+        (self._run = run);
     });
     Monad(Instance, (function(x) {
         return new(Instance)((function(k) {
@@ -28,9 +28,9 @@ var __o = require("../structure"),
         return new(Instance)((function(k) {
             var k0 = (function(x) {
                 var m0 = f(x);
-                return new(Tail)(m0.run, k);
+                return new(Tail)(m0._run, k);
             });
-            return new(Tail)(c.run, k0);
+            return new(Tail)(c._run, k0);
         }));
     }));
     Monoid(Instance, new(Instance)((function(_) {

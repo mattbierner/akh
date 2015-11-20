@@ -37,7 +37,7 @@ var __o = require("nu-stream")["stream"],
         return [cons(x, a), b];
     }),
     unDContT = (function(m, k) {
-        return new(Tail)(m.run, k);
+        return new(Tail)(m._run, k);
     }),
     runDContT = ((y = UniqueT.runUniqueT), (function() {
         var args = arguments,
@@ -48,7 +48,7 @@ var __o = require("nu-stream")["stream"],
     var M = UniqueT(m),
         Instance = (function(run) {
             var self = this;
-            (self.run = run);
+            (self._run = run);
         }),
         appk = (function(k, x) {
             var c = k;
@@ -58,7 +58,7 @@ var __o = require("nu-stream")["stream"],
                 if ((top instanceof Seg)) {
                     var m0 = top.frame(x),
                         k0 = rest(c);
-                    return new(Tail)(m0.run, k0);
+                    return new(Tail)(m0._run, k0);
                 }
                 (c = ((top instanceof P) ? rest(c) : top));
             }
@@ -72,7 +72,7 @@ var __o = require("nu-stream")["stream"],
         var c = this;
         return new(Instance)((function(k) {
             var k0 = cons(new(Seg)(f), k);
-            return new(Tail)(c.run, k0);
+            return new(Tail)(c._run, k0);
         }));
     }));
     Transformer(Instance, m, (function(t) {
@@ -92,7 +92,7 @@ var __o = require("nu-stream")["stream"],
     })), (function(prompt, c) {
         return new(Instance)((function(k) {
             var k0 = cons(new(P)(prompt), k);
-            return new(Tail)(c.run, k0);
+            return new(Tail)(c._run, k0);
         }));
     }), (function(prompt, f) {
         return new(Instance)((function(k) {
@@ -100,12 +100,12 @@ var __o = require("nu-stream")["stream"],
                 x = __o2[0],
                 xs = __o2[1],
                 m0 = f(x);
-            return new(Tail)(m0.run, xs);
+            return new(Tail)(m0._run, xs);
         }));
     }), (function(subk, c) {
         return new(Instance)((function(k) {
             var k0 = append(subk, k);
-            return new(Tail)(c.run, k0);
+            return new(Tail)(c._run, k0);
         }));
     }));
     return Instance;

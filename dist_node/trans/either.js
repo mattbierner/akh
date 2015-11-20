@@ -12,7 +12,7 @@ var __o = require("../structure"),
 (EitherT = (function(m) {
     var x, x0, x1, Instance = (function(run) {
             var self = this;
-            (self.run = run);
+            (self._run = run);
         });
     Monad(Instance, ((x = m.of), (function(z) {
         var z0 = ({
@@ -23,11 +23,11 @@ var __o = require("../structure"),
         return new(Instance)(y);
     })), (function(f) {
         var c = this;
-        return new(Instance)(c.run.chain((function(__o0) {
+        return new(Instance)(c._run.chain((function(__o0) {
             var right = __o0["right"],
                 x0 = __o0["x"],
                 x1;
-            return (right ? ((x1 = f(x0)), x1.run) : m.of(({
+            return (right ? ((x1 = f(x0)), x1._run) : m.of(({
                 right: false,
                 x: x0
             })));
@@ -38,13 +38,13 @@ var __o = require("../structure"),
         x: x0
     })))), (function(b) {
         var a = this;
-        return new(Instance)(a.run.chain((function(__o0) {
+        return new(Instance)(a._run.chain((function(__o0) {
             var right = __o0["right"],
                 x1 = __o0["x"];
             return (right ? m.of(({
                 right: true,
                 x: x1
-            })) : b.run);
+            })) : b._run);
         })));
     }));
     Transformer(Instance, m, (function(t) {
@@ -67,7 +67,7 @@ var __o = require("../structure"),
     return Instance;
 }));
 (EitherT.eitherT = (function(m, l, r) {
-    return m.run.chain((function(__o0) {
+    return m._run.chain((function(__o0) {
         var right = __o0["right"],
             x = __o0["x"];
         return (right ? r(x) : l(x));
