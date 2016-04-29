@@ -39,7 +39,7 @@ const c =
              M.put('new_state').map(_ => 3),
              M.of(10),
              M.get // get the current state)
-         
+         )
          // And operate on them
          .map(x => x + 'aa');
 
