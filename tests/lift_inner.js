@@ -1,58 +1,52 @@
-var StateT = require('../index').trans.state;
-var Identity = require('../index').identity;
+"use strict"
+const assert = require('chai').assert
+const StateT = require('../index').trans.state
+const Identity = require('../index').identity
 
-var run = function(c) {
+const run = function (c) {
     return Identity.runIdentity(
         StateT.evalStateT(
             StateT.evalStateT(
                 StateT.evalStateT(
                     StateT.evalStateT(c, 1),
-                2),
-            3),
-        4));
-};
+                    2),
+                3),
+            4))
+}
+
+const M = StateT(StateT(StateT(StateT(Identity))))
 
 
-var M = StateT(StateT(StateT(StateT(Identity))));
+describe('Lift Inner', () => {
+    it("top_level", () => {
+        const c = M.get
 
-exports.top_level = function(test) {
-    var c = M.get;
-    
-    test.deepEqual(
-        run(c),
-        1);
-    
-    test.done();
-};
+        assert.deepEqual(
+            run(c),
+            1)
+    })
 
+    it("liftOne", () => {
+        const c = M.lift(M.inner.get)
 
-exports.liftOne = function(test) {
-    var c = M.lift(M.inner.get);
-    
-    test.deepEqual(
-        run(c),
-        2);
-    
-    test.done();
-};
+        assert.deepEqual(
+            run(c),
+            2)
+    })
 
+    it("liftInner", () => {
+        const c = M.liftInner(M.inner.inner.get)
 
-exports.liftInner = function(test) {
-    var c = M.liftInner(M.inner.inner.get);
-    
-    test.deepEqual(
-        run(c),
-        3);
-    
-    test.done();
-};
+        assert.deepEqual(
+            run(c),
+            3)
+    })
 
-exports.liftInner2 = function(test) {
-    var c = M.liftInner.liftInner(M.inner.inner.inner.get);
-    
-    test.deepEqual(
-        run(c),
-        4);
-    
-    test.done();
-};
+    it("liftInner2", () => {
+        const c = M.liftInner.liftInner(M.inner.inner.inner.get)
+
+        assert.deepEqual(
+            run(c),
+            4)
+    })
+})

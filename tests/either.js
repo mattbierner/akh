@@ -1,189 +1,169 @@
-"use strict";
-var Either = require('../index').either;
+"use strict"
+const assert = require('chai').assert
+const Either = require('../index').either
 
-var l = function(x) { return [false, x]; }
-var r = function(x) { return [true, x]; }
+const l = function (x) { return [false, x] }
+const r = function (x) { return [true, x] }
 
-exports.simple_of = function(test) {
-    var c = Either.of(3);
-    
-    test.deepEqual(
-        Either.either(c, l, r),
-        [true, 3]);
-    
-    test.deepEqual(
-        Either.runEither(c),
-        { right: true, value: 3});
-    
-    test.done();
-};
+describe('Either', () => {
+    it("simple_of", () => {
+        const c = Either.of(3)
 
-exports.left = function(test) {
-    var c = Either.left(3);
-    
-    test.deepEqual(
-        Either.either(c, l, r),
-        [false, 3]);
-    
-     test.deepEqual(
-        Either.runEither(c),
-        { left: true, value: 3});
-    
-    test.done();
-};
+        assert.deepEqual(
+            Either.either(c, l, r),
+            [true, 3])
 
-exports.simple_chain = function(test) {
-    var c = Either.of(3)
-        .chain(function(x) {
-            return Either.of(x * 2);
-        });
+        assert.deepEqual(
+            Either.runEither(c),
+            { right: true, value: 3 })
+    })
 
-    test.deepEqual(
-        Either.either(c, l, r),
-        [true, 6]);
-    
-    test.done();
-};
+    it("left", () => {
+        const c = Either.left(3)
 
-exports.chain_order= function(test) {
-    var c = Either.of(1)
-        .chain(function(x) {
-            return Either.of(x + 1)
-        })
-        .chain(function(x) {
-            return Either.of(x * 2);
-        });
+        assert.deepEqual(
+            Either.either(c, l, r),
+            [false, 3])
 
-    test.deepEqual(
-        Either.either(c, l, r),
-        [true, 4]);
-    
-    test.done();
-};
+        assert.deepEqual(
+            Either.runEither(c),
+            { left: true, value: 3 })
+    })
 
-exports.chain_many = function(test) {
-    var c = Either.of(0);
-    
-    for (var i = 0; i < 100000; ++i)
-        c = c.chain(function(x) {
-            return Either.of(x + 1);
-        });
+    it("simple_chain", () => {
+        const c = Either.of(3)
+            .chain(function (x) {
+                return Either.of(x * 2)
+            })
 
-    
-    test.deepEqual(
-        Either.either(c, l, r),
-        [true, 100000]);
+        assert.deepEqual(
+            Either.either(c, l, r),
+            [true, 6])
+    })
 
-    test.done();
-};
+    it('chain_order', () => {
+        const c = Either.of(1)
+            .chain(function (x) {
+                return Either.of(x + 1)
+            })
+            .chain(function (x) {
+                return Either.of(x * 2)
+            })
 
-exports.chain_left = function(test) {
-    var c = Either.of(1)
-        .chain(function(x) {
-            return Either.left(x + 1)
-        })
-        .chain(function(x) {
-            return Either.of(x * 2);
-        })
-        .chain(function(x) {
-            return Either.of(x + 10);
-        });
+        assert.deepEqual(
+            Either.either(c, l, r),
+            [true, 4])
+    })
 
-    test.deepEqual(
-        Either.either(c, l, r),
-        [false, 2]);
-    
-    test.done();
-};
+    it("chain_many", () => {
+        let c = Either.of(0)
+
+        for (let i = 0; i < 100000; ++i) {
+            c = c.chain(function (x) {
+                return Either.of(x + 1)
+            })
+        }
 
 
-exports.map_right = function(test) {
-    var c = Either.of(3)
-        .map(function(x) { return x * 2; })
-        .chain(function(x) {
-            return Either.of(x / 3);
-        });;
-    
-    test.deepEqual(
-        Either.either(c, l, r),
-        [true, 2]);
-    
-    test.done();
-};
+        assert.deepEqual(
+            Either.either(c, l, r),
+            [true, 100000])
+    })
 
-exports.map_left = function(test) {
-    var c = Either.left(3)
-        .map(function(x) { return x * 2; })
-        .chain(function(x) {
-            return Either.of(x / 3);
-        });
-    
-    test.deepEqual(
-        Either.either(c, l, r),
-        [false, 3]);
-    
-    test.done();
-};
+    it("chain_left", () => {
+        const c = Either.of(1)
+            .chain(function (x) {
+                return Either.left(x + 1)
+            })
+            .chain(function (x) {
+                return Either.of(x * 2)
+            })
+            .chain(function (x) {
+                return Either.of(x + 10)
+            })
+
+        assert.deepEqual(
+            Either.either(c, l, r),
+            [false, 2])
+    })
 
 
-exports.ac = function(test) {
-    var c = Either.of(function(x, y){return x / y;})
-        .ac(Either.of(10))
-        .ap(Either.of(5))
-    
-    test.deepEqual(
-        Either.either(c, l, r),
-        [true, 2]);
-    
-    test.done();
-};
+    it("map_right", () => {
+        const c = Either.of(3)
+            .map(function (x) { return x * 2 })
+            .chain(function (x) {
+                return Either.of(x / 3)
+            })
 
-exports.acn = function(test) {
-    var c = Either.of([].concat.bind([]))
-        .ac(Either.of(1))
-        .ac(Either.of(2))
-        .ac(Either.of(3))
-        .ac(Either.of(4))
-        .ac(Either.of(5))
-        .ap(Either.of(6))
-    
-    test.deepEqual(
-        Either.either(c, l, r),
-        [true, [1,2, 3, 4, 5, 6]]);
-    
-    test.done();
-};
+        assert.deepEqual(
+            Either.either(c, l, r),
+            [true, 2])
+    })
 
-exports.ac_no_apply = function(test) {
-    var c = Either.of([].concat.bind([]))
-        .ac(Either.of(1))
-        .ac(Either.of(2))
-        .ac(Either.of(3))
-        .ac(Either.of(4))
-        .ac(Either.of(5))
-        .ac(Either.of(6))
-    
-    var result = Either.either(c, l, r);
-    test.deepEqual(
-        result[1](7),
-        [1,2, 3, 4, 5, 6, 7]);
-    
-    test.done();
-};
+    it("map_left", () => {
+        const c = Either.left(3)
+            .map(function (x) { return x * 2 })
+            .chain(function (x) {
+                return Either.of(x / 3)
+            })
+
+        assert.deepEqual(
+            Either.either(c, l, r),
+            [false, 3])
+    })
 
 
-exports.ac_too_many = function(test) {
-    var c = Either.of(function(x, y) {return x + y; })
-        .ac(Either.of(1))
-        .ac(Either.of(2))
-        .ac(Either.of(3))
-        .ac(Either.of(4))
-        .ac(Either.of(5))
-        .ap(Either.of(6))
+    it("ac", () => {
+        const c = Either.of(function (x, y) { return x / y })
+            .ac(Either.of(10))
+            .ap(Either.of(5))
 
-    test.deepEqual(
-        Either.either(c, l, r),
-        [true, 3]);
-    
-    test.done();
-};
+        assert.deepEqual(
+            Either.either(c, l, r),
+            [true, 2])
+    })
+
+    it("acn", () => {
+        const c = Either.of([].concat.bind([]))
+            .ac(Either.of(1))
+            .ac(Either.of(2))
+            .ac(Either.of(3))
+            .ac(Either.of(4))
+            .ac(Either.of(5))
+            .ap(Either.of(6))
+
+        assert.deepEqual(
+            Either.either(c, l, r),
+            [true, [1, 2, 3, 4, 5, 6]])
+    })
+
+    it("ac_no_apply", () => {
+        const c = Either.of([].concat.bind([]))
+            .ac(Either.of(1))
+            .ac(Either.of(2))
+            .ac(Either.of(3))
+            .ac(Either.of(4))
+            .ac(Either.of(5))
+            .ac(Either.of(6))
+
+        const result = Either.either(c, l, r)
+        assert.deepEqual(
+            result[1](7),
+            [1, 2, 3, 4, 5, 6, 7])
+    })
+
+
+    it("ac_too_many", () => {
+        const c = Either.of(function (x, y) { return x + y })
+            .ac(Either.of(1))
+            .ac(Either.of(2))
+            .ac(Either.of(3))
+            .ac(Either.of(4))
+            .ac(Either.of(5))
+            .ap(Either.of(6))
+
+        assert.deepEqual(
+            Either.either(c, l, r),
+            [true, 3])
+    })
+})

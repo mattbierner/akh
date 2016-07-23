@@ -11,7 +11,6 @@
         "monad",
         "functor",
         "applicative functor",
-        
         "functional",
         "continuation",
         "delimited continuation"
@@ -21,9 +20,8 @@
         "url": "https://github.com/mattbierner/akh.git"
     },
     "bugs": {
-       "url" : "https://github.com/mattbierner/akh/issues"
+        "url": "https://github.com/mattbierner/akh/issues"
     },
-    
     "main": "index.js",
     "directories": {
         "lib": "dist_node/"
@@ -34,20 +32,16 @@
         "test.js",
         "tests"
     ],
-    
     "dependencies": {
         "nu-stream": ">=3.2.0",
-        
         "require-directory": "1.2.x"
     },
-    
-   "devDependencies": {
-        "nodeunit": "0.8.x"
+    "devDependencies": {
+        "chai": "*",
+        "mocha": "*"
     },
-    
     "scripts": {
-        "test": "node test.js",
-        
+        "test": "mocha ./tests",
         "build": "npm run build-amd && npm run build-node",
         "build-amd": "khepri --prune lib -o dist",
         "build-node": "khepri --prune --package_manager=node lib -o dist_node"

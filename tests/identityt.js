@@ -1,136 +1,123 @@
-var IdentityT = require('../index').trans.identity;
-var List = require('../index').list;
+"use strict"
+const assert = require('chai').assert
+const IdentityT = require('../index').trans.identity
+const List = require('../index').list
 
-var M = IdentityT(List);
+const M = IdentityT(List)
 
-var run = function(m) {
+const run = function (m) {
     return List.runList(
-        IdentityT.runIdentityT(m));
-};
+        IdentityT.runIdentityT(m))
+}
 
-exports.simple_of = function(test) {
-    var c = M.of(3);
-    
-    test.deepEqual(
-        run(c),
-        [3]);
-    
-    test.done();
-};
 
-exports.of_array = function(test) {
-    var c = M.of([3]);
-    
-    test.deepEqual(
-        run(c),
-        [[3]]);
-    
-    test.done();
-};
+describe('IdentityT', () => {
+    it("simple_of", () => {
+        const c = M.of(3)
 
-exports.chain_simple = function(test) {
-    var c = M.of(3)
-        .chain(function(x) {
-            return M.of(x * 2);
+        assert.deepEqual(
+            run(c),
+            [3])
+    })
+
+    it("of_array", () => {
+        const c = M.of([3])
+
+        assert.deepEqual(
+            run(c),
+            [[3]])
+    })
+
+    it("chain_simple", () => {
+        const c = M.of(3)
+            .chain(function (x) {
+                return M.of(x * 2)
+            })
+            .chain(function (x) {
+                return M.of(x + 1)
+            })
+
+        assert.deepEqual(
+            run(c),
+            [7])
+    })
+
+
+    it("chain_flatten", () => {
+        const c = M.of(3).chain(function (x) {
+            return M.of([x, x * 2])
         })
-        .chain(function(x) {
-            return M.of(x + 1);
-        });
 
-    test.deepEqual(
-        run(c),
-        [7]);
-    
-    test.done();
-};
+        assert.deepEqual(
+            run(c),
+            [3, 6])
+    })
 
 
-exports.chain_flatten = function(test) {
-    var c = M.of(3).chain(function(x) {
-        return M.of([x, x * 2]);
-    });
+    it('chain_order', () => {
+        const c = M.of(1)
+            .chain(function (x) {
+                return M.of([x, x + 1])
+            })
+            .chain(function (x) {
+                return M.of([x, x * 2])
+            })
 
-    test.deepEqual(
-        run(c),
-        [3, 6]);
-    
-    test.done();
-};
+        assert.deepEqual(
+            run(c),
+            [1, 2, 2, 4])
+    })
 
+    it('chain_empty', () => {
+        const c = M.of(1)
+            .chain(function (x) {
+                return M.of([])
+            })
+            .chain(function (x) {
+                return M.of([x, x * 2])
+            })
 
-exports.chain_order= function(test) {
-    var c = M.of(1)
-        .chain(function(x) {
-            return M.of([x, x + 1])
-        })
-        .chain(function(x) {
-            return M.of([x, x * 2]);
-        });
+        assert.deepEqual(
+            run(c),
+            [])
+    })
 
-    test.deepEqual(
-        run(c),
-        [1, 2, 2, 4]);
-    
-    test.done();
-};
+    it("chain_list", () => {
+        const c = M.of(1)
+            .chain(function (x) {
+                return M.of([[x], [x * 2]])
+            })
+            .chain(function (x) {
+                return M.of([x.concat(x[0] + 1)])
+            })
 
-exports.chain_empty= function(test) {
-    var c = M.of(1)
-        .chain(function(x) {
-            return M.of([])
-        })
-        .chain(function(x) {
-            return M.of([x, x * 2]);
-        });
-
-    test.deepEqual(
-        run(c),
-        []);
-    
-    test.done();
-};
-
-exports.chain_list = function(test) {
-    var c = M.of(1)
-        .chain(function(x) {
-            return M.of([[x], [x * 2]])
-        })
-        .chain(function(x) {
-            return M.of([x.concat(x[0] + 1)])
-        });
-
-    test.deepEqual(
-        run(c),
-        [[1, 2], [2, 3]]);
-    
-    test.done();
-};
+        assert.deepEqual(
+            run(c),
+            [[1, 2], [2, 3]])
+    })
 
 
-exports.list_concat = function(test) {
-    var c = M.zero
-        .concat(M.of(1))
-        .concat(M.of(2))
-        .concat(M.of(3))
+    it("list_concat", () => {
+        const c = M.zero
+            .concat(M.of(1))
+            .concat(M.of(2))
+            .concat(M.of(3))
 
-    test.deepEqual(
-        run(c),
-        [1, 2, 3]);
-    
-    test.done();
-};
+        assert.deepEqual(
+            run(c),
+            [1, 2, 3])
+    })
 
 
-exports.map = function(test) {
-    var c = M.zero
-        .concat(M.of(1))
-        .concat(M.of(2))
-        .map(function(x) { return x * x; })
-        .concat(M.of(3))
+    it("map", () => {
+        const c = M.zero
+            .concat(M.of(1))
+            .concat(M.of(2))
+            .map(function (x) { return x * x })
+            .concat(M.of(3))
 
-    test.deepEqual(
-        run(c),
-        [1, 4, 3]);
-    
-    test.done();
-};
+        assert.deepEqual(
+            run(c),
+            [1, 4, 3])
+    })
+})

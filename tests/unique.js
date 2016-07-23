@@ -1,40 +1,38 @@
-var Unique = require('../index').unique;
+"use strict"
+const assert = require('chai').assert
+const Unique = require('../index').unique
 
-exports.simple_of = function(test) {
-    var c = Unique.of(3);
+describe('Unique', () => {
+    it("simple_of", () => {
+        const c = Unique.of(3)
 
-    test.deepEqual(
-        Unique.runUnique(c),
-        3);
+        assert.deepEqual(
+            Unique.runUnique(c),
+            3)
+    })
 
-    test.done();
-};
+    it("simple_bind", () => {
+        const c = Unique.of(3)
+            .chain(function (x) {
+                return Unique.of(x + 5)
+            })
 
-exports.simple_bind = function(test) {
-    var c = Unique.of(3)
-        .chain(function(x) {
-            return Unique.of(x + 5);
-        });
-    
-    test.deepEqual(
-        Unique.runUnique(c),
-        8);
-    
-    test.done();
-};
+        assert.deepEqual(
+            Unique.runUnique(c),
+            8)
+    })
 
-exports.getting_uniques = function(test) {
-    var c = Unique.unique
-        .chain(function(x) {
-            return Unique.unique
-                .map(function(y) {
-                    return [x, y];
-                });
-        });
-    
-    var r = Unique.runUnique(c);
-    
-    test.ok(r[0] !== r[1]);
-    
-    test.done();
-};
+    it("getting_uniques", () => {
+        const c = Unique.unique
+            .chain(function (x) {
+                return Unique.unique
+                    .map(function (y) {
+                        return [x, y]
+                    })
+            })
+
+        const r = Unique.runUnique(c)
+
+        assert.ok(r[0] !== r[1])
+    })
+})
