@@ -16,42 +16,72 @@ Collection of simple monad and monad transformers that implement [Fantasy Land's
 
 ### Quick Example
 
-
 ```js
 const List = require('akh').list;
 const StateT = require('akh').trans.state;
-
 // Define a new monad using the state transformer on the list monad.
-const M = StateT(List);
+const M = StateT(List)
 
-const run = (c, state) => List.runList(StateT.runStateT(c, state));
+// Define a way to pass values through `M`
+const run = (c, state) => List.runList(StateT.runStateT(c, state))
 
-// Create a stateful computation
-const c =
-    M.of(1) // simple value
-    
-        // modify state
-        .chain(x =>
-            M.modify(s => s + x + 'xyz'))
-        
-        // Branch states
-        .concat(
-             M.put('new_state').map(_ => 3),
-             M.of(10),
-             M.get // get the current state)
-         )
-         // And operate on them
-         .map(x => x + 'aa');
 
-// Run the computation to get list of state value pairs
-run(c, 'state');
-[
-    {'x': '1aa', 's': 'state1xyz'},
-    {'x': '3aa', 's': 'new_state'},
-    {'x': '10aa', 's': 'state1xyz'}
-    {'x': 'state1xyzaa', 's': 'state1xyz'}
+// Create a simple stateful computation with an initial value
+const start = M.of('porky')
+
+// Run the stateful computation to get a list of
+// value, state pairs
+run(start, 'wackyland') === [
+    { x: 'porky', s: 'wackyland' }
 ]
-}
+
+// Let's update the current state using a function
+const modifiedState = start.modify(state => state.toUpperCase());
+
+run(modifiedState, 'wackyland') === [
+    { x: 'WACKYLAND', s: 'WACKYLAND' }
+]
+
+// Note that modify also updated the held value here. We could avoid that
+// by instead writing
+const modifiedState2 = start
+    .chain(currentValue =>
+        M.modify(state => state.toUpperCase())
+            .map(_ => currentValue))
+
+run(modifiedState2, 'wackyland') === [
+    { x: 'porky', s: 'WACKYLAND' }
+]
+
+// Now let's start using the list monad and branch the state.
+const branched = modifiedState2
+    .concat(
+        M.put('nuts').map(_ => 100)  // `put` sets the current state
+    )
+    .concat(
+        M.put('squirrel').map(_ => 1)
+    )
+    .concat(
+        M.get // gets the state
+    )
+
+run(branched, 'wackyland') === [
+    { x: 'porky', s: 'WACKYLAND' },
+    { x: 100, s: 'nuts' },
+    { x: 1, s: 'squirrel' },
+    { x: 'wackyland', s: 'wackyland' }
+]
+
+
+// We can then operate on all states at the same time.
+const doubled = branched.map(x => x + x);
+
+run(doubled, 'wackyland') === [
+    { x: 'porkyporky', s: 'WACKYLAND' },
+    { x: 200, s: 'nuts' },
+    { x: 2, s: 'squirrel' },
+    { x: 'wackylandwackyland', s: 'wackyland' }
+]
 ```
 
 
