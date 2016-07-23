@@ -2,11 +2,17 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/error.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "./identity", "./trans/error"], (function(require, exports, Identity, ErrorT) {
+define(["require", "exports", "akh.identity", "./trans/error"], (function(require, exports, __o, ErrorT) {
     "use strict";
-    var Error, runErrorT = ErrorT["runErrorT"],
+    var Error, Identity = __o["Identity"],
+        runErrorT = ErrorT["runErrorT"],
         id = (function(x) {
             return x;
+        }),
+        constant = (function(x) {
+            return (function() {
+                return x;
+            });
         });
     (Error = ErrorT(Identity));
     var x = (function(m, ok, err) {

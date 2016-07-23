@@ -3,7 +3,7 @@
  */
 package Cont
 with
-    import './identity' Identity,
+    import 'akh.identity' {Identity},
     import './trans/cont' ContT#{runContT}
 in {
 

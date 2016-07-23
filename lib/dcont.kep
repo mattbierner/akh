@@ -3,7 +3,7 @@
  */
 package DCont
 with
-    import './identity' Identity,
+    import 'akh.identity' {Identity},
     import './trans/dcont' DContT#{runDContT}
 in {
 

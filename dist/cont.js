@@ -2,9 +2,10 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/cont.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "./identity", "./trans/cont"], (function(require, exports, Identity, ContT) {
+define(["require", "exports", "akh.identity", "./trans/cont"], (function(require, exports, __o, ContT) {
     "use strict";
-    var Cont, runContT = ContT["runContT"];
+    var Cont, Identity = __o["Identity"],
+        runContT = ContT["runContT"];
     (Cont = ContT(Identity));
     var x = (function(m, k) {
         var y;

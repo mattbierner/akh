@@ -34,6 +34,7 @@
   ],
   "dependencies": {
     "akh.core.spec": "^0.0.2",
+    "akh.identity": "0.0.0",
     "nu-stream": ">=3.2.0",
     "require-directory": "1.2.x"
   },

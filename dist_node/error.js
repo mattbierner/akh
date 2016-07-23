@@ -3,9 +3,10 @@
  * DO NOT EDIT
 */
 "use strict";
-var Identity = require("./identity"),
+var __o = require("akh.identity"),
     ErrorT = require("./trans/error"),
-    Error, runErrorT = ErrorT["runErrorT"],
+    Error, Identity = __o["Identity"],
+    runErrorT = ErrorT["runErrorT"],
     id = (function(x) {
         return x;
     });

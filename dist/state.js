@@ -2,9 +2,9 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/state.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "./identity", "./trans/state"], (function(require, exports, Identity, StateT) {
+define(["require", "exports", "akh.identity", "./trans/state"], (function(require, exports, __o, StateT) {
     "use strict";
-    var State;
+    var State, Identity = __o["Identity"];
     (State = StateT(Identity));
     var x = StateT.runStateT,
         y = Identity.runIdentity;

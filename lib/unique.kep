@@ -4,7 +4,7 @@
 package Unique
 with
     import './trans/unique' UniqueT,
-    import './identity' Identity
+    import 'akh.identity' {Identity}
 in {
 
 /* Structure

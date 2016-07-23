@@ -3,9 +3,10 @@
  * DO NOT EDIT
 */
 "use strict";
-var Identity = require("./identity"),
+var __o = require("akh.identity"),
     ListT = require("./trans/list"),
-    List, runListT = ListT["runListT"];
+    List, Identity = __o["Identity"],
+    runListT = ListT["runListT"];
 (List = ListT(Identity));
 var y = Identity.runIdentity;
 (List.runList = (function(z) {

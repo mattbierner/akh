@@ -3,7 +3,7 @@
  */
 package State
 with
-    import './identity' Identity,
+    import 'akh.identity' {Identity},
     import './trans/state' StateT
 in {
 

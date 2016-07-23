@@ -3,7 +3,7 @@
  */
 package Either
 with
-    import './identity' Identity,
+    import 'akh.identity' {Identity},
     import './trans/either' EitherT
 in {
 

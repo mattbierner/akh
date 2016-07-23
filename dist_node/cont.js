@@ -3,9 +3,10 @@
  * DO NOT EDIT
 */
 "use strict";
-var Identity = require("./identity"),
+var __o = require("akh.identity"),
     ContT = require("./trans/cont"),
-    Cont, runContT = ContT["runContT"];
+    Cont, Identity = __o["Identity"],
+    runContT = ContT["runContT"];
 (Cont = ContT(Identity));
 var x = (function(m, k) {
     var y;

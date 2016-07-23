@@ -3,7 +3,7 @@
  */
 package List
 with
-    import './identity' Identity,
+    import 'akh.identity' {Identity},
     import './trans/list' ListT#{runListT}
 in {
 

@@ -3,9 +3,10 @@
  * DO NOT EDIT
 */
 "use strict";
-var Identity = require("./identity"),
+var __o = require("akh.identity"),
     DContT = require("./trans/dcont"),
-    DCont, runDContT = DContT["runDContT"];
+    DCont, Identity = __o["Identity"],
+    runDContT = DContT["runDContT"];
 (DCont = DContT(Identity));
 var y = Identity.runIdentity;
 (DCont.runDCont = (function() {

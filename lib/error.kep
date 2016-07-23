@@ -3,7 +3,7 @@
  */
 package Error
 with
-    import './identity' Identity,
+    import 'akh.identity' {Identity},
     import './trans/error' ErrorT#{runErrorT}
 in {
 

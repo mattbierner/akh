@@ -3,9 +3,9 @@
  * DO NOT EDIT
 */
 "use strict";
-var Identity = require("./identity"),
+var __o = require("akh.identity"),
     EitherT = require("./trans/either"),
-    Either;
+    Either, Identity = __o["Identity"];
 (Either = EitherT(Identity));
 var x = EitherT.runEitherT,
     y = Identity.runIdentity;

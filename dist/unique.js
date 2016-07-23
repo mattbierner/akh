@@ -2,9 +2,9 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/unique.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "./trans/unique", "./identity"], (function(require, exports, UniqueT, Identity) {
+define(["require", "exports", "./trans/unique", "akh.identity"], (function(require, exports, UniqueT, __o) {
     "use strict";
-    var Unique;
+    var Unique, Identity = __o["Identity"];
     (Unique = UniqueT(Identity));
     var x = UniqueT.runUniqueT,
         y = Identity.runIdentity;

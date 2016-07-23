@@ -4,8 +4,8 @@
 */
 "use strict";
 var UniqueT = require("./trans/unique"),
-    Identity = require("./identity"),
-    Unique;
+    __o = require("akh.identity"),
+    Unique, Identity = __o["Identity"];
 (Unique = UniqueT(Identity));
 var x = UniqueT.runUniqueT,
     y = Identity.runIdentity;

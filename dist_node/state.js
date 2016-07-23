@@ -3,9 +3,9 @@
  * DO NOT EDIT
 */
 "use strict";
-var Identity = require("./identity"),
+var __o = require("akh.identity"),
     StateT = require("./trans/state"),
-    State;
+    State, Identity = __o["Identity"];
 (State = StateT(Identity));
 var x = StateT.runStateT,
     y = Identity.runIdentity;
