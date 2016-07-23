@@ -3,7 +3,7 @@
  */
 package Codensity
 with
-    import '../structure' {Monad Monoid Transformer},
+    import 'akh.core.spec' {Monad Monoid Transformer},
     import '../_tail' {Tail trampoline},
     import '../spec/state' StateMonad
 in {

@@ -2,7 +2,7 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/codensity.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../structure", "../_tail", "../spec/state"], (function(require, exports, __o, __o0,
+define(["require", "exports", "akh.core.spec", "../_tail", "../spec/state"], (function(require, exports, __o, __o0,
     StateMonad) {
     "use strict";
     var Codensity, Monad = __o["Monad"],

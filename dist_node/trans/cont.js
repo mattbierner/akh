@@ -4,7 +4,7 @@
 */
 "use strict";
 var __o = require("../_tail"),
-    __o0 = require("../structure"),
+    __o0 = require("akh.core.spec"),
     ContMonad = require("../spec/cont"),
     ContT, Tail = __o["Tail"],
     trampoline = __o["trampoline"],

@@ -9,14 +9,14 @@
  */
 package StateT
 with
-    import '../structure' {Monad Monoid Transformer},
+    import 'akh.core.spec' {Monad Monoid Transformer},
     import '../base' {map},
     import '../spec/state' StateMonad
 in {
 
 /**
  * Value, state pair.
- */
+ */ 
 var Pair := \x s -> ({ x: x, s: s });
 
 /* Transformer

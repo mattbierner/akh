@@ -11,7 +11,7 @@ with
     import 'nu-stream::stream' {append cons first rest isEmpty NIL},
     
     import './unique' UniqueT,
-    import '../structure' {Monad Transformer},
+    import 'akh.core.spec' {Monad Transformer},
     import '../spec/dcont' DContMonad,
     import '../_tail' {Tail trampoline}
 in {

@@ -3,7 +3,7 @@
  * DO NOT EDIT
 */
 "use strict";
-var __o = require("./structure"),
+var __o = require("akh.core.spec"),
     Identity, Monad = __o["Monad"];
 (Identity = (function(x) {
     var self = this;

@@ -1,49 +1,50 @@
 {
-    "name": "akh",
-    "version": "2.1.0",
-    "description": "Monad and Monad Transformer Collection",
-    "author": "Matt Bierner",
-    "license": "MIT",
-    "keywords": [
-        "monad transformer",
-        "algebraic",
-        "fantasy land",
-        "monad",
-        "functor",
-        "applicative functor",
-        "functional",
-        "continuation",
-        "delimited continuation"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/mattbierner/akh.git"
-    },
-    "bugs": {
-        "url": "https://github.com/mattbierner/akh/issues"
-    },
-    "main": "index.js",
-    "directories": {
-        "lib": "dist_node/"
-    },
-    "files": [
-        "dist_node",
-        "index.js",
-        "test.js",
-        "tests"
-    ],
-    "dependencies": {
-        "nu-stream": ">=3.2.0",
-        "require-directory": "1.2.x"
-    },
-    "devDependencies": {
-        "chai": "*",
-        "mocha": "*"
-    },
-    "scripts": {
-        "test": "mocha ./tests",
-        "build": "npm run build-amd && npm run build-node",
-        "build-amd": "khepri --prune lib -o dist",
-        "build-node": "khepri --prune --package_manager=node lib -o dist_node"
-    }
+  "name": "akh",
+  "version": "2.1.0",
+  "description": "Monad and Monad Transformer Collection",
+  "author": "Matt Bierner",
+  "license": "MIT",
+  "keywords": [
+    "monad transformer",
+    "algebraic",
+    "fantasy land",
+    "monad",
+    "functor",
+    "applicative functor",
+    "functional",
+    "continuation",
+    "delimited continuation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mattbierner/akh.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mattbierner/akh/issues"
+  },
+  "main": "index.js",
+  "directories": {
+    "lib": "dist_node/"
+  },
+  "files": [
+    "dist_node",
+    "index.js",
+    "test.js",
+    "tests"
+  ],
+  "dependencies": {
+    "akh.core.spec": "^0.0.2",
+    "nu-stream": ">=3.2.0",
+    "require-directory": "1.2.x"
+  },
+  "devDependencies": {
+    "chai": "*",
+    "mocha": "*"
+  },
+  "scripts": {
+    "test": "mocha ./tests",
+    "build": "npm run build-amd && npm run build-node",
+    "build-amd": "khepri --prune lib -o dist",
+    "build-node": "khepri --prune --package_manager=node lib -o dist_node"
+  }
 }

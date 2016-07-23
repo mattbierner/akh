@@ -2,7 +2,7 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/state.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../structure", "../base", "./codensity", "./statei"], (function(require, exports, __o,
+define(["require", "exports", "akh.core.spec", "../base", "./codensity", "./statei"], (function(require, exports, __o,
     __o0, Codensity, StateI) {
     "use strict";
     var StateT, LiftInner = __o["LiftInner"],

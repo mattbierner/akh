@@ -2,13 +2,19 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/statei.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../structure", "../base", "../spec/state"], (function(require, exports, __o, __o0,
+define(["require", "exports", "akh.core.spec", "../base", "../spec/state"], (function(require, exports, __o, __o0,
     StateMonad) {
     "use strict";
     var StateT, Monad = __o["Monad"],
         Monoid = __o["Monoid"],
         Transformer = __o["Transformer"],
         map = __o0["map"],
+        Pair = (function(x, s) {
+            return ({
+                x: x,
+                s: s
+            });
+        }),
         runStateT = (function(m, s) {
             return m._run(s);
         });

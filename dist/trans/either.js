@@ -2,7 +2,7 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/either.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../structure", "../spec/either", "../spec/state"], (function(require, exports, __o,
+define(["require", "exports", "akh.core.spec", "../spec/either", "../spec/state"], (function(require, exports, __o,
     EitherMonad, StateMonad) {
     "use strict";
     var EitherT, Monad = __o["Monad"],

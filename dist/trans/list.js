@@ -2,19 +2,28 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/list.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../base", "../structure", "../spec/state"], (function(require, exports, __o, __o0,
+define(["require", "exports", "../base", "akh.core.spec", "../spec/state"], (function(require, exports, __o, __o0,
     StateMonad) {
     "use strict";
     var ListT, liftM = __o["liftM"],
         liftM2 = __o["liftM2"],
+        Functor = __o0["Functor"],
         Monoid = __o0["Monoid"],
         Monad = __o0["Monad"],
         Transformer = __o0["Transformer"],
+        foldr = (function(f, z, a) {
+            return Array.prototype.reduceRight.call(a, f, z);
+        }),
         map = (function(f, a) {
             return Array.prototype.map.call(a, f);
         }),
         concat = Function.prototype.call.bind(Array.prototype.concat),
         flatten = Function.prototype.apply.bind(Array.prototype.concat, []),
+        flip = (function(f) {
+            return (function(x, y) {
+                return f(y, x);
+            });
+        }),
         flattenM = liftM.bind(null, flatten),
         runListT = (function(x) {
             return x._run;

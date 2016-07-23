@@ -3,7 +3,7 @@
  * DO NOT EDIT
 */
 "use strict";
-var __o = require("../structure"),
+var __o = require("akh.core.spec"),
     __o0 = require("../base"),
     StateMonad = require("../spec/state"),
     StateT, Monad = __o["Monad"],

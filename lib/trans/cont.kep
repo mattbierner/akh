@@ -4,7 +4,7 @@
 package ContT
 with
     import '../_tail' {Tail trampoline},
-    import '../structure' {Monad Transformer},
+    import 'akh.core.spec' {Monad Transformer},
     import '../spec/cont' ContMonad
 in {
 

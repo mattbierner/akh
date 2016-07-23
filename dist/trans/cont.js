@@ -2,7 +2,7 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/cont.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "../_tail", "../structure", "../spec/cont"], (function(require, exports, __o, __o0,
+define(["require", "exports", "../_tail", "akh.core.spec", "../spec/cont"], (function(require, exports, __o, __o0,
     ContMonad) {
     "use strict";
     var ContT, Tail = __o["Tail"],
@@ -13,10 +13,10 @@ define(["require", "exports", "../_tail", "../structure", "../spec/cont"], (func
             return new(Tail)(m._run, k);
         });
     (ContT = (function(m) {
-        var Instance = (function(run) {
-            var self = this;
-            (self._run = run);
-        });
+        var reify, Instance = (function(run) {
+                var self = this;
+                (self._run = run);
+            });
         Monad(Instance, (function(x) {
             return new(Instance)((function(k) {
                 return k(x);
@@ -38,7 +38,13 @@ define(["require", "exports", "../_tail", "../structure", "../spec/cont"], (func
                 }));
             }));
         }));
-        ContMonad(Instance, (function(f) {
+        ContMonad(Instance, ((reify = (function(k) {
+            return (function(x) {
+                return new(Instance)((function(_) {
+                    return k(x);
+                }));
+            });
+        })), (function(f) {
             return new(Instance)((function(k) {
                 var m0 = f((function(x) {
                     return new(Instance)((function(_) {
@@ -47,7 +53,7 @@ define(["require", "exports", "../_tail", "../structure", "../spec/cont"], (func
                 }));
                 return new(Tail)(m0._run, k);
             }));
-        }));
+        })));
         return Instance;
     }));
     (ContT.runContT = (function() {

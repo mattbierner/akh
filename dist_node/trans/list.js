@@ -4,7 +4,7 @@
 */
 "use strict";
 var __o = require("../base"),
-    __o0 = require("../structure"),
+    __o0 = require("akh.core.spec"),
     StateMonad = require("../spec/state"),
     ListT, liftM = __o["liftM"],
     liftM2 = __o["liftM2"],

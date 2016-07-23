@@ -2,9 +2,10 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/identity.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "./structure"], (function(require, exports, __o) {
+define(["require", "exports", "akh.core.spec"], (function(require, exports, __o) {
     "use strict";
-    var Identity, Monad = __o["Monad"];
+    var Identity, Functor = __o["Functor"],
+        Monad = __o["Monad"];
     (Identity = (function(x) {
         var self = this;
         (self.value = x);

@@ -5,7 +5,7 @@
 "use strict";
 var __o = require("nu-stream")["stream"],
     UniqueT = require("./unique"),
-    __o0 = require("../structure"),
+    __o0 = require("akh.core.spec"),
     DContMonad = require("../spec/dcont"),
     __o1 = require("../_tail"),
     DContT, append = __o["append"],

@@ -6,7 +6,7 @@
 package ListT
 with
     import '../base' {liftM liftM2},
-    import '../structure' {Functor Monoid Monad Transformer},
+    import 'akh.core.spec' {Functor Monoid Monad Transformer},
     import '../spec/state' StateMonad
 in {
 

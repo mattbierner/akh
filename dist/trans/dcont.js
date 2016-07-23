@@ -2,7 +2,7 @@
  * THIS FILE IS AUTO GENERATED FROM 'lib/trans/dcont.kep'
  * DO NOT EDIT
 */
-define(["require", "exports", "nu-stream/stream", "./unique", "../structure", "../spec/dcont", "../_tail"], (function(
+define(["require", "exports", "nu-stream/stream", "./unique", "akh.core.spec", "../spec/dcont", "../_tail"], (function(
     require, exports, __o, UniqueT, __o0, DContMonad, __o1) {
     "use strict";
     var DContT, append = __o["append"],
@@ -22,6 +22,12 @@ define(["require", "exports", "nu-stream/stream", "./unique", "../structure", ".
         P = (function(t) {
             var self = this;
             (self.prompt = t);
+        }),
+        pushP = (function(t, k) {
+            return cons(new(P)(t), k);
+        }),
+        pushSeg = (function(f, k) {
+            return cons(new(Seg)(f), k);
         }),
         splitSeq = (function(t, k) {
             if (isEmpty(k)) return [NIL, NIL];

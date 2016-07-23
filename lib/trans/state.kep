@@ -7,7 +7,7 @@
  */
 package StateT
 with
-    import '../structure' {LiftInner},
+    import 'akh.core.spec' {LiftInner},
     import '../base' {map},
     import './codensity' Codensity,
     import './statei' StateI

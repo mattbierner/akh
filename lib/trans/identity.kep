@@ -3,7 +3,7 @@
  */
 package Identity
 with
-    import '../structure' {Monad Monoid Transformer}
+    import 'akh.core.spec' {Monad Monoid Transformer}
 in {
 
 /* Transform

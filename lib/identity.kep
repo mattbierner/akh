@@ -3,7 +3,7 @@
  */
 package Identity
 with
-    import './structure' {Functor Monad}
+    import 'akh.core.spec' {Functor Monad}
 in {
 
 /* Structure

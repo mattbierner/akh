@@ -3,7 +3,7 @@
  */
 package ErrorT
 with
-    import '../structure' {Monad Monoid},
+    import 'akh.core.spec' {Monad Monoid},
     import '../spec/error' ErrorMonad,
     import '../spec/state' StateMonad,
 

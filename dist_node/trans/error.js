@@ -3,7 +3,7 @@
  * DO NOT EDIT
 */
 "use strict";
-var __o = require("../structure"),
+var __o = require("akh.core.spec"),
     ErrorMonad = require("../spec/error"),
     StateMonad = require("../spec/state"),
     EitherT = require("./either"),
