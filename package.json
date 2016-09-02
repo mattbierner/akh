@@ -1,6 +1,7 @@
 {
   "name": "akh",
-  "version": "2.1.0",
+  "version": "3.0.0",
+  "private": true,
   "description": "Monad and Monad Transformer Collection",
   "author": "Matt Bierner",
   "license": "MIT",
@@ -23,29 +24,19 @@
     "url": "https://github.com/mattbierner/akh/issues"
   },
   "main": "index.js",
-  "directories": {
-    "lib": "dist_node/"
-  },
-  "files": [
-    "dist_node",
-    "index.js",
-    "test.js",
-    "tests"
-  ],
   "dependencies": {
+    "akh.codensity": "^0.0.1",
+    "akh.cont": "^0.0.0",
     "akh.core.spec": "^0.0.2",
-    "akh.identity": "0.0.0",
-    "nu-stream": ">=3.2.0",
-    "require-directory": "1.2.x"
+    "akh.identity": "^0.1.0",
+    "akh.state": "^0.0.0",
+    "object.assign": "^4.0.4"
   },
   "devDependencies": {
     "chai": "*",
     "mocha": "*"
   },
   "scripts": {
-    "test": "mocha ./tests",
-    "build": "npm run build-amd && npm run build-node",
-    "build-amd": "khepri --prune lib -o dist",
-    "build-node": "khepri --prune --package_manager=node lib -o dist_node"
+    "test": "mocha ./tests"
   }
 }
