@@ -1,5 +1,10 @@
 # ChangeLog
 
+ ## 3.1.0 - September 3, 2016
+* Added `Maybe`
+* Added `Reader`
+* Added `Writer`
+
  ## 3.0.0 - September 2, 2016
 * Split out into individual libraries.
 * Cleaned up and simplified namespacing.
