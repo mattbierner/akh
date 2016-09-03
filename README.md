@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://raw.githubusercontent.com/mattbierner/akh/v3/documentation/akh.png" alt="akh" />
+    <img src="https://raw.githubusercontent.com/mattbierner/akh/master/documentation/akh.png" alt="akh" />
 </div>
 
 <h2 align="center"><b>Akh</b> - <i>noun</i></h2>
