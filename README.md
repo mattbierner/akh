@@ -9,6 +9,9 @@
     2) Javascript <a href="https://en.wikibooks.org/wiki/Haskell/Monad_transformers">monad transformer</a> library
 </p>
 
+```js
+$ npm install --save akh
+```
 
 ## Overview
 Akh is a collection of monad and monad transformers that implement [Fantasy Land's][fl] interfaces. It is inspired by [Haskell's MTL](https://hackage.haskell.org/package/mtl).
