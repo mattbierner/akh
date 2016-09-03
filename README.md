@@ -4,10 +4,10 @@
 
 <h2 align="center"><b>Akh</b> - <i>noun</i></h2>
 
-<ol  align="center">
-    <li>Large flightless bird found in <a href="https://github.com/fantasyland/fantasy-land">Fantasy Land</a></li>
-    <li>Javascript <a href="https://en.wikibooks.org/wiki/Haskell/Monad_transformers">monad transformer</a> library.</li>
-</ol>
+<p  align="center">
+    1) Large flightless bird found in <a href="https://github.com/fantasyland/fantasy-land">Fantasy Land</a></br>
+    2) Javascript <a href="https://en.wikibooks.org/wiki/Haskell/Monad_transformers">monad transformer</a> library.
+</p>
 
 
 ## Overview
