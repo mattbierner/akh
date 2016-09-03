@@ -140,3 +140,7 @@ or send a pull request.
 [unique]: https://github.com/mattbierner/akh-unique
 
 ---
+
+<p align="center">
+<i>The Dodo Bird is a Looney Toons character created and owned by Warner Bros.</i>
+</p>
