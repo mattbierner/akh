@@ -4,7 +4,7 @@
 
 <h2 align="center"><b>Akh</b> - <i>noun</i></h2>
 
-<ol>
+<ol  align="center">
     <li>Large flightless bird found in <a href="https://github.com/fantasyland/fantasy-land">Fantasy Land</a></li>
     <li>Javascript <a href="https://en.wikibooks.org/wiki/Haskell/Monad_transformers">monad transformer</a> library.</li>
 </ol>
