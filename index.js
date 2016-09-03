@@ -23,8 +23,11 @@ module.exports = function akh(self) {
     require('akh.dcont'),
     require('akh.either'),
     require('akh.error'),
-    require('akh.list'),
     require('akh.identity'),
+    require('akh.list'),
+    require('akh.maybe'),
+    require('akh.reader'),
     require('akh.state'),
-    require('akh.unique')
+    require('akh.unique'),
+    require('akh.writer')
 )
