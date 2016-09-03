@@ -1,24 +1,46 @@
 # Akh
 Javascript Monad and Monad Transformer Collection
 
-
 ## Overview
+Akh is a collection of monad and monad transformers that implement [Fantasy Land's][fl] interfaces. It is inspired by [Haskell's MTL](https://hackage.haskell.org/package/mtl).
+
 <a href="https://github.com/fantasyland/fantasy-land">
     <img src="https://raw.github.com/fantasyland/fantasy-land/master/logo.png" align="right" width="82px" height="82px" alt="Fantasy Land logo" />
 </a>
 
-Collection of simple monad and monad transformers that implement [Fantasy Land's][fl] interfaces.
 
-### Links
-* [Documentation][documentation] - Documentation of general interfaces and specific
-  types.
+### Usage
+Akh can either be used as a single library, or you can pick up individual types from split out libraries. See each library for more documentation on that type.
+
+All functions from [akh.core][core] are top level exports.
+
+#### Monad Transformers
+* [akh.ContT][cont] - Continuation transformer. (Monad, Functor, Applicative Functor)
+* [akh.DContT][dcont] - Delimited continuation transformer. (Monad, Functor, Applicative Functor)
+* [akh.EitherT][either] - Either transformer. (Monad, Monoid, Functor, Applicative Functor)
+* [akh.ErrorT][error] - Error transformer. (Monad, Monoid, Functor, Applicative Functor)
+* [akh.IdentityT][identity] - Transforms a monad to itself. (Monad, Functor, Applicative Functor)
+* [akh.ListT][list] - List transformer. (Monad, Monoid, Functor, Applicative Functor)
+* [akh.StateT][state] - State transformer. (Monad, Monoid, Functor, Applicative Functor)
+* [akh.UniqueT][unique] - Get unique int value (Monad, Monoid, Functor, Applicative Functor)
+
+#### Monads
+* [akh.Cont][cont] - Continuation computation. (Monad, Functor, Applicative Functor)
+* [akh.DCont][dcont] - Delimited continuation computation. (Monad, Functor, Applicative Functor)
+* [akh.Either][either] - Either computation. (Monad, Functor, Applicative Functor)
+* [akh.Error][error] - Error computation. (Monad, Functor, Applicative Functor)
+* [akh.Identity][identity] - Identity computation. (Monad, Functor, Applicative Functor)
+* [akh.List][list] - List computation. (Monad, Monoid, Functor, Applicative Functor)
+* [akh.State][state] – Stateful computation. (Monad, Functor, Applicative Functor)
+* [akh.Unique][unique] – Get Unique int (Monad, Monoid, Functor, Applicative Functor)
 
 
 ### Quick Example
 
 ```js
-const List = require('akh').list;
-const StateT = require('akh').trans.state;
+const List = require('akh').List
+const StateT = require('akh').StateT
+
 // Define a new monad using the state transformer on the list monad.
 const M = StateT(List)
 
@@ -36,7 +58,7 @@ run(start, 'wackyland') === [
 ]
 
 // Let's update the current state using a function
-const modifiedState = start.modify(state => state.toUpperCase());
+const modifiedState = start.modify(state => state.toUpperCase())
 
 run(modifiedState, 'wackyland') === [
     { x: 'WACKYLAND', s: 'WACKYLAND' }
@@ -74,7 +96,7 @@ run(branched, 'wackyland') === [
 
 
 // We can then operate on all states at the same time.
-const doubled = branched.map(x => x + x);
+const doubled = branched.map(x => x + x)
 
 run(doubled, 'wackyland') === [
     { x: 'porkyporky', s: 'WACKYLAND' },
@@ -85,82 +107,25 @@ run(doubled, 'wackyland') === [
 ```
 
 
-## Install
-
-### Node
-Node files live in `dist_node`
-
-```sh
-$ npm install akh
-```
-
-
-### With AMD
-Node files live in `dist`
-
-```js
-requirejs.config({
-    paths: {
-        'akh': './dist'
-    }
-});
-
-require(['akh/list'], function(List) {
-    ...
-});
-```
-
-### Included Types
-
-#### Monad Transformers
-* IdentityT - `akh::trans::identity` - Transforms a monad to itself. (Monad, Functor, Applicative Functor)
-* StateT - `akh::trans::state` - State transformer. (Monad, Monoid, Functor, Applicative Functor)
-* ListT - `akh::trans::list` - List transformer. (Monad, Monoid, Functor, Applicative Functor)
-* ContT - `akh::trans::cont` - Continuation transformer. (Monad, Functor, Applicative Functor)
-* DContT - `akh::trans::dcont` - Delimited continuation transformer. (Monad, Functor, Applicative Functor)
-* EitherT - `akh::trans::either` - Either transformer. (Monad, Monoid, Functor, Applicative Functor)
-* ErrorT - `akh::trans::error` - Error transformer. (Monad, Monoid, Functor, Applicative Functor)
-* UniqueT - `akh::unique` Add unique int to monad (Monad, Monoid, Functor, Applicative Functor)
-
-#### Monads
-* Identity - `akh::identity` - Identity computation. (Monad, Functor, Applicative Functor)
-* State - `akh::state` - Stateful computation. (Monad, Functor, Applicative Functor)
-* List - `akh::list` - List computation. (Monad, Monoid, Functor, Applicative Functor)
-* Cont - `akh::cont` - Continuation computation. (Monad, Functor, Applicative Functor)
-* DCont - `akh::dcont` - Delimited continuation computation. (Monad, Functor, Applicative Functor)
-* EitherT - `akh::either` - Either computation. (Monad, Functor, Applicative Functor)
-* ErrorT - `akh::error` - Error computation. (Monad, Functor, Applicative Functor)
-* Unique - `akh::unique` Get Unique int (Monad, Monoid, Functor, Applicative Functor)
-
-
 
 
 ## Contribute
 Improvement and additions to Akh are welcome. Please report any [issues][issues]
 or send a pull request.
 
-### Code
-Akh is written in Khepri. [Khepri][khepri] is an ECMAScript derived language
-focused on functional programming that compiles to Javascript.
-Khepri sources are in `lib` directory with node output in `dist_node`
-and AMD output in `dist`.
-
-```sh
-# install khepri
-$ npm install -g khepri
-
-# Compile all Khepri files
-$ npm run build
-
-# Run tests
-$ npm test
-
-# While developing, auto compile changed files
-$ khepri -w lib -o dist_node --package_manager=node
-```
 
 
 [fl]: https://github.com/fantasyland/fantasy-land
-[khepri]: https://github.com/mattbierner/khepri
 [issues]: https://github.com/mattbierner/akh/issues
 [documentation]: https://github.com/mattbierner/akh/wiki
+
+[core]: https://github.com/mattbierner/akh-core
+
+[cont]: https://github.com/mattbierner/akh-cont
+[dcont]: https://github.com/mattbierner/akh-dcont
+[either]: https://github.com/mattbierner/akh-either
+[error]: https://github.com/mattbierner/akh-error
+[identity]: https://github.com/mattbierner/akh-identity
+[list]: https://github.com/mattbierner/akh-list
+[state]: https://github.com/mattbierner/akh-state
+[unique]: https://github.com/mattbierner/akh-unique

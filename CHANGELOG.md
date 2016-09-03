@@ -1,5 +1,12 @@
 # ChangeLog
 
+ ## 3.0.0 - September 2, 2016
+* Split out into individual libraries.
+* Cleaned up and simplified namespacing.
+  * Types now are in `akh.Type` and ``akh.TypeT`
+  * Core methods are now in top level `akh.next`
+* Added `m.run()` instance methods to all types.
+
  ## 2.1.0 - November 20, 2015
 * Added `EitherT.runEitherT` and `Either.runEither` to extract either values
   without needing to pass in callback functions.
@@ -16,8 +23,8 @@
 * Added `Codensity` monad.
 * Removed trampoline.
 * Split StateT into two files.
-** `akh::trans::state` has the main, stack safe impl which auto wraps in a `Codensity`.
-** `akh::trans::statei` has the actual impl, which is stack unsafe but should be used in
+  * `akh::trans::state` has the main, stack safe impl which auto wraps in a `Codensity`.
+  * `akh::trans::statei` has the actual impl, which is stack unsafe but should be used in
   stacks so as not to dup the `Codensity` logic.
 
  ## 1.1.2 - April 10, 2014
@@ -75,7 +82,7 @@
 
 ## 0.5.0 - March 21, 2014
 * Temp fix for call stack on `ContT` and `DContT`.
-** Wrap other structures for long running computations in `ContT`.
+  * Wrap other structures for long running computations in `ContT`.
 * Added State.modify.
 * Added `IdentityT`.
 * Added top level generic versions of ops in base that determine type using argument.

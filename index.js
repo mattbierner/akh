@@ -1,9 +1,5 @@
 "use strict";
-
-var requireDirectory = require('require-directory');
-var assign = require('object.assign').getPolyfill();
-
-var path = require('path');
+const assign = require('object.assign').getPolyfill();
 
 const merge = function(o1, o2) {
     var self = assign({}, o1, o2);
@@ -13,18 +9,22 @@ const merge = function(o1, o2) {
     return self;
 }
 
+
+// Combine sub-libraries into exports
 module.exports = function akh(self) {
     return assign(function(/*...*/) {
         return akh([].reduce.call(arguments, merge, self));
     }, self);
 }(
-    requireDirectory(module, path.join(__dirname, 'dist_node'))
+    require('akh.core')
 )(
     require('akh.codensity'),
     require('akh.cont'),
+    require('akh.dcont'),
+    require('akh.either'),
+    require('akh.error'),
+    require('akh.list'),
     require('akh.identity'),
-    require('akh.state')
-);
-
-module.exports.base = require('akh.core');
-
+    require('akh.state'),
+    require('akh.unique')
+)

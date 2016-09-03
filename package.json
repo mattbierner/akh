@@ -26,10 +26,15 @@
   "main": "index.js",
   "dependencies": {
     "akh.codensity": "^0.0.1",
-    "akh.cont": "^0.0.0",
-    "akh.core.spec": "^0.0.2",
+    "akh.cont": "^0.1.0",
+    "akh.core": "0.0.0",
+    "akh.dcont": "0.0.1",
+    "akh.either": "^0.0.1",
+    "akh.error": "^0.0.0",
     "akh.identity": "^0.1.0",
+    "akh.list": "^0.0.1",
     "akh.state": "^0.0.0",
+    "akh.unique": "0.0.0",
     "object.assign": "^4.0.4"
   },
   "devDependencies": {
