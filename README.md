@@ -2,17 +2,12 @@
     <img src="https://raw.githubusercontent.com/mattbierner/akh/v3/documentation/akh.png" alt="akh" />
 </div>
 
-<h2><b>Akh</b> - noun</h2>
+<h2 align="center"><b>Akh</b> - <i>noun</i></h2>
 
 <ol>
     <li>Large flightless bird found in <a href="https://github.com/fantasyland/fantasy-land">Fantasy Land</a></li>
     <li>Javascript <a href="https://en.wikibooks.org/wiki/Haskell/Monad_transformers">monad transformer</a> library.</li>
 </ol>
-
-
-# Akh
-Javascript Monad and Monad Transformer Collection
-
 
 
 ## Overview
