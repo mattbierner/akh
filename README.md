@@ -6,7 +6,7 @@
 
 <p  align="center">
     1) Large flightless bird found in <a href="https://github.com/fantasyland/fantasy-land">Fantasy Land</a></br>
-    2) Javascript <a href="https://en.wikibooks.org/wiki/Haskell/Monad_transformers">monad transformer</a> library.
+    2) Javascript <a href="https://en.wikibooks.org/wiki/Haskell/Monad_transformers">monad transformer</a> library
 </p>
 
 
@@ -63,14 +63,14 @@ const start = M.of('porky')
 // Run the stateful computation to get a list of
 // value, state pairs
 run(start, 'wackyland') === [
-    { x: 'porky', s: 'wackyland' }
+    { value: 'porky', state: 'wackyland' }
 ]
 
 // Let's update the current state using a function
 const modifiedState = start.modify(state => state.toUpperCase())
 
 run(modifiedState, 'wackyland') === [
-    { x: 'WACKYLAND', s: 'WACKYLAND' }
+    { value: 'WACKYLAND', state: 'WACKYLAND' }
 ]
 
 // Note that modify also updated the held value here. We could avoid that
@@ -81,7 +81,7 @@ const modifiedState2 = start
             .map(_ => currentValue))
 
 run(modifiedState2, 'wackyland') === [
-    { x: 'porky', s: 'WACKYLAND' }
+    { value: 'porky', state: 'WACKYLAND' }
 ]
 
 // Now let's start using the list monad and branch the state.
@@ -97,10 +97,10 @@ const branched = modifiedState2
     )
 
 run(branched, 'wackyland') === [
-    { x: 'porky', s: 'WACKYLAND' },
-    { x: 100, s: 'nuts' },
-    { x: 1, s: 'squirrel' },
-    { x: 'wackyland', s: 'wackyland' }
+    { value: 'porky', state: 'WACKYLAND' },
+    { value: 100, state: 'nuts' },
+    { value: 1, state: 'squirrel' },
+    { value: 'wackyland', state: 'wackyland' }
 ]
 
 
@@ -108,10 +108,10 @@ run(branched, 'wackyland') === [
 const doubled = branched.map(x => x + x)
 
 run(doubled, 'wackyland') === [
-    { x: 'porkyporky', s: 'WACKYLAND' },
-    { x: 200, s: 'nuts' },
-    { x: 2, s: 'squirrel' },
-    { x: 'wackylandwackyland', s: 'wackyland' }
+    { value: 'porkyporky', state: 'WACKYLAND' },
+    { value: 200, state: 'nuts' },
+    { value: 2, state: 'squirrel' },
+    { value: 'wackylandwackyland', state: 'wackyland' }
 ]
 ```
 
