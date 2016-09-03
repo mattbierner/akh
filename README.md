@@ -30,8 +30,11 @@ All functions from [akh.core][core] are top level exports.
 * [akh.ErrorT][error] - Error transformer. (Monad, Monoid, Functor, Applicative Functor)
 * [akh.IdentityT][identity] - Transforms a monad to itself. (Monad, Functor, Applicative Functor)
 * [akh.ListT][list] - List transformer. (Monad, Monoid, Functor, Applicative Functor)
+* [akh.MaybeT][maybe] - Maybe transformer. (Monad, Monoid, Functor, Applicative Functor)
+* [akh.ReaderT][reader] - Reader transformer. (Monad, Monoid, Functor, Applicative Functor)
 * [akh.StateT][state] - State transformer. (Monad, Monoid, Functor, Applicative Functor)
 * [akh.UniqueT][unique] - Get unique int value (Monad, Monoid, Functor, Applicative Functor)
+* [akh.WriterT][reader] - Writer transformer. (Monad, Monoid, Functor, Applicative Functor)
 
 #### Monads
 * [akh.Cont][cont] - Continuation computation. (Monad, Functor, Applicative Functor)
@@ -40,8 +43,11 @@ All functions from [akh.core][core] are top level exports.
 * [akh.Error][error] - Error computation. (Monad, Functor, Applicative Functor)
 * [akh.Identity][identity] - Identity computation. (Monad, Functor, Applicative Functor)
 * [akh.List][list] - List computation. (Monad, Monoid, Functor, Applicative Functor)
+* [akh.Maybe][maybe] - Computation that may produce a value or nothing. (Monad, Monoid, Functor, Applicative Functor)
+* [akh.Reader][reader] - Reader monad. (Monad, Monoid, Functor, Applicative Functor)
 * [akh.State][state] – Stateful computation. (Monad, Functor, Applicative Functor)
 * [akh.Unique][unique] – Get Unique int (Monad, Monoid, Functor, Applicative Functor)
+* [akh.Writer][reader] - Writer monad. (Monad, Monoid, Functor, Applicative Functor)
 
 
 ### Quick Example
@@ -136,8 +142,12 @@ or send a pull request.
 [error]: https://github.com/mattbierner/akh-error
 [identity]: https://github.com/mattbierner/akh-identity
 [list]: https://github.com/mattbierner/akh-list
+[maybe]: https://github.com/mattbierner/akh-maybe
+[reader]: https://github.com/mattbierner/akh-reader
 [state]: https://github.com/mattbierner/akh-state
 [unique]: https://github.com/mattbierner/akh-unique
+[writer]: https://github.com/mattbierner/akh-writer
+
 
 ---
 
