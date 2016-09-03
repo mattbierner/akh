@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="" alt="akh" />
+    <img src="https://raw.githubusercontent.com/mattbierner/akh/v3/documentation/akh.png" alt="akh" />
 </div>
 
 <h2><b>Akh</b> - noun</h2>
@@ -143,3 +143,5 @@ or send a pull request.
 [list]: https://github.com/mattbierner/akh-list
 [state]: https://github.com/mattbierner/akh-state
 [unique]: https://github.com/mattbierner/akh-unique
+
+---
