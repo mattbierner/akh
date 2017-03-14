@@ -1,28 +1,31 @@
 # ChangeLog
 
- ## 3.1.0 - September 3, 2016
+## 3.1.1 - March 13, 2017
+* Pick up minor fixes for Maybe and Writer
+
+## 3.1.0 - September 3, 2016
 * Added `Maybe`
 * Added `Reader`
 * Added `Writer`
 
- ## 3.0.0 - September 2, 2016
+## 3.0.0 - September 2, 2016
 * Split out into individual libraries.
 * Cleaned up and simplified namespacing.
   * Types now are in `akh.Type` and ``akh.TypeT`
   * Core methods are now in top level `akh.next`
 * Added `m.run()` instance methods to all types.
 
- ## 2.1.0 - November 20, 2015
+## 2.1.0 - November 20, 2015
 * Added `EitherT.runEitherT` and `Either.runEither` to extract either values
   without needing to pass in callback functions.
 * Updated some internal structures to make it more clear that some values are
   private.
 
- ## 2.0.1 - November 18, 2015
+## 2.0.1 - November 18, 2015
 * Fixed exec state returning value instead of state.
 * Made sure all code uses modern Khepri.
 
- ## 2.0.0 - April 13, 2014
+## 2.0.0 - April 13, 2014
 * Split interfaces into own files. `akh::spec::*`.
 * Autolifting of state `get` `put` and `modify` in most base types.
 * Added `Codensity` monad.
@@ -32,13 +35,13 @@
   * `akh::trans::statei` has the actual impl, which is stack unsafe but should be used in
   stacks so as not to dup the `Codensity` logic.
 
- ## 1.1.2 - April 10, 2014
+## 1.1.2 - April 10, 2014
 * Performance improvements though recompile with khepri V0.23.0
 
- ## 1.1.1 - April 7, 2014
+## 1.1.1 - April 7, 2014
 * Performance improvements though recompile with khepri V0.21.13.
 
- ## 1.1.0 - April 3, 2014
+## 1.1.0 - April 3, 2014
 * Added `base::liftA` and `base::liftA2` to lift to an applicative.
 * Added derived applicative operation `ac` that curries `f` with the argument `a`.
 

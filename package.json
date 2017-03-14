@@ -1,6 +1,6 @@
 {
   "name": "akh",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Monad and Monad Transformer Collection",
   "author": "Matt Bierner",
   "license": "MIT",
@@ -32,11 +32,11 @@
     "akh.error": "^0.0.2",
     "akh.identity": "^0.1.0",
     "akh.list": "^0.0.1",
-    "akh.maybe": "0.0.2",
-    "akh.reader": "0.0.0",
+    "akh.maybe": "^0.0.2",
+    "akh.reader": "^0.0.0",
     "akh.state": "^0.0.0",
     "akh.unique": "^0.0.0",
-    "akh.writer": "^0.0.0",
+    "akh.writer": "^0.0.1",
     "object.assign": "^4.0.4"
   },
   "devDependencies": {
