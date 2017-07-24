@@ -8,4 +8,17 @@ describe("State", () => {
         const c = State.of(3)
         assert.strictEqual(3, State.eval(c, null))
     })
+
+    it("simple_bind", () => {
+        const c = State.of(3).chain(x => State.of(x + 5))
+
+        assert.deepEqual(
+            { value: 8, state: 's' },
+            State.run(c, 's'))
+
+        assert.deepEqual(
+            { value: 8, state: 's' },
+            c.run('s'))
+    })
+
 })
