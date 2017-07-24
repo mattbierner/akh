@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 3.1.2 - July 23, 2017
+* Pick up minor fixes for State
+
 ## 3.1.1 - March 13, 2017
 * Pick up minor fixes for Maybe and Writer
 
